@@ -25,7 +25,7 @@ const items = [
   "Quince",
 ];
 
-export default function SearchBox({}) {
+export default function SearchBox() {
   const [query, setQuery] = useState("");
   const [results, setResults] = useState([]);
   const [savedItems, setSavedItems] = useState([]);
