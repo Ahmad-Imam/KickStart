@@ -22,23 +22,21 @@ import {
   TooltipTrigger,
 } from "@/components/ui/tooltip";
 import { toast } from "sonner";
+import { set } from "mongoose";
 
 export function TournamentMultiForm() {
   const [page, setPage] = useState(1);
   const [totalPages, setTotalPages] = useState(3);
   const [formData, setFormData] = useState({
     name: "",
-    email: "",
-    age: "",
-    occupation: "",
-    interests: "",
-    additionalInfo: "",
-    groupsNum: 0,
-    teamsPerGroup: 0,
-    teamsQPerGroup: 0,
+    groupsNum: 1,
+    teamsPerGroup: 1,
+    teamsQPerGroup: 1,
   });
 
   const [quarterSwitch, setQuarterSwitch] = useState(false);
+  const [semiSwitch, setSemiSwitch] = useState(false);
+  const [thirdSwitch, setThirdSwitch] = useState(false);
 
   useEffect(() => {
     // Determine total pages based on age
@@ -53,16 +51,147 @@ export function TournamentMultiForm() {
   const handleInputChange = (e) => {
     const { name, value } = e.target;
     // console.log(name, value);
+
+    // if (name === "teamsQPerGroup" && value > formData.teamsPerGroup) {
+    //   setFormData((prevData) => ({
+    //     ...prevData,
+    //     teamsPerGroup: value,
+    //   }));
+    // }
+    console.log("form");
+    const valueInt = parseInt(value);
+    // console.log("q" + formData.teamsQPerGroup);
+    // console.log(formData.teamsPerGroup);
+
+    setFormData((prevData) => {
+      if (name === "teamsPerGroup" && valueInt < prevData.teamsQPerGroup) {
+        console.log("asd");
+        return {
+          ...prevData,
+          teamsPerGroup: prevData.teamsQPerGroup,
+        };
+      } else {
+        console.log("qwewqeasd");
+        return {
+          ...prevData,
+          [name]: valueInt,
+        };
+      }
+    });
+  };
+  const handleRadioChangeGroup = (value) => {
+    const valueInt = parseInt(value);
+    if (formData.teamsQPerGroup === 2 && valueInt === 8) {
+      toast.error(
+        "Number of Groups * Number of Teams Qualified must equal or less than 8"
+      );
+      return;
+    }
+    if (formData.teamsQPerGroup === 4 && (valueInt === 4 || valueInt === 8)) {
+      toast.error(
+        "Number of Groups * Number of Teams Qualified must equal or less than 8"
+      );
+      return;
+    }
+    if (
+      formData.teamsQPerGroup === 8 &&
+      (valueInt === 2 || valueInt === 4 || valueInt === 8)
+    ) {
+      toast.error(
+        "Number of Groups * Number of Teams Qualified must equal or less than 8"
+      );
+      return;
+    }
+    if (
+      (formData.teamsQPerGroup === 8 && valueInt === 1) ||
+      (formData.teamsQPerGroup === 1 && valueInt === 8) ||
+      (formData.teamsQPerGroup === 2 && valueInt === 4) ||
+      (formData.teamsQPerGroup === 4 && valueInt === 2)
+    ) {
+      setQuarterSwitch(true);
+      setSemiSwitch(false);
+    } else {
+      setQuarterSwitch(false);
+    }
+
+    if (
+      (formData.teamsQPerGroup === 4 && valueInt === 1) ||
+      (formData.teamsQPerGroup === 1 && valueInt === 4) ||
+      (formData.teamsQPerGroup === 2 && valueInt === 2)
+    ) {
+      setSemiSwitch(true);
+      setQuarterSwitch(false);
+    } else setSemiSwitch(false);
+
     setFormData((prevData) => ({
       ...prevData,
-      [name]: value,
+      groupsNum: valueInt,
     }));
   };
-  console.log(formData);
-  const handleRadioChange = (value) => {
+  const handleRadioChangeGroupQ = (value) => {
+    const valueInt = parseInt(value);
+
+    if (formData.groupsNum === 2 && valueInt === 8) {
+      toast.error(
+        "Number of Groups * Number of Teams Qualified must equal or less than 8"
+      );
+      return;
+    }
+    if (formData.groupsNum === 4 && (valueInt === 4 || valueInt === 8)) {
+      toast.error(
+        "Number of Groups * Number of Teams Qualified must equal or less than 8"
+      );
+      return;
+    }
+    if (
+      formData.groupsNum === 8 &&
+      (valueInt === 2 || valueInt === 4 || valueInt === 8)
+    ) {
+      toast.error(
+        "Number of Groups * Number of Teams Qualified must equal or less than 8"
+      );
+      return;
+    }
+    if (
+      (formData.groupsNum === 8 && valueInt === 1) ||
+      (formData.groupsNum === 1 && valueInt === 8) ||
+      (formData.groupsNum === 2 && valueInt === 4) ||
+      (formData.groupsNum === 4 && valueInt === 2)
+    ) {
+      setQuarterSwitch(true);
+      setSemiSwitch(false);
+    } else {
+      setQuarterSwitch(false);
+    }
+
+    if (
+      (formData.groupsNum === 4 && valueInt === 1) ||
+      (formData.groupsNum === 1 && valueInt === 4) ||
+      (formData.groupsNum === 2 && valueInt === 2)
+    ) {
+      setSemiSwitch(true);
+      setQuarterSwitch(false);
+    } else setSemiSwitch(false);
+
+    setFormData((prevData) => {
+      if (valueInt > prevData.teamsPerGroup) {
+        console.log("asd");
+        return {
+          ...prevData,
+          teamsPerGroup: valueInt,
+          teamsQPerGroup: valueInt,
+        };
+      } else {
+        console.log("qwewqeasd");
+        return {
+          ...prevData,
+          teamsQPerGroup: valueInt,
+        };
+      }
+    });
     setFormData((prevData) => ({
       ...prevData,
-      occupation: value,
+      teamsQPerGroup: valueInt,
     }));
   };
 
@@ -162,16 +291,30 @@ export function TournamentMultiForm() {
 
           {page === 2 && (
             <div className="grid w-full items-center gap-4">
-              <div className="flex flex-col space-y-1.5">
-                <Label htmlFor="age">Number of Groups</Label>
-                <Input
-                  id="groupsNum"
-                  name="groupsNum"
-                  type="number"
-                  value={formData.groupsNum}
-                  onChange={handleInputChange}
-                  placeholder="4"
-                />
+              <div>
+                <Label>Number of Groups</Label>
+                <RadioGroup
+                  value={formData.groupsNum.toString()}
+                  onValueChange={handleRadioChangeGroup}
+                  className="flex flex-row gap-4 my-2"
+                >
+                  <div className="flex items-center space-x-1">
+                    <RadioGroupItem value="1" id="1" />
+                    <Label htmlFor="1">1</Label>
+                  </div>
+                  <div className="flex items-center space-x-1">
+                    <RadioGroupItem value="2" id="2" />
+                    <Label htmlFor="2">2</Label>
+                  </div>
+                  <div className="flex items-center space-x-1">
+                    <RadioGroupItem value="4" id="4" />
+                    <Label htmlFor="4">4</Label>
+                  </div>
+                  <div className="flex items-center space-x-1">
+                    <RadioGroupItem value="8" id="8" />
+                    <Label htmlFor="8">8</Label>
+                  </div>
+                </RadioGroup>
               </div>
               <div className="flex flex-col space-y-1.5">
                 <Label htmlFor="age">Teams Per Group</Label>
@@ -184,16 +327,30 @@ export function TournamentMultiForm() {
                   placeholder="5"
                 />
               </div>
-              <div className="flex flex-col space-y-1.5">
-                <Label htmlFor="age">Teams Qualified Per Group</Label>
-                <Input
-                  id="teamsQPerGroup"
-                  name="teamsQPerGroup"
-                  type="number"
-                  value={formData.teamsQPerGroup}
-                  onChange={handleInputChange}
-                  placeholder="2"
-                />
+              <div>
+                <Label>Teams Qualified Per Group</Label>
+                <RadioGroup
+                  value={formData.teamsQPerGroup.toString()}
+                  onValueChange={handleRadioChangeGroupQ}
+                  className="flex flex-row gap-4 my-2"
+                >
+                  <div className="flex items-center space-x-1">
+                    <RadioGroupItem value="1" id="1" />
+                    <Label htmlFor="1">1</Label>
+                  </div>
+                  <div className="flex items-center space-x-1">
+                    <RadioGroupItem value="2" id="2" />
+                    <Label htmlFor="2">2</Label>
+                  </div>
+                  <div className="flex items-center space-x-1">
+                    <RadioGroupItem value="4" id="4" />
+                    <Label htmlFor="4">4</Label>
+                  </div>
+                  <div className="flex items-center space-x-1">
+                    <RadioGroupItem value="8" id="8" />
+                    <Label htmlFor="8">8</Label>
+                  </div>
+                </RadioGroup>
               </div>
               <div className="flex flex-col space-y-1.5">
                 <div className="flex items-center space-x-2">
@@ -204,7 +361,7 @@ export function TournamentMultiForm() {
                       console.log("switch");
                       console.log(formData.groupsNum * formData.teamsQPerGroup);
                       if (formData.groupsNum * formData.teamsQPerGroup === 8) {
-                        return setQuarterSwitch(!quarterSwitch);
+                        return;
                       } else {
                         toast.error(
                           "Number of Groups * Number of Teams Qualified must be 8"
@@ -228,6 +385,70 @@ export function TournamentMultiForm() {
                   </Label>
                 </div>
               </div>
+              {!quarterSwitch && (
+                <div className="flex flex-col space-y-1.5">
+                  <div className="flex items-center space-x-2">
+                    <Switch
+                      id="quarter"
+                      checked={semiSwitch}
+                      onClick={() => {
+                        console.log("switch");
+                        console.log(
+                          formData.groupsNum * formData.teamsQPerGroup
+                        );
+                        if (
+                          formData.groupsNum * formData.teamsQPerGroup ===
+                          4
+                        ) {
+                          return;
+                        } else {
+                          toast.error(
+                            "Number of Groups * Number of Teams Qualified must be 4"
+                          );
+                        }
+                      }}
+                    />
+
+                    <TooltipProvider>
+                      <Tooltip>
+                        <TooltipTrigger asChild>
+                          <Label htmlFor="quarter">Semi Final</Label>
+                        </TooltipTrigger>
+                        <TooltipContent>
+                          Number of Groups * Number of Teams Qualified must be 4
+                        </TooltipContent>
+                      </Tooltip>
+                    </TooltipProvider>
+                    <Label htmlFor="airplane-mode" className="text-gray-300">
+                      4 teams
+                    </Label>
+                  </div>
+                </div>
+              )}
+              {semiSwitch && (
+                <div className="flex flex-col space-y-1.5">
+                  <div className="flex items-center space-x-2">
+                    <Switch
+                      id="quarter"
+                      checked={thirdSwitch}
+                      onClick={() => {
+                        setThirdSwitch(!thirdSwitch);
+                      }}
+                    />
+
+                    <TooltipProvider>
+                      <Tooltip>
+                        <TooltipTrigger asChild>
+                          <Label htmlFor="quarter">Third Place</Label>
+                        </TooltipTrigger>
+                        <TooltipContent>
+                          Number of Groups * Number of Teams Qualified must be 4
+                        </TooltipContent>
+                      </Tooltip>
+                    </TooltipProvider>
+                  </div>
+                </div>
+              )}
             </div>
           )}
 
