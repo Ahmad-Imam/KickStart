@@ -48,81 +48,50 @@ export function TournamentMultiForm() {
     }
   }, [formData.age, page]);
 
-  const handleInputChange = (e) => {
-    const { name, value } = e.target;
-    // console.log(name, value);
+  const validateGroups = (teamsQPerGroup, valueInt) => {
+    const invalidCombinations = {
+      2: [8],
+      4: [4, 8],
+      8: [2, 4, 8],
+    };
 
-    // if (name === "teamsQPerGroup" && value > formData.teamsPerGroup) {
-    //   setFormData((prevData) => ({
-    //     ...prevData,
-    //     teamsPerGroup: value,
-    //   }));
-    // }
-    console.log("form");
-    const valueInt = parseInt(value);
-    // console.log("q" + formData.teamsQPerGroup);
-    // console.log(formData.teamsPerGroup);
+    if (invalidCombinations[teamsQPerGroup]?.includes(valueInt)) {
+      toast.error(
+        "Number of Groups * Number of Teams Qualified must equal or less than 8"
+      );
+      return false;
+    }
+    return true;
+  };
+  const setSwitches = (teamsQPerGroup, valueInt) => {
+    const quarterSwitchCombinations = [
+      [8, 1],
+      [1, 8],
+      [2, 4],
+      [4, 2],
+    ];
+    const semiSwitchCombinations = [
+      [4, 1],
+      [1, 4],
+      [2, 2],
+    ];
 
-    setFormData((prevData) => {
-      if (name === "teamsPerGroup" && valueInt < prevData.teamsQPerGroup) {
-        console.log("asd");
-        return {
-          ...prevData,
-          teamsPerGroup: prevData.teamsQPerGroup,
-        };
-      } else {
-        console.log("qwewqeasd");
-        return {
-          ...prevData,
-          [name]: valueInt,
-        };
-      }
-    });
+    const isQuarterSwitch = quarterSwitchCombinations.some(
+      ([q, v]) => q === teamsQPerGroup && v === valueInt
+    );
+    const isSemiSwitch = semiSwitchCombinations.some(
+      ([q, v]) => q === teamsQPerGroup && v === valueInt
+    );
+
+    setQuarterSwitch(isQuarterSwitch);
+    setSemiSwitch(isSemiSwitch && !isQuarterSwitch);
   };
   const handleRadioChangeGroup = (value) => {
     const valueInt = parseInt(value);
-    if (formData.teamsQPerGroup === 2 && valueInt === 8) {
-      toast.error(
-        "Number of Groups * Number of Teams Qualified must equal or less than 8"
-      );
+    if (!validateGroups(formData.teamsQPerGroup, valueInt)) {
       return;
     }
-    if (formData.teamsQPerGroup === 4 && (valueInt === 4 || valueInt === 8)) {
-      toast.error(
-        "Number of Groups * Number of Teams Qualified must equal or less than 8"
-      );
-      return;
-    }
-    if (
-      formData.teamsQPerGroup === 8 &&
-      (valueInt === 2 || valueInt === 4 || valueInt === 8)
-    ) {
-      toast.error(
-        "Number of Groups * Number of Teams Qualified must equal or less than 8"
-      );
-      return;
-    }
-    if (
-      (formData.teamsQPerGroup === 8 && valueInt === 1) ||
-      (formData.teamsQPerGroup === 1 && valueInt === 8) ||
-      (formData.teamsQPerGroup === 2 && valueInt === 4) ||
-      (formData.teamsQPerGroup === 4 && valueInt === 2)
-    ) {
-      setQuarterSwitch(true);
-      setSemiSwitch(false);
-    } else {
-      setQuarterSwitch(false);
-    }
-
-    if (
-      (formData.teamsQPerGroup === 4 && valueInt === 1) ||
-      (formData.teamsQPerGroup === 1 && valueInt === 4) ||
-      (formData.teamsQPerGroup === 2 && valueInt === 2)
-    ) {
-      setSemiSwitch(true);
-      setQuarterSwitch(false);
-    } else setSemiSwitch(false);
-
+    setSwitches(formData.teamsQPerGroup, valueInt);
     setFormData((prevData) => ({
       ...prevData,
       groupsNum: valueInt,
@@ -131,68 +100,39 @@ export function TournamentMultiForm() {
   const handleRadioChangeGroupQ = (value) => {
     const valueInt = parseInt(value);
 
-    if (formData.groupsNum === 2 && valueInt === 8) {
-      toast.error(
-        "Number of Groups * Number of Teams Qualified must equal or less than 8"
-      );
+    if (!validateGroups(formData.groupsNum, valueInt)) {
       return;
-    }
-    if (formData.groupsNum === 4 && (valueInt === 4 || valueInt === 8)) {
-      toast.error(
-        "Number of Groups * Number of Teams Qualified must equal or less than 8"
-      );
-      return;
-    }
-    if (
-      formData.groupsNum === 8 &&
-      (valueInt === 2 || valueInt === 4 || valueInt === 8)
-    ) {
-      toast.error(
-        "Number of Groups * Number of Teams Qualified must equal or less than 8"
-      );
-      return;
-    }
-    if (
-      (formData.groupsNum === 8 && valueInt === 1) ||
-      (formData.groupsNum === 1 && valueInt === 8) ||
-      (formData.groupsNum === 2 && valueInt === 4) ||
-      (formData.groupsNum === 4 && valueInt === 2)
-    ) {
-      setQuarterSwitch(true);
-      setSemiSwitch(false);
-    } else {
-      setQuarterSwitch(false);
     }
 
-    if (
-      (formData.groupsNum === 4 && valueInt === 1) ||
-      (formData.groupsNum === 1 && valueInt === 4) ||
-      (formData.groupsNum === 2 && valueInt === 2)
-    ) {
-      setSemiSwitch(true);
-      setQuarterSwitch(false);
-    } else setSemiSwitch(false);
+    setSwitches(formData.groupsNum, valueInt);
 
     setFormData((prevData) => {
-      if (valueInt > prevData.teamsPerGroup) {
-        console.log("asd");
+      const newTeamsPerGroup =
+        valueInt > prevData.teamsPerGroup ? valueInt : prevData.teamsPerGroup;
+      return {
+        ...prevData,
+        teamsPerGroup: newTeamsPerGroup,
+        teamsQPerGroup: valueInt,
+      };
+    });
+  };
+
+  const handleInputChange = (e) => {
+    const { name, value } = e.target;
+    const valueInt = parseInt(value);
+    setFormData((prevData) => {
+      if (name === "teamsPerGroup" && valueInt < prevData.teamsQPerGroup) {
         return {
           ...prevData,
-          teamsPerGroup: valueInt,
-          teamsQPerGroup: valueInt,
+          teamsPerGroup: prevData.teamsQPerGroup,
         };
       } else {
-        console.log("qwewqeasd");
         return {
           ...prevData,
-          teamsQPerGroup: valueInt,
+          [name]: valueInt,
         };
       }
     });
-    setFormData((prevData) => ({
-      ...prevData,
-      teamsQPerGroup: valueInt,
-    }));
   };
 
   const handleNext = () => {
