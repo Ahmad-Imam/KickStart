@@ -1,16 +1,17 @@
-import { getTeamInfo } from "@/queries/teams";
+import { getTeamById, getTeams } from "@/queries/teams";
 import { dbConnect } from "@/service/mongo";
+import { NextResponse } from "next/server";
 
 export const GET = async (req, res) => {
   try {
-    const { id } = await req.json();
+    // const { id } = await req.json();
 
     await dbConnect();
 
-    const team = await getTeamInfo();
-    console.log(team);
-    res.status(200).json(team);
+    const teams = await getTeams();
+    console.log(teams);
+    return NextResponse.json(teams);
   } catch (error) {
-    res.status(500).json({ error: error.message });
+    return NextResponse.error(error);
   }
 };

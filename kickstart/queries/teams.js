@@ -15,7 +15,31 @@ export async function createTeams(data) {
   }
 }
 
-export async function getTeamInfo(id) {
+export async function createTeamsN(data, n) {
+  try {
+    for (let i = 0; i < n; i++) {
+      const team = await teamsModel.create(data);
+      console.log(team);
+    }
+
+    // const team = await teamsModel.create(data);
+    // console.log(team);
+    // return replaceMongoIdInObject(team);
+  } catch (error) {
+    throw new Error(error);
+  }
+}
+
+export async function getTeams() {
+  try {
+    const teams = await teamsModel.find().lean();
+    return replaceMongoIdInArray(teams);
+  } catch (error) {
+    throw new Error(error);
+  }
+}
+
+export async function getTeamById(id) {
   try {
     const teams = await teamsModel
       .findById(id)

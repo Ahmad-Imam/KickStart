@@ -12,6 +12,7 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 import { Switch } from "@/components/ui/switch";
+import Link from "next/link";
 
 const tournamentNotifications = [
   {
@@ -30,7 +31,7 @@ const tournamentNotifications = [
 
 const teamsNotifications = [
   {
-    title: "Create your team",
+    title: "Create teams",
     description: "Teams are available for all tournaments",
   },
   {
@@ -45,7 +46,7 @@ const teamsNotifications = [
 
 const playersNotifications = [
   {
-    title: "Create your player",
+    title: "Create players",
     description: "Players are available for all tournaments",
   },
   {
@@ -79,9 +80,9 @@ export default function CardDemo({ className, ...props }) {
   return (
     <Card className={cn("w-[380px]", className)} {...props}>
       <CardHeader>
-        <CardTitle>Create {headerText}</CardTitle>
+        <CardTitle>Create your {headerText}</CardTitle>
         <CardDescription>
-          {`Create your ${headerText} by entering information`}
+          {/* {`Create your ${headerText} by entering information`} */}
         </CardDescription>
       </CardHeader>
       <CardContent className="grid gap-4">
@@ -105,9 +106,19 @@ export default function CardDemo({ className, ...props }) {
         </div>
       </CardContent>
       <CardFooter>
-        <Button className="w-full">
-          <Check className="mr-2 h-4 w-4" /> Mark all as read
-        </Button>
+        <Link
+          href={
+            type === "tournament"
+              ? "/create/tournaments"
+              : type === "team"
+              ? "/create/teams"
+              : "/create/players"
+          }
+          className="w-full"
+        >
+          <Button className="w-full">Create</Button>
+          {/* <Check className="mr-2 h-4 w-4" /> */}
+        </Link>
       </CardFooter>
     </Card>
   );

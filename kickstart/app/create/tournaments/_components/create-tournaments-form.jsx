@@ -11,13 +11,13 @@ import {
 } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { addTeams } from "@/app/actions";
+import { addTeams, addTeamsN } from "@/app/actions";
 import { useState, useEffect } from "react";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { X } from "lucide-react";
 import { set } from "mongoose";
 
-export function TeamsForm() {
+export function TournamentForm() {
   const fruits = [
     "Apple",
     "Banana",
@@ -83,11 +83,11 @@ export function TeamsForm() {
       name,
       bio,
       location,
-      players: savedItems.map((item) => item.id),
+      // players: savedItems.map((item) => item.id),
     };
 
     console.log(teamData);
-    const teams = await addTeams(teamData);
+    const teams = await addTeamsN(teamData, 3);
     // Call the API to create the team
     // console.log(teamData);
   }

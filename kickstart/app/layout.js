@@ -1,6 +1,7 @@
 import { Inter } from "next/font/google";
 import "./globals.css";
 import { MainNav } from "@/components/main-nav";
+import { Toaster } from "@/components/ui/sonner";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -32,9 +33,10 @@ export default function RootLayout({ children }) {
   return (
     <html lang="en">
       <body className={inter.className}>
-        <div className="flex h-full flex-col items-center px-2">
-          <header className="bg-background/60 border-b w-5/6">
-            <div className="container flex h-20 items-center justify-between py-6 ">
+        <Toaster position="top-center" richColors />
+        <div className="flex h-screen flex-col items-center justify-between px-2">
+          <header className="bg-background/60 border-b w-5/6 h-20">
+            <div className="container flex items-center justify-between py-4 ">
               <MainNav items={navLinks} />
             </div>
           </header>

@@ -22,10 +22,7 @@ const playerSchema = new Schema({
     required: false,
     type: {},
   },
-  team: {
-    required: false,
-    type: ObjectId,
-  },
+  team: { type: Schema.ObjectId, ref: "teams", required: false },
 });
 
 export const playersModel =
