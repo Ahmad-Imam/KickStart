@@ -12,7 +12,6 @@ import { X } from "lucide-react";
 import { Alert, AlertDescription } from "@/components/ui/alert";
 
 export default function GroupMatcher({
-  teamsQ,
   numberOfGroups,
   teamsPerGroup,
   teamsQualified,
@@ -20,6 +19,7 @@ export default function GroupMatcher({
   setIsAllGroupsFilled,
   setGroupMatch,
   groupMatch,
+  teamsTournament,
 }) {
   const [config, setConfig] = useState({
     numberOfGroups,
@@ -27,24 +27,7 @@ export default function GroupMatcher({
     teamsQualified,
   });
 
-  const [availableTeams, setAvailableTeams] = useState([
-    "Team A",
-    "Team B",
-    "Team C",
-    "Team D",
-    "Team E",
-    "Team F",
-    "Team G",
-    "Team H",
-    "Team I",
-    "Team J",
-    "Team K",
-    "Team L",
-    "Team M",
-    "Team N",
-    "Team O",
-    "Team P",
-  ]);
+  const [availableTeams, setAvailableTeams] = useState(teamsTournament);
 
   const [groups, setGroups] = useState(
     groupMatch.length > 0
@@ -74,7 +57,7 @@ export default function GroupMatcher({
           i === groupIndex ? { ...group, teams: [...group.teams, team] } : group
         )
       );
-      setAvailableTeams(availableTeams.filter((t) => t !== team));
+      setAvailableTeams(availableTeams.filter((t) => t.name !== team));
     }
   };
 
@@ -82,14 +65,14 @@ export default function GroupMatcher({
     setGroups(
       groups.map((group, i) =>
         i === groupIndex
-          ? { ...group, teams: group.teams.filter((t) => t !== team) }
+          ? { ...group, teams: group.teams.filter((t) => t.name !== team) }
           : group
       )
     );
     setGroupMatch(
       groups.map((group, i) =>
         i === groupIndex
-          ? { ...group, teams: group.teams.filter((t) => t !== team) }
+          ? { ...group, teams: group.teams.filter((t) => t.name !== team) }
           : group
       )
     );
@@ -103,7 +86,8 @@ export default function GroupMatcher({
       .map((group) => group.name)
       .join(", ");
   };
-
+  console.log("availableTeams");
+  console.log(availableTeams);
   return (
     <div className="container">
       <h1 className="text-lg font-semibold mb-4">Create Group:</h1>
@@ -124,8 +108,8 @@ export default function GroupMatcher({
                 </SelectTrigger>
                 <SelectContent>
                   {availableTeams.map((team) => (
-                    <SelectItem key={team} value={team}>
-                      {team}
+                    <SelectItem key={team?.id} value={team?.name}>
+                      {team?.name}
                     </SelectItem>
                   ))}
                 </SelectContent>

@@ -28,10 +28,11 @@ import SearchBox from "./searchBox";
 import QFMatcher from "./create-qf-matcher";
 import SFMatcher from "./create-sf-matcher";
 import GroupMatcher from "./create-group-matcher";
+import CreateTeamsTournament from "./create-team-list";
 
 export function TournamentMultiForm() {
   const [page, setPage] = useState(1);
-  const [totalPages, setTotalPages] = useState(4);
+  const [totalPages, setTotalPages] = useState(5);
   const [formData, setFormData] = useState({
     name: "",
     groupsNum: 1,
@@ -46,20 +47,16 @@ export function TournamentMultiForm() {
   const [groupMatch, setGroupMatch] = useState([]);
   const [quarterMatch, setQuarterMatch] = useState([]);
   const [semiMatch, setSemiMatch] = useState([]);
+  const [teamsTournament, setTeamsTournament] = useState([]);
 
   console.log("semi");
-  console.log(quarterMatch);
-  console.log(semiMatch);
-  console.log(groupMatch);
+  // console.log(quarterMatch);
+  // console.log(semiMatch);
+  // console.log(groupMatch);
+  console.log(teamsTournament);
 
   useEffect(() => {
     // Determine total pages based on age
-    if (formData.age && parseInt(formData.age) < 18) {
-      setTotalPages(4);
-      if (page > 2) setPage(2);
-    } else {
-      setTotalPages(4);
-    }
   }, [formData.age, page]);
 
   const validateGroups = (teamsQPerGroup, valueInt) => {
@@ -198,7 +195,7 @@ export function TournamentMultiForm() {
     console.log(formData);
     // Here you would typically send the data to a server
   };
-  console.log("filler" + isAllGroupsFilled);
+  // console.log("filler" + isAllGroupsFilled);
   return (
     <Card className="mx-auto w-full max-w-screen-xl">
       <CardHeader>
@@ -438,10 +435,18 @@ export function TournamentMultiForm() {
                   </div>
                 </div>
               )}
+
+              {/* <CreateTeamsTournament /> */}
             </div>
           )}
-
-          {page === 3 && (
+          {page == 3 && (
+            <CreateTeamsTournament
+              groupsNum={formData.groupsNum}
+              teamsPerGroup={formData.teamsPerGroup}
+              setTeamsTournament={setTeamsTournament}
+            />
+          )}
+          {page === 4 && (
             <div className="grid w-full items-center gap-4">
               <div className="flex flex-col items-start">
                 <p>Groups:</p>
@@ -486,15 +491,15 @@ export function TournamentMultiForm() {
                 <SFMatcher
                   teamsQ={teamsQualifiedList}
                   setSemiMatch={setSemiMatch}
+                  teamsTournament={teamsTournament}
                 />
               )}
             </div>
           )}
 
-          {page === 4 && (
+          {page === 5 && (
             <div className="grid w-full items-center gap-4">
               <GroupMatcher
-                teamsQ={teamsQualifiedList}
                 numberOfGroups={formData.groupsNum}
                 teamsPerGroup={formData.teamsPerGroup}
                 teamsQualified={formData.teamsQPerGroup}
@@ -502,6 +507,7 @@ export function TournamentMultiForm() {
                 setIsAllGroupsFilled={setIsAllGroupsFilled}
                 groupMatch={groupMatch}
                 setGroupMatch={setGroupMatch}
+                teamsTournament={teamsTournament}
               />
             </div>
           )}
@@ -514,7 +520,16 @@ export function TournamentMultiForm() {
           </Button>
         )}
         {page < totalPages ? (
-          <Button onClick={handleNext}>Next</Button>
+          <Button
+            disabled={
+              page == 3 &&
+              teamsTournament.length !==
+                formData.groupsNum * formData.teamsPerGroup
+            }
+            onClick={handleNext}
+          >
+            Next
+          </Button>
         ) : (
           <Button
             type="submit"

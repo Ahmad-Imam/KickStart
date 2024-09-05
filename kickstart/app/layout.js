@@ -33,7 +33,7 @@ export default function RootLayout({ children }) {
   return (
     <html lang="en">
       <body className={inter.className}>
-        <Toaster position="top-center" richColors />
+        <Toaster position="top-center" duration="1500" richColors />
         <div className="flex h-screen flex-col items-center justify-between px-2">
           <header className="bg-background/60 border-b w-5/6 h-20">
             <div className="container flex items-center justify-between py-4 ">

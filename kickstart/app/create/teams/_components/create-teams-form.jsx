@@ -16,6 +16,7 @@ import { useState, useEffect } from "react";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { X } from "lucide-react";
 import { set } from "mongoose";
+import { toast } from "sonner";
 
 export function TeamsForm() {
   const fruits = [
@@ -89,7 +90,7 @@ export function TeamsForm() {
     console.log(teamData);
     const teams = await addTeams(teamData);
     // Call the API to create the team
-    // console.log(teamData);
+    console.log("teamData");
   }
 
   const fetchPlayers = async () => {
@@ -201,6 +202,7 @@ export function TeamsForm() {
                 </ul>
               </div>
             )}
+
             <Button type="submit" className="w-full">
               Submit
             </Button>
