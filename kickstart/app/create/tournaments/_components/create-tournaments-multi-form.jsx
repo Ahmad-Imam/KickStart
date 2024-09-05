@@ -62,9 +62,18 @@ export function TournamentMultiForm() {
     };
 
     if (invalidCombinations[teamsQPerGroup]?.includes(valueInt)) {
+  const validateGroups = (teamsQPerGroup, valueInt) => {
+    const invalidCombinations = {
+      2: [8],
+      4: [4, 8],
+      8: [2, 4, 8],
+    };
+
+    if (invalidCombinations[teamsQPerGroup]?.includes(valueInt)) {
       toast.error(
         "Number of Groups * Number of Teams Qualified must equal or less than 8"
       );
+      return false;
       return false;
     }
     return true;
@@ -125,6 +134,7 @@ export function TournamentMultiForm() {
     const valueInt = parseInt(value);
 
     if (!validateGroups(formData.groupsNum, valueInt)) {
+    if (!validateGroups(formData.groupsNum, valueInt)) {
       return;
     }
 
@@ -148,10 +158,12 @@ export function TournamentMultiForm() {
         return {
           ...prevData,
           teamsPerGroup: prevData.teamsQPerGroup,
+          teamsPerGroup: prevData.teamsQPerGroup,
         };
       } else {
         return {
           ...prevData,
+          [name]: valueInt,
           [name]: valueInt,
         };
       }
