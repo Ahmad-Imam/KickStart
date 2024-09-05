@@ -4,12 +4,10 @@ import TournamentPage from "./_components/test_torunament";
 
 const TournamentsPage = () => {
   return (
-    <div className="w-full flex-col h-screen flex items-center justify-center py-20">
-      <div className="container">
-        {/* <TournamentPage /> */}
-        {/* <TournamentForm /> */}
-        <TournamentMultiForm />
-      </div>
+    <div className="w-full px-6 py-10">
+      {/* <TournamentPage /> */}
+      {/* <TournamentForm /> */}
+      <TournamentMultiForm />
     </div>
   );
 };

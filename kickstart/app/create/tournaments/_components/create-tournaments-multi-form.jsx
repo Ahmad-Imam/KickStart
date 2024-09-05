@@ -23,28 +23,34 @@ import {
 } from "@/components/ui/tooltip";
 import { toast } from "sonner";
 import { set } from "mongoose";
+import { Badge } from "@/components/ui/badge";
+import SearchBox from "./searchBox";
+import QFMatcher from "./create-qf-matcher";
+import SFMatcher from "./create-sf-matcher";
+import GroupMatcher from "./create-group-matcher";
 
 export function TournamentMultiForm() {
   const [page, setPage] = useState(1);
-  const [totalPages, setTotalPages] = useState(3);
+  const [totalPages, setTotalPages] = useState(4);
   const [formData, setFormData] = useState({
     name: "",
     groupsNum: 1,
     teamsPerGroup: 1,
     teamsQPerGroup: 1,
   });
-
   const [quarterSwitch, setQuarterSwitch] = useState(false);
   const [semiSwitch, setSemiSwitch] = useState(false);
   const [thirdSwitch, setThirdSwitch] = useState(false);
+  const [teams, setTeams] = useState([]);
+  const [isAllGroupsFilled, setIsAllGroupsFilled] = useState(false);
 
   useEffect(() => {
     // Determine total pages based on age
     if (formData.age && parseInt(formData.age) < 18) {
-      setTotalPages(2);
+      setTotalPages(4);
       if (page > 2) setPage(2);
     } else {
-      setTotalPages(3);
+      setTotalPages(4);
     }
   }, [formData.age, page]);
 
@@ -63,7 +69,8 @@ export function TournamentMultiForm() {
     }
     return true;
   };
-  const setSwitches = (teamsQPerGroup, valueInt) => {
+  const setSwitches = (teamsQPerGroup, valueInt, typeS) => {
+    console.log(typeS);
     const quarterSwitchCombinations = [
       [8, 1],
       [1, 8],
@@ -84,6 +91,23 @@ export function TournamentMultiForm() {
     );
 
     setQuarterSwitch(isQuarterSwitch);
+
+    if (isQuarterSwitch || isSemiSwitch) {
+      if (typeS === "G") {
+        console.log("quarter switch G");
+        console.log(valueInt + "  " + teamsQPerGroup);
+        const teamsQ = generateTeamLabels(valueInt, teamsQPerGroup);
+        console.log(teamsQ);
+        setTeams(teamsQ);
+      } else if (typeS === "Q") {
+        console.log("quarter switch q");
+        console.log(teamsQPerGroup + "  " + valueInt);
+        const teamsQ = generateTeamLabels(teamsQPerGroup, valueInt);
+        console.log(teamsQ);
+        setTeams(teamsQ);
+      }
+    }
+
     setSemiSwitch(isSemiSwitch && !isQuarterSwitch);
   };
   const handleRadioChangeGroup = (value) => {
@@ -91,7 +115,7 @@ export function TournamentMultiForm() {
     if (!validateGroups(formData.teamsQPerGroup, valueInt)) {
       return;
     }
-    setSwitches(formData.teamsQPerGroup, valueInt);
+    setSwitches(formData.teamsQPerGroup, valueInt, "G");
     setFormData((prevData) => ({
       ...prevData,
       groupsNum: valueInt,
@@ -104,7 +128,7 @@ export function TournamentMultiForm() {
       return;
     }
 
-    setSwitches(formData.groupsNum, valueInt);
+    setSwitches(formData.groupsNum, valueInt, "Q");
 
     setFormData((prevData) => {
       const newTeamsPerGroup =
@@ -116,7 +140,6 @@ export function TournamentMultiForm() {
       };
     });
   };
-
   const handleInputChange = (e) => {
     const { name, value } = e.target;
     const valueInt = parseInt(value);
@@ -144,14 +167,32 @@ export function TournamentMultiForm() {
     setPage((prevPage) => prevPage - 1);
   };
 
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    console.log("Form submitted:", formData);
-    // Here you would typically send the data to a server
+  const generateGroupLabels = (groupsNum) => {
+    const labels = [];
+    for (let i = 0; i < groupsNum; i++) {
+      labels.push(String.fromCharCode(65 + i)); // 65 is the ASCII code for 'A'
+    }
+    return labels;
+  };
+  const generateTeamLabels = (groupsNum, teamsPerGroupQualified) => {
+    const labels = [];
+    for (let i = 0; i < groupsNum; i++) {
+      const groupLabel = String.fromCharCode(65 + i); // 65 is the ASCII code for 'A'
+      for (let j = 1; j <= teamsPerGroupQualified; j++) {
+        labels.push(`${groupLabel}${j}`);
+      }
+    }
+    return labels;
   };
 
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    console.log(formData);
+    // Here you would typically send the data to a server
+  };
+  console.log("filler" + isAllGroupsFilled);
   return (
-    <Card className="mx-auto max-w-lg w-full ">
+    <Card className="mx-auto w-full max-w-screen-xl">
       <CardHeader>
         <CardTitle>
           Create Tournament (Page {page}/{totalPages})
@@ -394,26 +435,55 @@ export function TournamentMultiForm() {
 
           {page === 3 && (
             <div className="grid w-full items-center gap-4">
-              <div className="flex flex-col space-y-1.5">
-                <Label htmlFor="interests">Interests</Label>
-                <Input
-                  id="interests"
-                  name="interests"
-                  value={formData.interests}
-                  onChange={handleInputChange}
-                  placeholder="Your interests"
-                />
+              <div className="flex flex-col items-start">
+                <p>Groups:</p>
+                <div className="flex flex-row flex-wrap gap-2 py-2">
+                  {generateGroupLabels(formData.groupsNum).map((label) => (
+                    <Badge
+                      className="bg-black text-white text-base"
+                      variant={"outline"}
+                      key={label}
+                    >
+                      {label}
+                    </Badge>
+                  ))}
+                </div>
               </div>
-              <div className="flex flex-col space-y-1.5">
-                <Label htmlFor="additionalInfo">Additional Information</Label>
-                <Textarea
-                  id="additionalInfo"
-                  name="additionalInfo"
-                  value={formData.additionalInfo}
-                  onChange={handleInputChange}
-                  placeholder="Any additional information"
-                />
+
+              <div className="flex flex-col items-start">
+                <p>Qualified Teams:</p>
+                <div className="flex flex-row flex-wrap gap-2 py-2">
+                  {generateTeamLabels(
+                    formData.groupsNum,
+                    formData.teamsQPerGroup
+                  ).map((label) => (
+                    <Badge
+                      className="bg-black text-white text-sm"
+                      variant={"outline"}
+                      key={label}
+                    >
+                      {label}
+                    </Badge>
+                  ))}
+                </div>
               </div>
+
+              {quarterSwitch && <QFMatcher teamsQ={teams} />}
+              {semiSwitch && <SFMatcher teamsQ={teams} />}
+            </div>
+          )}
+
+          {page === 4 && (
+            <div className="grid w-full items-center gap-4">
+              <GroupMatcher
+                teamsQ={teams}
+                numberOfGroups={formData.groupsNum}
+                teamsPerGroup={formData.teamsPerGroup}
+                teamsQualified={formData.teamsQPerGroup}
+                isAllGroupsFilled={isAllGroupsFilled}
+                setIsAllGroupsFilled={setIsAllGroupsFilled}
+                allGroups={generateGroupLabels(formData.groupsNum)}
+              />
             </div>
           )}
         </form>
@@ -427,7 +497,11 @@ export function TournamentMultiForm() {
         {page < totalPages ? (
           <Button onClick={handleNext}>Next</Button>
         ) : (
-          <Button type="submit" onClick={handleSubmit}>
+          <Button
+            type="submit"
+            onClick={handleSubmit}
+            disabled={!isAllGroupsFilled}
+          >
             Submit
           </Button>
         )}
