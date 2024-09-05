@@ -41,8 +41,16 @@ export function TournamentMultiForm() {
   const [quarterSwitch, setQuarterSwitch] = useState(false);
   const [semiSwitch, setSemiSwitch] = useState(false);
   const [thirdSwitch, setThirdSwitch] = useState(false);
-  const [teams, setTeams] = useState([]);
+  const [teamsQualifiedList, setTeamsQualifiedList] = useState([]);
   const [isAllGroupsFilled, setIsAllGroupsFilled] = useState(false);
+  const [groupMatch, setGroupMatch] = useState([]);
+  const [quarterMatch, setQuarterMatch] = useState([]);
+  const [semiMatch, setSemiMatch] = useState([]);
+
+  console.log("semi");
+  console.log(quarterMatch);
+  console.log(semiMatch);
+  console.log(groupMatch);
 
   useEffect(() => {
     // Determine total pages based on age
@@ -98,13 +106,13 @@ export function TournamentMultiForm() {
         console.log(valueInt + "  " + teamsQPerGroup);
         const teamsQ = generateTeamLabels(valueInt, teamsQPerGroup);
         console.log(teamsQ);
-        setTeams(teamsQ);
+        setTeamsQualifiedList(teamsQ);
       } else if (typeS === "Q") {
         console.log("quarter switch q");
         console.log(teamsQPerGroup + "  " + valueInt);
         const teamsQ = generateTeamLabels(teamsQPerGroup, valueInt);
         console.log(teamsQ);
-        setTeams(teamsQ);
+        setTeamsQualifiedList(teamsQ);
       }
     }
 
@@ -468,21 +476,32 @@ export function TournamentMultiForm() {
                 </div>
               </div>
 
-              {quarterSwitch && <QFMatcher teamsQ={teams} />}
-              {semiSwitch && <SFMatcher teamsQ={teams} />}
+              {quarterSwitch && (
+                <QFMatcher
+                  teamsQ={teamsQualifiedList}
+                  setQuarterMatch={setQuarterMatch}
+                />
+              )}
+              {semiSwitch && (
+                <SFMatcher
+                  teamsQ={teamsQualifiedList}
+                  setSemiMatch={setSemiMatch}
+                />
+              )}
             </div>
           )}
 
           {page === 4 && (
             <div className="grid w-full items-center gap-4">
               <GroupMatcher
-                teamsQ={teams}
+                teamsQ={teamsQualifiedList}
                 numberOfGroups={formData.groupsNum}
                 teamsPerGroup={formData.teamsPerGroup}
                 teamsQualified={formData.teamsQPerGroup}
                 isAllGroupsFilled={isAllGroupsFilled}
                 setIsAllGroupsFilled={setIsAllGroupsFilled}
-                allGroups={generateGroupLabels(formData.groupsNum)}
+                groupMatch={groupMatch}
+                setGroupMatch={setGroupMatch}
               />
             </div>
           )}

@@ -18,7 +18,8 @@ export default function GroupMatcher({
   teamsQualified,
   isAllGroupsFilled,
   setIsAllGroupsFilled,
-  allGroups,
+  setGroupMatch,
+  groupMatch,
 }) {
   const [config, setConfig] = useState({
     numberOfGroups,
@@ -46,10 +47,12 @@ export default function GroupMatcher({
   ]);
 
   const [groups, setGroups] = useState(
-    Array.from({ length: config.numberOfGroups }, (_, i) => ({
-      name: `Group ${String.fromCharCode(65 + i)}`, // 65 is the ASCII code for 'A'
-      teams: [],
-    }))
+    groupMatch.length > 0
+      ? groupMatch
+      : Array.from({ length: config.numberOfGroups }, (_, i) => ({
+          name: `Group ${String.fromCharCode(65 + i)}`, // 65 is the ASCII code for 'A'
+          teams: [],
+        }))
   );
 
   useEffect(() => {
@@ -66,6 +69,11 @@ export default function GroupMatcher({
           i === groupIndex ? { ...group, teams: [...group.teams, team] } : group
         )
       );
+      setGroupMatch(
+        groups.map((group, i) =>
+          i === groupIndex ? { ...group, teams: [...group.teams, team] } : group
+        )
+      );
       setAvailableTeams(availableTeams.filter((t) => t !== team));
     }
   };
@@ -78,6 +86,14 @@ export default function GroupMatcher({
           : group
       )
     );
+    setGroupMatch(
+      groups.map((group, i) =>
+        i === groupIndex
+          ? { ...group, teams: group.teams.filter((t) => t !== team) }
+          : group
+      )
+    );
+
     setAvailableTeams([...availableTeams, team]);
   };
 

@@ -12,13 +12,19 @@ import {
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { X } from "lucide-react";
 
-export default function SFMatcher({ teamsQ }) {
+export default function SFMatcher({ teamsQ, setSemiMatch }) {
   const [teams] = useState(teamsQ);
 
-  const [matches, setMatches] = useState([
-    { team1: null, team2: null },
-    { team1: null, team2: null },
-  ]);
+  const [matches, setMatches] = useState(() => {
+    const initialMatches = teamsQ.reduce((acc, team, index) => {
+      if (index % 2 === 0) {
+        acc.push({ team1: team, team2: teamsQ[index + 1] || null });
+      }
+      return acc;
+    }, []);
+    return initialMatches;
+  });
+  setSemiMatch(matches);
 
   const handleTeamSelect = (matchIndex, teamKey, selectedTeam) => {
     setMatches((prevMatches) => {
