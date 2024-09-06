@@ -26,8 +26,8 @@ export default function TournamentPreview({
       id: index + 1,
       date: new Date().toDateString(),
       teams: [
-        { id: index * 2 + 1, name: match.team1, score: 0 },
-        { id: index * 2 + 2, name: match.team2, score: 0 },
+        { id: index * 2 + 1, name: match.team1.name, score: 0 },
+        { id: index * 2 + 2, name: match.team2.name, score: 0 },
       ],
     }));
 
@@ -71,7 +71,7 @@ export default function TournamentPreview({
     return rounds;
   };
 
-  const transformedRounds = transformData(matches);
+  const transformedRounds = transformData(quarterMatch);
 
   return (
     <div className="container mx-auto p-4">
@@ -114,7 +114,8 @@ export default function TournamentPreview({
         {quarterMatch.map((match, index) => (
           <div key={index} className="bg-gray-100 p-4 rounded mb-4">
             <p>
-              <strong>Match {index + 1}:</strong> {match.team1} vs {match.team2}
+              <strong>Match {index + 1}:</strong> {match.team1?.name} vs{" "}
+              {match.team2?.name}
             </p>
           </div>
         ))}
@@ -126,8 +127,8 @@ export default function TournamentPreview({
           {semiMatch.map((match, index) => (
             <div key={index} className="bg-gray-100 p-4 rounded mb-4">
               <p>
-                <strong>Match {index + 1}:</strong> {match.team1} vs{" "}
-                {match.team2}
+                <strong>Match {index + 1}:</strong> {match.team1?.name} vs{" "}
+                {match.team2?.name}
               </p>
             </div>
           ))}

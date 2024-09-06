@@ -51,10 +51,10 @@ export function TournamentMultiForm() {
   const [teamsTournament, setTeamsTournament] = useState([]);
 
   console.log("semi");
-  console.log(quarterMatch);
-  // console.log(semiMatch);
-  console.log(groupMatch);
-  console.log(teamsTournament);
+  // console.log(quarterMatch);
+  console.log(semiMatch);
+  // console.log(groupMatch);
+  // console.log(teamsTournament);
 
   const validateGroups = (teamsQPerGroup, valueInt) => {
     const invalidCombinations = {
@@ -100,6 +100,7 @@ export function TournamentMultiForm() {
         console.log(valueInt + "  " + teamsQPerGroup);
         const teamsQ = generateTeamLabels(valueInt, teamsQPerGroup);
         console.log(teamsQ);
+
         setTeamsQualifiedList(teamsQ);
       } else if (typeS === "Q") {
         console.log("quarter switch q");
@@ -489,7 +490,6 @@ export function TournamentMultiForm() {
                 <SFMatcher
                   teamsQ={teamsQualifiedList}
                   setSemiMatch={setSemiMatch}
-                  teamsTournament={teamsTournament}
                 />
               )}
             </div>

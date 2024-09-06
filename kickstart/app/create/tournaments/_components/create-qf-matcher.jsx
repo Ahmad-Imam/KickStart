@@ -18,7 +18,10 @@ export default function SFMatcher({ teamsQ, setQuarterMatch }) {
   const [matches, setMatches] = useState(() => {
     const initialMatches = teamsQ.reduce((acc, team, index) => {
       if (index % 2 === 0) {
-        acc.push({ team1: team, team2: teamsQ[index + 1] || null });
+        acc.push({
+          team1: { name: team },
+          team2: teamsQ[index + 1] ? { name: teamsQ[index + 1] } : null,
+        });
       }
       return acc;
     }, []);
@@ -29,7 +32,10 @@ export default function SFMatcher({ teamsQ, setQuarterMatch }) {
     setQuarterMatch(() => {
       const initialMatches = teamsQ.reduce((acc, team, index) => {
         if (index % 2 === 0) {
-          acc.push({ team1: team, team2: teamsQ[index + 1] || null });
+          acc.push({
+            team1: { name: team },
+            team2: teamsQ[index + 1] ? { name: teamsQ[index + 1] } : null,
+          });
         }
         return acc;
       }, []);
@@ -37,7 +43,9 @@ export default function SFMatcher({ teamsQ, setQuarterMatch }) {
     });
   }, []);
 
-  const handleTeamSelect = (matchIndex, teamKey, selectedTeam) => {
+  const handleTeamSelect = (matchIndex, teamKey, selectedTeamName) => {
+    const selectedTeam = { name: selectedTeamName };
+
     setMatches((prevMatches) => {
       const newMatches = [...prevMatches];
       newMatches[matchIndex] = {
@@ -46,6 +54,7 @@ export default function SFMatcher({ teamsQ, setQuarterMatch }) {
       };
       return newMatches;
     });
+
     setQuarterMatch((prevMatches) => {
       const newMatches = [...prevMatches];
       newMatches[matchIndex] = {
@@ -59,22 +68,31 @@ export default function SFMatcher({ teamsQ, setQuarterMatch }) {
   const getAvailableTeams = (matchIndex, teamKey) => {
     const selectedTeams = matches
       .flatMap((match) => [match.team1, match.team2])
-      .filter(Boolean);
+      .filter((team) => team && team.name) // Filter out null and undefined teams
+      .map((team) => team.name);
+
+    // console.log("selectedTeams");
+    // console.log(selectedTeams);
+    // console.log(teams);
+
     const availableTeams = teams.filter(
       (team) => !selectedTeams.includes(team)
     );
 
+    // console.log("availableTeams");
+    // console.log(availableTeams);
+
     // Include the currently selected team for this slot
     const currentTeam = matches[matchIndex][teamKey];
-    if (currentTeam && !availableTeams.includes(currentTeam)) {
-      availableTeams.push(currentTeam);
+    if (currentTeam && !availableTeams.includes(currentTeam.name)) {
+      availableTeams.push(currentTeam.name);
     }
 
     return availableTeams;
   };
 
   const isAllTeamsSelected = matches.every(
-    (match) => match.team1 && match.team2
+    (match) => match.team1?.name && match.team2?.name
   );
 
   return (
@@ -94,7 +112,7 @@ export default function SFMatcher({ teamsQ, setQuarterMatch }) {
             <CardContent className="m-0 py-2 max-w-sm">
               <div className="flex justify-between items-center space-x-2 py-3">
                 <Select
-                  value={match.team1 || ""}
+                  value={match?.team1?.name || ""}
                   onValueChange={(value) =>
                     handleTeamSelect(index, "team1", value)
                   }
@@ -114,7 +132,7 @@ export default function SFMatcher({ teamsQ, setQuarterMatch }) {
                   size="icon"
                   variant="ghost"
                   onClick={() => handleTeamSelect(index, "team1", null)}
-                  disabled={!match.team1}
+                  disabled={!match.team1?.name}
                   className="h-5 w-5"
                 >
                   <X />
@@ -126,7 +144,7 @@ export default function SFMatcher({ teamsQ, setQuarterMatch }) {
               </div>
               <div className="flex justify-between items-center space-x-2 pb-2">
                 <Select
-                  value={match.team2 || ""}
+                  value={match.team2?.name || ""}
                   onValueChange={(value) =>
                     handleTeamSelect(index, "team2", value)
                   }
