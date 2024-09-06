@@ -29,10 +29,11 @@ import QFMatcher from "./create-qf-matcher";
 import SFMatcher from "./create-sf-matcher";
 import GroupMatcher from "./create-group-matcher";
 import CreateTeamsTournament from "./create-team-list";
+import TournamentPreview from "./create-tournament-preview";
 
 export function TournamentMultiForm() {
   const [page, setPage] = useState(1);
-  const [totalPages, setTotalPages] = useState(5);
+  const [totalPages, setTotalPages] = useState(6);
   const [formData, setFormData] = useState({
     name: "",
     groupsNum: 1,
@@ -50,14 +51,10 @@ export function TournamentMultiForm() {
   const [teamsTournament, setTeamsTournament] = useState([]);
 
   console.log("semi");
-  // console.log(quarterMatch);
+  console.log(quarterMatch);
   // console.log(semiMatch);
-  // console.log(groupMatch);
+  console.log(groupMatch);
   console.log(teamsTournament);
-
-  useEffect(() => {
-    // Determine total pages based on age
-  }, [formData.age, page]);
 
   const validateGroups = (teamsQPerGroup, valueInt) => {
     const invalidCombinations = {
@@ -444,6 +441,7 @@ export function TournamentMultiForm() {
               groupsNum={formData.groupsNum}
               teamsPerGroup={formData.teamsPerGroup}
               setTeamsTournament={setTeamsTournament}
+              teamsTournament={teamsTournament}
             />
           )}
           {page === 4 && (
@@ -510,6 +508,17 @@ export function TournamentMultiForm() {
                 teamsTournament={teamsTournament}
               />
             </div>
+          )}
+          {page == 6 && (
+            <TournamentPreview
+              groupMatch={groupMatch}
+              teamsTournament={teamsTournament}
+              quarterMatch={quarterMatch}
+              semiMatch={semiMatch}
+              thirdSwitch={thirdSwitch}
+              formData={formData}
+            />
+            // <div>pp</div>
           )}
         </form>
       </CardContent>

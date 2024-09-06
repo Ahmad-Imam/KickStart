@@ -18,7 +18,6 @@ export default function GroupMatcher({
   isAllGroupsFilled,
   setIsAllGroupsFilled,
   setGroupMatch,
-  groupMatch,
   teamsTournament,
 }) {
   const [config, setConfig] = useState({
@@ -26,17 +25,23 @@ export default function GroupMatcher({
     teamsPerGroup,
     teamsQualified,
   });
-
+  // console.log(config.numberOfGroups);
   const [availableTeams, setAvailableTeams] = useState(teamsTournament);
 
   const [groups, setGroups] = useState(
-    groupMatch.length > 0
-      ? groupMatch
-      : Array.from({ length: config.numberOfGroups }, (_, i) => ({
-          name: `Group ${String.fromCharCode(65 + i)}`, // 65 is the ASCII code for 'A'
-          teams: [],
-        }))
+    Array.from({ length: config.numberOfGroups }, (_, i) => ({
+      name: `Group ${String.fromCharCode(65 + i)}`, // 65 is the ASCII code for 'A'
+      teams: [],
+    }))
   );
+
+  console.log("groups");
+  console.log(teamsTournament);
+  console.log(groups);
+
+  useEffect(() => {
+    setGroupMatch([]);
+  }, []);
 
   useEffect(() => {
     const allFilled = groups.every(
@@ -45,39 +50,52 @@ export default function GroupMatcher({
     setIsAllGroupsFilled(allFilled);
   }, [groups, config.teamsPerGroup]);
 
-  const addTeamToGroup = (groupIndex, team) => {
+  const addTeamToGroup = (groupIndex, teamName) => {
+    console.log("team");
+    console.log(teamName);
+    const selectedTeam = availableTeams.find((t) => t.name === teamName);
+    console.log("selectedTeam");
+    console.log(selectedTeam);
     if (groups[groupIndex].teams.length < config.teamsPerGroup) {
       setGroups(
         groups.map((group, i) =>
-          i === groupIndex ? { ...group, teams: [...group.teams, team] } : group
+          i === groupIndex
+            ? { ...group, teams: [...group.teams, selectedTeam] }
+            : group
         )
       );
       setGroupMatch(
         groups.map((group, i) =>
-          i === groupIndex ? { ...group, teams: [...group.teams, team] } : group
+          i === groupIndex
+            ? { ...group, teams: [...group.teams, selectedTeam] }
+            : group
         )
       );
-      setAvailableTeams(availableTeams.filter((t) => t.name !== team));
+      setAvailableTeams(availableTeams.filter((t) => t.name !== teamName));
     }
   };
 
-  const removeTeamFromGroup = (groupIndex, team) => {
+  const removeTeamFromGroup = (groupIndex, teamName) => {
+    const selectedTeam = teamsTournament.find((t) => t.name === teamName);
+    console.log("selectedTeamremvoe");
+    console.log(selectedTeam);
+
     setGroups(
       groups.map((group, i) =>
         i === groupIndex
-          ? { ...group, teams: group.teams.filter((t) => t.name !== team) }
+          ? { ...group, teams: group.teams.filter((t) => t.name !== teamName) }
           : group
       )
     );
     setGroupMatch(
       groups.map((group, i) =>
         i === groupIndex
-          ? { ...group, teams: group.teams.filter((t) => t.name !== team) }
+          ? { ...group, teams: group.teams.filter((t) => t.name !== teamName) }
           : group
       )
     );
 
-    setAvailableTeams([...availableTeams, team]);
+    setAvailableTeams([...availableTeams, selectedTeam]);
   };
 
   const getIncompleteGroups = () => {
@@ -86,14 +104,15 @@ export default function GroupMatcher({
       .map((group) => group.name)
       .join(", ");
   };
-  console.log("availableTeams");
-  console.log(availableTeams);
+
   return (
     <div className="container">
+      <div>{`Groups: ${numberOfGroups}`}</div>
+      <div>{`Teams in a group: ${teamsPerGroup}`}</div>
       <h1 className="text-lg font-semibold mb-4">Create Group:</h1>
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 justify-center">
         {groups.map((group, groupIndex) => (
-          <Card key={group.name}>
+          <Card key={group.name} className="w-full">
             <CardHeader className="m-0 text-center py-1 ">
               <CardTitle className="text-lg">{group.name}</CardTitle>
             </CardHeader>
@@ -117,18 +136,20 @@ export default function GroupMatcher({
               <ul className="mt-4 space-y-2">
                 {group.teams.map((team, teamIndex) => (
                   <li
-                    key={team}
+                    key={team?.id}
                     className={`flex justify-between items-center p-2 text-sm rounded ${
                       teamIndex < config.teamsQualified
                         ? "bg-green-100"
                         : "bg-gray-100"
                     }`}
                   >
-                    {team}
+                    {team?.name}
                     <Button
                       size="icon"
                       variant="ghost"
-                      onClick={() => removeTeamFromGroup(groupIndex, team)}
+                      onClick={() =>
+                        removeTeamFromGroup(groupIndex, team?.name)
+                      }
                       className="h-3 w-3 md:h-5 md:w-5"
                     >
                       <X className="" />
@@ -142,7 +163,7 @@ export default function GroupMatcher({
         ))}
       </div>
       {!isAllGroupsFilled && (
-        <Alert variant="destructive" className="my-4 max-w-sm">
+        <Alert variant="destructive" className="my-4">
           <AlertDescription>
             Please fill all groups before proceeding. Incomplete groups:{" "}
             {getIncompleteGroups()}

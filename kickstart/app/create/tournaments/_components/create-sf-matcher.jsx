@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Button } from "@/components/ui/button";
 import {
   Select,
@@ -17,12 +17,29 @@ export default function SFMatcher({ teamsQ, setSemiMatch, teamsTournament }) {
   console.log(teamsQ);
   const [teams] = useState(teamsQ);
 
-  const [matches, setMatches] = useState([
-    { team1: null, team2: null },
-    { team1: null, team2: null },
-  ]);
+  const [matches, setMatches] = useState(() => {
+    const initialMatches = teamsQ.reduce((acc, team, index) => {
+      if (index % 2 === 0) {
+        acc.push({ team1: team, team2: teamsQ[index + 1] || null });
+      }
+      return acc;
+    }, []);
+    return initialMatches;
+  });
   console.log("matches");
   console.log(matches);
+
+  useEffect(() => {
+    setSemiMatch(() => {
+      const initialMatches = teamsQ.reduce((acc, team, index) => {
+        if (index % 2 === 0) {
+          acc.push({ team1: team, team2: teamsQ[index + 1] || null });
+        }
+        return acc;
+      }, []);
+      return initialMatches;
+    });
+  }, []);
 
   const handleTeamSelect = (matchIndex, teamKey, selectedTeam) => {
     setMatches((prevMatches) => {

@@ -14,11 +14,12 @@ export default function CreateTeamsTournament({
   groupsNum,
   teamsPerGroup,
   setTeamsTournament,
+  teamsTournament,
 }) {
   const [teamsTList, setTeamsTList] = useState([]);
   const [query, setQuery] = useState("");
   const [results, setResults] = useState([]);
-  const [savedItems, setSavedItems] = useState([]);
+  const [savedItems, setSavedItems] = useState(teamsTournament ?? []);
 
   useEffect(() => {
     if (query.trim() === "") {
@@ -35,6 +36,10 @@ export default function CreateTeamsTournament({
 
     return () => clearTimeout(timeoutId);
   }, [query]);
+
+  useEffect(() => {
+    setTeamsTournament(savedItems);
+  }, []);
 
   const handleResultClick = (item) => {
     console.log(item);

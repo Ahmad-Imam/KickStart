@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Button } from "@/components/ui/button";
 import {
   Select,
@@ -24,6 +24,18 @@ export default function SFMatcher({ teamsQ, setQuarterMatch }) {
     }, []);
     return initialMatches;
   });
+
+  useEffect(() => {
+    setQuarterMatch(() => {
+      const initialMatches = teamsQ.reduce((acc, team, index) => {
+        if (index % 2 === 0) {
+          acc.push({ team1: team, team2: teamsQ[index + 1] || null });
+        }
+        return acc;
+      }, []);
+      return initialMatches;
+    });
+  }, []);
 
   const handleTeamSelect = (matchIndex, teamKey, selectedTeam) => {
     setMatches((prevMatches) => {
