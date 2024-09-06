@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -30,6 +30,17 @@ import SFMatcher from "./create-sf-matcher";
 import GroupMatcher from "./create-group-matcher";
 import CreateTeamsTournament from "./create-team-list";
 import TournamentPreview from "./create-tournament-preview";
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+  AlertDialogTrigger,
+} from "@/components/ui/alert-dialog";
 
 export function TournamentMultiForm() {
   const [page, setPage] = useState(1);
@@ -52,9 +63,18 @@ export function TournamentMultiForm() {
 
   console.log("semi");
   // console.log(quarterMatch);
-  console.log(semiMatch);
-  // console.log(groupMatch);
-  // console.log(teamsTournament);
+  // console.log(semiMatch);
+  console.log(groupMatch);
+  console.log(teamsTournament);
+
+  useEffect(() => {
+    if (page === 2) {
+      setSemiMatch([]);
+      setQuarterMatch([]);
+      setGroupMatch([]);
+      // setTeamsTournament([]);
+    }
+  }, [page]);
 
   const validateGroups = (teamsQPerGroup, valueInt) => {
     const invalidCombinations = {
@@ -187,9 +207,11 @@ export function TournamentMultiForm() {
     }
     return labels;
   };
+  const ref = useRef();
 
   const handleSubmit = (e) => {
     e.preventDefault();
+    ref.current?.click();
     console.log(formData);
     // Here you would typically send the data to a server
   };
@@ -540,13 +562,33 @@ export function TournamentMultiForm() {
             Next
           </Button>
         ) : (
-          <Button
-            type="submit"
-            onClick={handleSubmit}
-            disabled={!isAllGroupsFilled}
-          >
-            Submit
-          </Button>
+          // <Button
+          //   type="submit"
+          //   onClick={handleSubmit}
+          //   disabled={!isAllGroupsFilled}
+          // >
+          //   Submit
+          // </Button>
+          <AlertDialog>
+            <AlertDialogTrigger ref={ref} asChild>
+              <Button variant="outline">Submit</Button>
+            </AlertDialogTrigger>
+            <AlertDialogContent>
+              <AlertDialogHeader>
+                <AlertDialogTitle>Are you absolutely sure?</AlertDialogTitle>
+                <AlertDialogDescription>
+                  You can not change tournament settings and tournament
+                  structure after this step.
+                </AlertDialogDescription>
+              </AlertDialogHeader>
+              <AlertDialogFooter>
+                <AlertDialogCancel>Cancel</AlertDialogCancel>
+                <AlertDialogAction onClick={(e) => handleSubmit(e)}>
+                  Submit
+                </AlertDialogAction>
+              </AlertDialogFooter>
+            </AlertDialogContent>
+          </AlertDialog>
         )}
       </CardFooter>
     </Card>

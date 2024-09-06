@@ -100,7 +100,7 @@ export default function SFMatcher({ teamsQ, setSemiMatch }) {
   return (
     <div className="">
       <h1 className="text-xl font-bold text-center py-2">Semi Final</h1>
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
         {matches.map((match, index) => (
           <Card
             key={index}

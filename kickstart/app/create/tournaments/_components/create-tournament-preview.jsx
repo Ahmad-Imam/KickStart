@@ -31,11 +31,17 @@ export default function TournamentPreview({
       ],
     }));
 
-    rounds.push({
-      title: `Round 1`,
-      seeds: firstRoundMatches,
-    });
-
+    if (data.length === 4) {
+      rounds.push({
+        title: `Quarter Final`,
+        seeds: firstRoundMatches,
+      });
+    } else {
+      rounds.push({
+        title: `Semi Final`,
+        seeds: firstRoundMatches,
+      });
+    }
     // Generate subsequent rounds
     let currentRound = firstRoundMatches;
     let roundNumber = 2;
@@ -59,19 +65,23 @@ export default function TournamentPreview({
         }
       }
 
-      rounds.push({
-        title: `Round ${roundNumber}`,
-        seeds: nextRoundMatches,
-      });
-
+      if (data.length === 4 && roundNumber === 2) {
+        rounds.push({
+          title: `Semi Final`,
+          seeds: nextRoundMatches,
+        });
+      } else {
+        rounds.push({
+          title: `Final`,
+          seeds: nextRoundMatches,
+        });
+      }
       currentRound = nextRoundMatches;
       roundNumber++;
     }
 
     return rounds;
   };
-
-  const transformedRounds = transformData(quarterMatch);
 
   return (
     <div className="container mx-auto p-4">
@@ -92,24 +102,41 @@ export default function TournamentPreview({
           {/* Add more settings as needed */}
         </div>
       </section>
-
+      <section className="mb-8">
+        <h2 className="text-xl font-semibold mb-2">Teams</h2>
+        <ul className="bg-gray-100 p-4 rounded flex flex-row flex-wrap gap-2 justify-around ">
+          {teamsTournament.map((team, index) => (
+            <li key={index}>{team.name}</li>
+          ))}
+        </ul>
+      </section>
       <section className="mb-8">
         <h2 className="text-xl font-semibold mb-2">Groups</h2>
-        {groupMatch.map((group, index) => (
-          <div key={index} className="bg-gray-100 p-4 rounded mb-4">
-            <h3 className="text-lg font-semibold">{group.name}</h3>
-            <ul>
-              {group.teams.map((team, teamIndex) => (
-                <li key={teamIndex}>{team.name}</li>
-              ))}
-            </ul>
-          </div>
-        ))}
+        <div className="flex flex-wrap gap-4 justify-around items-center">
+          {groupMatch.map((group, index) => (
+            <div
+              key={index}
+              className="bg-gray-100 p-4 rounded mb-4 w-1/3 hover:
+                
+                shadow-lg transition duration-300 ease-in-out transform hover:-translate-y-1 hover:scale-105
+            "
+            >
+              <h3 className="text-lg font-semibold pb-2">{group.name}</h3>
+              <ul>
+                {group.teams.map((team, teamIndex) => (
+                  <li className="py-1" key={teamIndex}>
+                    {team.name}
+                  </li>
+                ))}
+              </ul>
+            </div>
+          ))}
+        </div>
       </section>
-      <div className="h-screen">
+      {/* <div className="h-screen">
         <SingleElimination transformedRounds={transformedRounds} />
-      </div>
-      <section className="mb-8">
+      </div> */}
+      {/* <section className="mb-8">
         <h2 className="text-xl font-semibold mb-2">Quarter-Final Matches</h2>
         {quarterMatch.map((match, index) => (
           <div key={index} className="bg-gray-100 p-4 rounded mb-4">
@@ -119,35 +146,35 @@ export default function TournamentPreview({
             </p>
           </div>
         ))}
-      </section>
-
-      {quarterMatch.length == 0 && (
-        <section className="mb-8">
-          <h2 className="text-xl font-semibold mb-2">Semi-Final Matches</h2>
-          {semiMatch.map((match, index) => (
-            <div key={index} className="bg-gray-100 p-4 rounded mb-4">
-              <p>
-                <strong>Match {index + 1}:</strong> {match.team1?.name} vs{" "}
-                {match.team2?.name}
-              </p>
-            </div>
-          ))}
-        </section>
+      </section> */}
+      <div className="text-xl font-semibold py-2 pb-10">Knockout Stage: </div>
+      {quarterMatch.length !== 0 && semiMatch.length === 0 && (
+        <div className="py-6">
+          <SingleElimination transformedRounds={transformData(quarterMatch)} />
+        </div>
+      )}
+      {quarterMatch.length === 0 && semiMatch.length > 0 && (
+        <div className="py-6">
+          <SingleElimination transformedRounds={transformData(semiMatch)} />
+        </div>
+        // <section className="mb-8">
+        //   <h2 className="text-xl font-semibold mb-2">Semi-Final Matches</h2>
+        //   {semiMatch.map((match, index) => (
+        //     <div key={index} className="bg-gray-100 p-4 rounded mb-4">
+        //       <p>
+        //         <strong>Match {index + 1}:</strong> {match.team1?.name} vs{" "}
+        //         {match.team2?.name}
+        //       </p>
+        //     </div>
+        //   ))}
+        // </section>
       )}
 
-      <section className="mb-8">
+      <section className="mb-8 w-20">
         <h2 className="text-xl font-semibold mb-2">Third Place</h2>
         <div className="bg-gray-100 p-4 rounded">
           <p>{thirdSwitch ? "Yes" : "No"}</p>
         </div>
-      </section>
-      <section className="mb-8">
-        <h2 className="text-xl font-semibold mb-2">Teams</h2>
-        <ul className="bg-gray-100 p-4 rounded">
-          {teamsTournament.map((team, index) => (
-            <li key={index}>{team.name}</li>
-          ))}
-        </ul>
       </section>
     </div>
   );

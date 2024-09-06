@@ -89,36 +89,37 @@ export default function CreateTeamsTournament({
         <Input
           type="search"
           placeholder="Search..."
-          value={query}
+          value={savedItems.length === groupsNum * teamsPerGroup ? "" : query}
           onChange={(e) => setQuery(e.target.value)}
           className="w-full"
           disabled={savedItems.length === groupsNum * teamsPerGroup}
         />
-        {query.trim() !== "" && (
-          <ScrollArea className="h-[200px] w-full rounded-md border">
-            {results?.length > 0 ? (
-              <ul className="p-4">
-                {results?.map((item, index) => (
-                  <li
-                    key={index}
-                    type="button"
-                    className="py-2 border-b last:border-b-0 cursor-pointer hover:bg-gray-100 rounded-sm p-2"
-                    onClick={() => handleResultClick(item)}
-                  >
-                    <div className="flex flex-row justify-start items-center gap-2">
-                      {item?.name}
-                      <MapPin className="ml-8" /> {item?.location}
-                    </div>
-                  </li>
-                ))}
-              </ul>
-            ) : (
-              <p className="p-4 text-center text-muted-foreground">
-                No results found
-              </p>
-            )}
-          </ScrollArea>
-        )}
+        {query.trim() !== "" &&
+          savedItems.length !== groupsNum * teamsPerGroup && (
+            <ScrollArea className="h-[200px] w-full rounded-md border">
+              {results?.length > 0 ? (
+                <ul className="p-4">
+                  {results?.map((item, index) => (
+                    <li
+                      key={index}
+                      type="button"
+                      className="py-2 border-b last:border-b-0 cursor-pointer hover:bg-gray-100 rounded-sm p-2"
+                      onClick={() => handleResultClick(item)}
+                    >
+                      <div className="flex flex-row justify-start items-center gap-2">
+                        {item?.name}
+                        <MapPin className="ml-8" /> {item?.location}
+                      </div>
+                    </li>
+                  ))}
+                </ul>
+              ) : (
+                <p className="p-4 text-center text-muted-foreground">
+                  No results found
+                </p>
+              )}
+            </ScrollArea>
+          )}
       </div>
       {savedItems?.length > 0 && (
         <div className="mt-4 w-full  rounded-md border-2">
