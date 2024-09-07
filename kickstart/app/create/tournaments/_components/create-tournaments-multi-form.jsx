@@ -1,7 +1,17 @@
 "use client";
 
 import { useState, useEffect, useRef } from "react";
+import { format } from "date-fns";
+import { Calendar as CalendarIcon } from "lucide-react";
+
+import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
+import { Calendar } from "@/components/ui/calendar";
+import {
+  Popover,
+  PopoverContent,
+  PopoverTrigger,
+} from "@/components/ui/popover";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
@@ -41,6 +51,8 @@ import {
   AlertDialogTitle,
   AlertDialogTrigger,
 } from "@/components/ui/alert-dialog";
+import { DateTimePicker } from "./date-time-picker";
+import { Alert, AlertDescription } from "@/components/ui/alert";
 
 export function TournamentMultiForm() {
   const [page, setPage] = useState(1);
@@ -60,6 +72,13 @@ export function TournamentMultiForm() {
   const [quarterMatch, setQuarterMatch] = useState([]);
   const [semiMatch, setSemiMatch] = useState([]);
   const [teamsTournament, setTeamsTournament] = useState([]);
+  const ref = useRef();
+  const [startDate, setStartDate] = useState(
+    new Date(new Date().setHours(0, 0, 0, 0))
+  );
+  const [endDate, setEndDate] = useState(
+    new Date(new Date().setHours(0, 0, 0, 0))
+  );
 
   console.log("semi");
   // console.log(quarterMatch);
@@ -165,6 +184,9 @@ export function TournamentMultiForm() {
   };
   const handleInputChange = (e) => {
     const { name, value } = e.target;
+    console.log(value);
+    console.log(name);
+
     const valueInt = parseInt(value);
     setFormData((prevData) => {
       if (name === "teamsPerGroup" && valueInt < prevData.teamsQPerGroup) {
@@ -175,7 +197,7 @@ export function TournamentMultiForm() {
       } else {
         return {
           ...prevData,
-          [name]: valueInt,
+          [name]: value,
         };
       }
     });
@@ -207,24 +229,44 @@ export function TournamentMultiForm() {
     }
     return labels;
   };
-  const ref = useRef();
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    ref.current?.click();
     console.log(formData);
     // Here you would typically send the data to a server
+    if (
+      formData.name === "" ||
+      formData.organizer === "" ||
+      formData.bio === "" ||
+      formData.location === ""
+    ) {
+      toast.error("Fill all the tournament information");
+      return;
+    }
+
+    const tournamentData = {
+      ...formData,
+      startDate: startDate.toISOString(),
+      endDate: endDate.toISOString(),
+      teams: teamsTournament,
+      groupMatch,
+      quarterMatch,
+      semiMatch,
+      thirdSwitch,
+    };
+    console.log(tournamentData);
   };
   // console.log("filler" + isAllGroupsFilled);
+
   return (
     <Card className="mx-auto w-full max-w-screen-xl">
-      <CardHeader>
-        <CardTitle>
-          Create Tournament (Page {page}/{totalPages})
-        </CardTitle>
-      </CardHeader>
-      <CardContent>
-        <form onSubmit={handleSubmit}>
+      <form onSubmit={handleSubmit}>
+        <CardHeader>
+          <CardTitle>
+            Create Tournament (Page {page}/{totalPages})
+          </CardTitle>
+        </CardHeader>
+        <CardContent>
           {page === 1 && (
             <div className="grid w-full items-center gap-4">
               <div className="flex flex-col space-y-1.5">
@@ -232,9 +274,10 @@ export function TournamentMultiForm() {
                 <Input
                   id="name"
                   name="name"
-                  value={formData.name}
+                  value={formData?.name}
                   onChange={handleInputChange}
                   placeholder="Your name"
+                  required
                 />
               </div>
               <div className="flex flex-col space-y-1.5">
@@ -243,7 +286,7 @@ export function TournamentMultiForm() {
                   id="bio"
                   name="bio"
                   type="text"
-                  value={formData.bio}
+                  value={formData?.bio}
                   onChange={handleInputChange}
                   placeholder="Tournament Description"
                 />
@@ -254,32 +297,58 @@ export function TournamentMultiForm() {
                   id="location"
                   name="location"
                   type="text"
-                  value={formData.location}
+                  value={formData?.location}
                   onChange={handleInputChange}
                   placeholder="Tournament Location"
                 />
               </div>
               <div className="flex flex-col space-y-1.5">
                 <Label htmlFor="bio">Start Date</Label>
-                <Input
+                {/* <Input
                   id="startDate"
                   name="startDate"
                   type="text"
                   value={formData.startDate}
                   onChange={handleInputChange}
                   placeholder="Tournament Start Date"
-                />
+                /> */}
+
+                {/* <Popover>
+                  <PopoverTrigger asChild>
+                    <Button
+                      variant={"outline"}
+                      className={cn(
+                        "w-[280px] justify-start text-left font-normal",
+                        !date && "text-muted-foreground"
+                      )}
+                    >
+                      <CalendarIcon className="mr-2 h-4 w-4" />
+                      {date ? format(date, "PPP") : <span>Pick a date</span>}
+                    </Button>
+                  </PopoverTrigger>
+                  <PopoverContent className="w-auto p-0">
+                    <Calendar
+                      mode="single"
+                      selected={date}
+                      onSelect={setDate}
+                      initialFocus
+                    />
+                  </PopoverContent>
+                </Popover> */}
+                <DateTimePicker value={startDate} onChange={setStartDate} />
               </div>
               <div className="flex flex-col space-y-1.5">
                 <Label htmlFor="bio">End Date</Label>
-                <Input
+                {/* <Input
                   id="endDate"
                   name="endDate"
                   type="text"
                   value={formData.endDate}
                   onChange={handleInputChange}
                   placeholder="Tournament End Date"
-                />
+                /> */}
+
+                <DateTimePicker value={endDate} onChange={setEndDate} />
               </div>
               <div className="flex flex-col space-y-1.5">
                 <Label htmlFor="bio">Organizer</Label>
@@ -287,11 +356,24 @@ export function TournamentMultiForm() {
                   id="organizer"
                   name="organizer"
                   type="text"
-                  value={formData.organizer}
+                  value={formData?.organizer}
                   onChange={handleInputChange}
                   placeholder="Tournament organizer"
+                  required
                 />
               </div>
+
+              {page == 1 &&
+                (formData.name === "" ||
+                  formData.organizer === "" ||
+                  formData.bio === "" ||
+                  formData.location === "") && (
+                  <Alert variant="destructive" className="my-4">
+                    <AlertDescription>
+                      Remember to fill all information before proceeding
+                    </AlertDescription>
+                  </Alert>
+                )}
             </div>
           )}
 
@@ -542,55 +624,58 @@ export function TournamentMultiForm() {
             />
             // <div>pp</div>
           )}
-        </form>
-      </CardContent>
-      <CardFooter className="flex justify-between">
-        {page > 1 && (
-          <Button variant="outline" onClick={handlePrevious}>
-            Previous
-          </Button>
-        )}
-        {page < totalPages ? (
-          <Button
-            disabled={
-              page == 3 &&
-              teamsTournament.length !==
-                formData.groupsNum * formData.teamsPerGroup
-            }
-            onClick={handleNext}
-          >
-            Next
-          </Button>
-        ) : (
-          // <Button
-          //   type="submit"
-          //   onClick={handleSubmit}
-          //   disabled={!isAllGroupsFilled}
-          // >
-          //   Submit
-          // </Button>
-          <AlertDialog>
-            <AlertDialogTrigger ref={ref} asChild>
-              <Button variant="outline">Submit</Button>
-            </AlertDialogTrigger>
-            <AlertDialogContent>
-              <AlertDialogHeader>
-                <AlertDialogTitle>Are you absolutely sure?</AlertDialogTitle>
-                <AlertDialogDescription>
-                  You can not change tournament settings and tournament
-                  structure after this step.
-                </AlertDialogDescription>
-              </AlertDialogHeader>
-              <AlertDialogFooter>
-                <AlertDialogCancel>Cancel</AlertDialogCancel>
-                <AlertDialogAction onClick={(e) => handleSubmit(e)}>
-                  Submit
-                </AlertDialogAction>
-              </AlertDialogFooter>
-            </AlertDialogContent>
-          </AlertDialog>
-        )}
-      </CardFooter>
+        </CardContent>
+
+        <CardFooter className="flex justify-between py-4 ">
+          {page > 1 && (
+            <Button variant="outline" onClick={handlePrevious}>
+              Previous
+            </Button>
+          )}
+          {page < totalPages ? (
+            <Button
+              type="button"
+              disabled={
+                (page == 1 &&
+                  (formData.name === "" ||
+                    formData.organizer === "" ||
+                    formData.bio === "" ||
+                    formData.location === "")) ||
+                (page == 5 && !isAllGroupsFilled) ||
+                (page == 3 &&
+                  teamsTournament.length !==
+                    formData.groupsNum * formData.teamsPerGroup)
+              }
+              onClick={handleNext}
+            >
+              Next
+            </Button>
+          ) : (
+            <Button type="submit">Submit</Button>
+
+            // <AlertDialog>
+            //   <AlertDialogTrigger ref={ref} asChild>
+            //     <Button variant="outline">Submit</Button>
+            //   </AlertDialogTrigger>
+            //   <AlertDialogContent>
+            //     <AlertDialogHeader>
+            //       <AlertDialogTitle>Are you absolutely sure?</AlertDialogTitle>
+            //       <AlertDialogDescription>
+            //         You can not change tournament settings and tournament
+            //         structure after this step.
+            //       </AlertDialogDescription>
+            //     </AlertDialogHeader>
+            //     <AlertDialogFooter>
+            //       <AlertDialogCancel>Cancel</AlertDialogCancel>
+            //       <AlertDialogAction onClick={(e) => handleSubmit(e)}>
+            //         Submit
+            //       </AlertDialogAction>
+            //     </AlertDialogFooter>
+            //   </AlertDialogContent>
+            // </AlertDialog>
+          )}
+        </CardFooter>
+      </form>
     </Card>
   );
 }

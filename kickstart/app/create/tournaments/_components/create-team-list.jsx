@@ -20,6 +20,7 @@ export default function CreateTeamsTournament({
   const [query, setQuery] = useState("");
   const [results, setResults] = useState([]);
   const [savedItems, setSavedItems] = useState(teamsTournament ?? []);
+  const [loading, setLoading] = useState(false);
 
   useEffect(() => {
     if (query.trim() === "") {
@@ -36,10 +37,6 @@ export default function CreateTeamsTournament({
 
     return () => clearTimeout(timeoutId);
   }, [query]);
-
-  useEffect(() => {
-    setTeamsTournament(savedItems);
-  }, []);
 
   const handleResultClick = (item) => {
     console.log(item);
@@ -72,10 +69,13 @@ export default function CreateTeamsTournament({
     const res = await fetch("/api/teams");
     const data = await res.json();
     setTeamsTList(data);
+    setLoading(false);
     // console.log(data);
   };
 
   useEffect(() => {
+    setLoading(true);
+    setTeamsTournament(savedItems);
     fetchPlayers();
   }, []);
 
@@ -84,43 +84,50 @@ export default function CreateTeamsTournament({
       <div>{`Groups: ${groupsNum}`}</div>
       <div>{`Teams in a group: ${teamsPerGroup}`}</div>
 
-      <div className="w-full max-w-lg mx-auto space-y-4 py-4">
-        <div className="text-md font-semibold p-0 m-0">Find Teams:</div>
-        <Input
-          type="search"
-          placeholder="Search..."
-          value={savedItems.length === groupsNum * teamsPerGroup ? "" : query}
-          onChange={(e) => setQuery(e.target.value)}
-          className="w-full"
-          disabled={savedItems.length === groupsNum * teamsPerGroup}
-        />
-        {query.trim() !== "" &&
-          savedItems.length !== groupsNum * teamsPerGroup && (
-            <ScrollArea className="h-[200px] w-full rounded-md border">
-              {results?.length > 0 ? (
-                <ul className="p-4">
-                  {results?.map((item, index) => (
-                    <li
-                      key={index}
-                      type="button"
-                      className="py-2 border-b last:border-b-0 cursor-pointer hover:bg-gray-100 rounded-sm p-2"
-                      onClick={() => handleResultClick(item)}
-                    >
-                      <div className="flex flex-row justify-start items-center gap-2">
-                        {item?.name}
-                        <MapPin className="ml-8" /> {item?.location}
-                      </div>
-                    </li>
-                  ))}
-                </ul>
-              ) : (
-                <p className="p-4 text-center text-muted-foreground">
-                  No results found
-                </p>
-              )}
-            </ScrollArea>
-          )}
-      </div>
+      {!loading ? (
+        <div className="w-full max-w-lg mx-auto space-y-4 py-4">
+          <div className="text-md font-semibold p-0 m-0">Find Teams:</div>
+          <Input
+            type="search"
+            placeholder="Search..."
+            value={savedItems.length === groupsNum * teamsPerGroup ? "" : query}
+            onChange={(e) => setQuery(e.target.value)}
+            className="w-full"
+            disabled={savedItems.length === groupsNum * teamsPerGroup}
+          />
+          {query.trim() !== "" &&
+            savedItems.length !== groupsNum * teamsPerGroup && (
+              <ScrollArea className="h-[200px] w-full rounded-md border">
+                {results?.length > 0 ? (
+                  <ul className="p-4">
+                    {results?.map((item, index) => (
+                      <li
+                        key={index}
+                        type="button"
+                        className="py-2 border-b last:border-b-0 cursor-pointer hover:bg-gray-100 rounded-sm p-2"
+                        onClick={() => handleResultClick(item)}
+                      >
+                        <div className="flex flex-row justify-start items-center gap-2">
+                          {item?.name}
+                          <MapPin className="ml-8" /> {item?.location}
+                        </div>
+                      </li>
+                    ))}
+                  </ul>
+                ) : (
+                  <p className="p-4 text-center text-muted-foreground">
+                    No results found
+                  </p>
+                )}
+              </ScrollArea>
+            )}
+        </div>
+      ) : (
+        <div className="flex justify-center items-center h-96 gap-2">
+          <div className="animate-spin rounded-full h-32 w-32 border-t-2 border-b-2 border-gray-900"></div>
+          <div>Loading Teams</div>
+        </div>
+      )}
       {savedItems?.length > 0 && (
         <div className="mt-4 w-full  rounded-md border-2">
           <h3 className="font-semibold mb-2 p-2">In the tournament:</h3>
