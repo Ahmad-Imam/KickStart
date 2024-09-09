@@ -1,7 +1,9 @@
 "use server";
 
+import { createGroups } from "@/queries/groups";
 import { createPlayers, updatePlayerTeam } from "@/queries/players";
 import { createTeams, createTeamsN } from "@/queries/teams";
+import { createTeamsTournamentList } from "@/queries/teamsTournament";
 import { createTournaments } from "@/queries/tournaments";
 import { dbConnect } from "@/service/mongo";
 import { ca } from "date-fns/locale";
@@ -61,6 +63,14 @@ export async function addTournaments(data) {
     await dbConnect();
     console.log(data);
     const tournament = await createTournaments(data);
+    console.log("tournamentData action");
+    console.log(data?.teamsTournament);
+    const teamsTournament = await createTeamsTournamentList(
+      data?.teamsTournament,
+      tournament.id
+    );
+    const groups = await createGroups(data?.groupMatch, tournament?.id);
+
     // console.log(teams);
     return tournament;
   } catch (error) {

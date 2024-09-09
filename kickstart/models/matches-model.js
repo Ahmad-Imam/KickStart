@@ -6,6 +6,10 @@ const matchSchema = new Schema({
     required: true,
     type: String,
   },
+  name: {
+    required: false,
+    type: String,
+  },
   team1: {
     required: false,
     type: String,
@@ -27,11 +31,56 @@ const matchSchema = new Schema({
     type: ObjectId,
   },
   matchDate: {
-    required: true,
+    required: false,
     type: String,
   },
   location: {
+    required: false,
+    type: String,
+  },
+  status: {
     required: true,
+    type: String,
+  },
+  result: {
+    required: false,
+    goals: {
+      team1: Number,
+      team2: Number,
+    },
+  },
+
+  scorer: {
+    required: false,
+    type: [
+      {
+        team1: [],
+      },
+      { team2: [] },
+    ],
+  },
+
+  yellow: {
+    required: false,
+    type: [
+      {
+        team1: [],
+      },
+      { team2: [] },
+    ],
+  },
+
+  red: {
+    required: false,
+    type: [
+      {
+        team1: [],
+      },
+      { team2: [] },
+    ],
+  },
+  referee: {
+    required: false,
     type: String,
   },
 });

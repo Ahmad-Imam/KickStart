@@ -253,7 +253,7 @@ export function TournamentMultiForm() {
       thirdSwitch,
     };
 
-    // console.log(tournamentData);
+    console.log(tournamentData);
     const createdTournament = await addTournaments(tournamentData);
     console.log("createdTournament");
     console.log(createdTournament);
