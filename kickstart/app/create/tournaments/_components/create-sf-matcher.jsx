@@ -21,8 +21,8 @@ export default function SFMatcher({ teamsQ, setSemiMatch }) {
     const initialMatches = teamsQ.reduce((acc, team, index) => {
       if (index % 2 === 0) {
         acc.push({
-          team1: { name: team },
-          team2: teamsQ[index + 1] ? { name: teamsQ[index + 1] } : null,
+          team1: { qName: team },
+          team2: teamsQ[index + 1] ? { qName: teamsQ[index + 1] } : null,
         });
       }
       return acc;
@@ -35,8 +35,8 @@ export default function SFMatcher({ teamsQ, setSemiMatch }) {
       const initialMatches = teamsQ.reduce((acc, team, index) => {
         if (index % 2 === 0) {
           acc.push({
-            team1: { name: team },
-            team2: teamsQ[index + 1] ? { name: teamsQ[index + 1] } : null,
+            team1: { qName: team },
+            team2: teamsQ[index + 1] ? { qName: teamsQ[index + 1] } : null,
           });
         }
         return acc;
@@ -46,7 +46,7 @@ export default function SFMatcher({ teamsQ, setSemiMatch }) {
   }, []);
 
   const handleTeamSelect = (matchIndex, teamKey, selectedTeamName) => {
-    const selectedTeam = { name: selectedTeamName };
+    const selectedTeam = { qName: selectedTeamName };
 
     setMatches((prevMatches) => {
       const newMatches = [...prevMatches];
@@ -70,8 +70,8 @@ export default function SFMatcher({ teamsQ, setSemiMatch }) {
   const getAvailableTeams = (matchIndex, teamKey) => {
     const selectedTeams = matches
       .flatMap((match) => [match.team1, match.team2])
-      .filter((team) => team && team.name) // Filter out null and undefined teams
-      .map((team) => team.name);
+      .filter((team) => team && team.qName) // Filter out null and undefined teams
+      .map((team) => team.qName);
 
     console.log("selectedTeams");
     console.log(selectedTeams);
@@ -86,15 +86,15 @@ export default function SFMatcher({ teamsQ, setSemiMatch }) {
 
     // Include the currently selected team for this slot
     const currentTeam = matches[matchIndex][teamKey];
-    if (currentTeam && !availableTeams.includes(currentTeam.name)) {
-      availableTeams.push(currentTeam.name);
+    if (currentTeam && !availableTeams.includes(currentTeam.qName)) {
+      availableTeams.push(currentTeam.qName);
     }
 
     return availableTeams;
   };
 
   const isAllTeamsSelected = matches.every(
-    (match) => match.team1?.name && match.team2?.name
+    (match) => match.team1?.qName && match.team2?.qName
   );
 
   return (
@@ -114,7 +114,7 @@ export default function SFMatcher({ teamsQ, setSemiMatch }) {
             <CardContent className="m-0 py-2 max-w-sm">
               <div className="flex justify-between items-center space-x-2 py-3">
                 <Select
-                  value={match?.team1?.name || ""}
+                  value={match?.team1?.qName || ""}
                   onValueChange={(value) =>
                     handleTeamSelect(index, "team1", value)
                   }
@@ -134,8 +134,9 @@ export default function SFMatcher({ teamsQ, setSemiMatch }) {
                   size="icon"
                   variant="ghost"
                   onClick={() => handleTeamSelect(index, "team1", null)}
-                  disabled={!match.team1?.name}
+                  disabled={!match.team1?.qName}
                   className="h-5 w-5"
+                  type="button"
                 >
                   <X />
                   <span className="sr-only">Clear selection</span>
@@ -146,7 +147,7 @@ export default function SFMatcher({ teamsQ, setSemiMatch }) {
               </div>
               <div className="flex justify-between items-center space-x-2 pb-2">
                 <Select
-                  value={match.team2?.name || ""}
+                  value={match.team2?.qName || ""}
                   onValueChange={(value) =>
                     handleTeamSelect(index, "team2", value)
                   }
@@ -166,8 +167,9 @@ export default function SFMatcher({ teamsQ, setSemiMatch }) {
                   size="icon"
                   variant="ghost"
                   onClick={() => handleTeamSelect(index, "team2", null)}
-                  disabled={!match.team2}
+                  disabled={!match.team2?.qName}
                   className="h-5 w-5"
+                  type="button"
                 >
                   <X className="" />
                   <span className="sr-only">Clear selection</span>

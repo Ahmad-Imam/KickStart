@@ -1,6 +1,6 @@
 import { PlayersForm } from "./_components/create-players-form";
 
-const LoginPage = () => {
+const CreatePlayerPage = () => {
   return (
     <div className="w-full flex-col flex items-center justify-center py-20">
       <div className="container">
@@ -9,4 +9,4 @@ const LoginPage = () => {
     </div>
   );
 };
-export default LoginPage;
+export default CreatePlayerPage;

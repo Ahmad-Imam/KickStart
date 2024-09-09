@@ -30,22 +30,22 @@ const tournamentsSchema = new Schema({
     required: true,
     type: String,
   },
-  teams: [{ type: Schema.ObjectId, ref: "teams" }],
+  teamsTournament: [],
   matches: [],
   scorers: [],
   stats: {},
   events: [],
-  isQuarterFinals: {
-    required: true,
-    type: Boolean,
+  groupMatch: {
+    required: false,
+    type: [],
   },
-  isSemiFinals: {
-    required: true,
-    type: Boolean,
+  quarterMatch: {
+    required: false,
+    type: [],
   },
-  isFinals: {
-    required: true,
-    type: Boolean,
+  semiMatch: {
+    required: false,
+    type: [],
   },
   isThirdPlace: {
     required: true,

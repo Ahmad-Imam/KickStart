@@ -8,8 +8,9 @@ import {
 export async function createTeams(data) {
   try {
     const team = await teamsModel.create(data);
-    console.log(team);
-    return replaceMongoIdInObject(team);
+    const simpleTeamData = await teamsModel.findById(team._id).lean();
+    // console.log(replaceMongoIdInObject(simpleTeamData));
+    return replaceMongoIdInObject(simpleTeamData);
   } catch (error) {
     throw new Error(error);
   }

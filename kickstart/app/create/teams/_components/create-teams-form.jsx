@@ -11,7 +11,7 @@ import {
 } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { addTeams } from "@/app/actions";
+import { addTeams, editPlayerTeam } from "@/app/actions";
 import { useState, useEffect } from "react";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { X } from "lucide-react";
@@ -79,6 +79,7 @@ export function TeamsForm() {
     const name = formData.get("name");
     const bio = formData.get("bio");
     const location = formData.get("location");
+    const playersInTeam = savedItems.map((item) => item.id);
 
     const teamData = {
       name,
@@ -87,10 +88,18 @@ export function TeamsForm() {
       players: savedItems.map((item) => item.id),
     };
 
-    console.log(teamData);
+    // console.log(teamData);
     const teams = await addTeams(teamData);
-    // Call the API to create the team
     console.log("teamData");
+    console.log(teams);
+
+    if (playersInTeam.length > 0) {
+      console.log("players");
+      const playersUpdated = await editPlayerTeam(playersInTeam, teams.id);
+      console.log("playersUpdated");
+      console.log(playersUpdated);
+    }
+    // Call the API to create the team
   }
 
   const fetchPlayers = async () => {

@@ -1,21 +1,13 @@
 "use client";
 
 import { useState, useEffect, useRef } from "react";
-import { format } from "date-fns";
-import { Calendar as CalendarIcon } from "lucide-react";
 
-import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
-import { Calendar } from "@/components/ui/calendar";
-import {
-  Popover,
-  PopoverContent,
-  PopoverTrigger,
-} from "@/components/ui/popover";
+
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
-import { Textarea } from "@/components/ui/textarea";
+
 import {
   Card,
   CardContent,
@@ -32,33 +24,27 @@ import {
   TooltipTrigger,
 } from "@/components/ui/tooltip";
 import { toast } from "sonner";
-import { set } from "mongoose";
+
 import { Badge } from "@/components/ui/badge";
-import SearchBox from "./searchBox";
+
 import QFMatcher from "./create-qf-matcher";
 import SFMatcher from "./create-sf-matcher";
 import GroupMatcher from "./create-group-matcher";
 import CreateTeamsTournament from "./create-team-list";
 import TournamentPreview from "./create-tournament-preview";
-import {
-  AlertDialog,
-  AlertDialogAction,
-  AlertDialogCancel,
-  AlertDialogContent,
-  AlertDialogDescription,
-  AlertDialogFooter,
-  AlertDialogHeader,
-  AlertDialogTitle,
-  AlertDialogTrigger,
-} from "@/components/ui/alert-dialog";
+
 import { DateTimePicker } from "./date-time-picker";
 import { Alert, AlertDescription } from "@/components/ui/alert";
+import { addTournaments } from "@/app/actions";
 
 export function TournamentMultiForm() {
   const [page, setPage] = useState(1);
   const [totalPages, setTotalPages] = useState(6);
   const [formData, setFormData] = useState({
     name: "",
+    bio: "",
+    location: "",
+    organizer: "",
     groupsNum: 1,
     teamsPerGroup: 1,
     teamsQPerGroup: 1,
@@ -72,7 +58,8 @@ export function TournamentMultiForm() {
   const [quarterMatch, setQuarterMatch] = useState([]);
   const [semiMatch, setSemiMatch] = useState([]);
   const [teamsTournament, setTeamsTournament] = useState([]);
-  const ref = useRef();
+  const [loading, setLoading] = useState(false);
+
   const [startDate, setStartDate] = useState(
     new Date(new Date().setHours(0, 0, 0, 0))
   );
@@ -80,11 +67,11 @@ export function TournamentMultiForm() {
     new Date(new Date().setHours(0, 0, 0, 0))
   );
 
-  console.log("semi");
+  // console.log("semi");
   // console.log(quarterMatch);
   // console.log(semiMatch);
-  console.log(groupMatch);
-  console.log(teamsTournament);
+  // console.log(groupMatch);
+  // console.log(teamsTournament);
 
   useEffect(() => {
     if (page === 2) {
@@ -230,9 +217,17 @@ export function TournamentMultiForm() {
     return labels;
   };
 
-  const handleSubmit = (e) => {
+  // console.log(startDate);
+  // console.log(endDate);
+  console.log("page " + page);
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    console.log(formData);
+    if (page < totalPages) {
+      return; // Prevent form submission if not on the last page
+    }
+    console.log("submit");
+    console.log(page);
+    // console.log(formData);
     // Here you would typically send the data to a server
     if (
       formData.name === "" ||
@@ -244,23 +239,219 @@ export function TournamentMultiForm() {
       return;
     }
 
+    const tournamentStatus = "pending";
     const tournamentData = {
       ...formData,
-      startDate: startDate.toISOString(),
-      endDate: endDate.toISOString(),
-      teams: teamsTournament,
+      startDate: startDate,
+      endDate: endDate,
+      teamsTournament: teamsTournament,
+      status: tournamentStatus,
+      isThirdPlace: thirdSwitch,
       groupMatch,
       quarterMatch,
       semiMatch,
       thirdSwitch,
     };
-    console.log(tournamentData);
+
+    // console.log(tournamentData);
+    const createdTournament = await addTournaments(tournamentData);
+    console.log("createdTournament");
+    console.log(createdTournament);
+
+    //     {
+    //     "name": "tname",
+    //     "groupsNum": 1,
+    //     "teamsPerGroup": 8,
+    //     "teamsQPerGroup": 8,
+    //     "bio": "tbio",
+    //     "location": "tlocaiton",
+    //     "organizer": "torganizer",
+    //     "startDate": "2024-09-09T21:00:00.000Z",
+    //     "endDate": "2024-09-10T21:00:00.000Z",
+    //     "teams": [
+    //         {
+    //             "id": "66da0d4dc3ad3ec6dafeacb6",
+    //             "name": "Man City",
+    //             "bio": "man is blue",
+    //             "location": "Manchester",
+    //             "players": [],
+    //             "__v": 0
+    //         },
+    //         {
+    //             "id": "66da0d9ac3ad3ec6dafeacbc",
+    //             "name": "man u",
+    //             "bio": "man is red",
+    //             "location": "Manchester",
+    //             "players": [],
+    //             "__v": 0
+    //         },
+    //         {
+    //             "id": "66da0dafc3ad3ec6dafeacbe",
+    //             "name": "tottenham",
+    //             "bio": "chickens",
+    //             "location": "London",
+    //             "players": [],
+    //             "__v": 0
+    //         },
+    //         {
+    //             "id": "66da0dfdc3ad3ec6dafeacc2",
+    //             "name": "Real Madrid",
+    //             "bio": "hala madrid",
+    //             "location": "Madrid",
+    //             "players": [],
+    //             "__v": 0
+    //         },
+    //         {
+    //             "id": "66da0e0dc3ad3ec6dafeacc4",
+    //             "name": "FC Barcelona",
+    //             "bio": "culers",
+    //             "location": "Barcelona",
+    //             "players": [],
+    //             "__v": 0
+    //         },
+    //         {
+    //             "id": "66da0e25c3ad3ec6dafeacc6",
+    //             "name": "FC Bayern",
+    //             "bio": "mia san mia",
+    //             "location": "Berlin",
+    //             "players": [],
+    //             "__v": 0
+    //         },
+    //         {
+    //             "id": "66dcadb3452f638115d30982",
+    //             "name": "Argentina",
+    //             "bio": "this is a country",
+    //             "location": "Argentina",
+    //             "players": [
+    //                 "66d7733f6e2f2988fc3735fc"
+    //             ],
+    //             "__v": 0
+    //         },
+    //         {
+    //             "id": "66da0d88c3ad3ec6dafeacba",
+    //             "name": "arsenal",
+    //             "bio": "london is red",
+    //             "location": "London",
+    //             "players": [],
+    //             "__v": 0
+    //         }
+    //     ],
+    //     "groupMatch": [
+    //         {
+    //             "name": "Group A",
+    //             "teams": [
+    //                 {
+    //                     "id": "66da0d9ac3ad3ec6dafeacbc",
+    //                     "name": "man u",
+    //                     "bio": "man is red",
+    //                     "location": "Manchester",
+    //                     "players": [],
+    //                     "__v": 0
+    //                 },
+    //                 {
+    //                     "id": "66da0dafc3ad3ec6dafeacbe",
+    //                     "name": "tottenham",
+    //                     "bio": "chickens",
+    //                     "location": "London",
+    //                     "players": [],
+    //                     "__v": 0
+    //                 },
+    //                 {
+    //                     "id": "66da0e0dc3ad3ec6dafeacc4",
+    //                     "name": "FC Barcelona",
+    //                     "bio": "culers",
+    //                     "location": "Barcelona",
+    //                     "players": [],
+    //                     "__v": 0
+    //                 },
+    //                 {
+    //                     "id": "66da0e25c3ad3ec6dafeacc6",
+    //                     "name": "FC Bayern",
+    //                     "bio": "mia san mia",
+    //                     "location": "Berlin",
+    //                     "players": [],
+    //                     "__v": 0
+    //                 },
+    //                 {
+    //                     "id": "66dcadb3452f638115d30982",
+    //                     "name": "Argentina",
+    //                     "bio": "this is a country",
+    //                     "location": "Argentina",
+    //                     "players": [
+    //                         "66d7733f6e2f2988fc3735fc"
+    //                     ],
+    //                     "__v": 0
+    //                 },
+    //                 {
+    //                     "id": "66da0d88c3ad3ec6dafeacba",
+    //                     "name": "arsenal",
+    //                     "bio": "london is red",
+    //                     "location": "London",
+    //                     "players": [],
+    //                     "__v": 0
+    //                 },
+    //                 {
+    //                     "id": "66da0d4dc3ad3ec6dafeacb6",
+    //                     "name": "Man City",
+    //                     "bio": "man is blue",
+    //                     "location": "Manchester",
+    //                     "players": [],
+    //                     "__v": 0
+    //                 },
+    //                 {
+    //                     "id": "66da0dfdc3ad3ec6dafeacc2",
+    //                     "name": "Real Madrid",
+    //                     "bio": "hala madrid",
+    //                     "location": "Madrid",
+    //                     "players": [],
+    //                     "__v": 0
+    //                 }
+    //             ]
+    //         }
+    //     ],
+    //     "quarterMatch": [
+    //         {
+    //             "team1": {
+    //                 "qName": "A8"
+    //             },
+    //             "team2": {
+    //                 "qName": "A2"
+    //             }
+    //         },
+    //         {
+    //             "team1": {
+    //                 "qName": "A5"
+    //             },
+    //             "team2": {
+    //                 "qName": "A4"
+    //             }
+    //         },
+    //         {
+    //             "team1": {
+    //                 "qName": "A3"
+    //             },
+    //             "team2": {
+    //                 "qName": "A6"
+    //             }
+    //         },
+    //         {
+    //             "team1": {
+    //                 "qName": "A7"
+    //             },
+    //             "team2": {
+    //                 "qName": "A1"
+    //             }
+    //         }
+    //     ],
+    //     "semiMatch": [],
+    //     "thirdSwitch": true
+    // }
   };
   // console.log("filler" + isAllGroupsFilled);
 
   return (
     <Card className="mx-auto w-full max-w-screen-xl">
-      <form onSubmit={handleSubmit}>
+      <form>
         <CardHeader>
           <CardTitle>
             Create Tournament (Page {page}/{totalPages})
@@ -513,12 +704,15 @@ export function TournamentMultiForm() {
                   </div>
                 </div>
               )}
-              {semiSwitch && (
+              {
                 <div className="flex flex-col space-y-1.5">
                   <div className="flex items-center space-x-2">
                     <Switch
-                      id="quarter"
+                      id="third"
                       checked={thirdSwitch}
+                      disabled={
+                        formData.groupsNum * formData.teamsQPerGroup < 4
+                      }
                       onClick={() => {
                         setThirdSwitch(!thirdSwitch);
                       }}
@@ -527,7 +721,7 @@ export function TournamentMultiForm() {
                     <TooltipProvider>
                       <Tooltip>
                         <TooltipTrigger asChild>
-                          <Label htmlFor="quarter">Third Place</Label>
+                          <Label htmlFor="third">Third Place</Label>
                         </TooltipTrigger>
                         <TooltipContent>
                           Number of Groups * Number of Teams Qualified must be 4
@@ -536,7 +730,7 @@ export function TournamentMultiForm() {
                     </TooltipProvider>
                   </div>
                 </div>
-              )}
+              }
 
               {/* <CreateTeamsTournament /> */}
             </div>
@@ -549,7 +743,7 @@ export function TournamentMultiForm() {
               teamsTournament={teamsTournament}
             />
           )}
-          {page === 4 && (
+          {page === 5 && (
             <div className="grid w-full items-center gap-4">
               <div className="flex flex-col items-start">
                 <p>Groups:</p>
@@ -599,7 +793,7 @@ export function TournamentMultiForm() {
             </div>
           )}
 
-          {page === 5 && (
+          {page === 4 && (
             <div className="grid w-full items-center gap-4">
               <GroupMatcher
                 numberOfGroups={formData.groupsNum}
@@ -621,6 +815,8 @@ export function TournamentMultiForm() {
               semiMatch={semiMatch}
               thirdSwitch={thirdSwitch}
               formData={formData}
+              startDate={startDate}
+              endDate={endDate}
             />
             // <div>pp</div>
           )}
@@ -628,7 +824,7 @@ export function TournamentMultiForm() {
 
         <CardFooter className="flex justify-between py-4 ">
           {page > 1 && (
-            <Button variant="outline" onClick={handlePrevious}>
+            <Button variant="outline" onClick={handlePrevious} type="button">
               Previous
             </Button>
           )}
@@ -636,13 +832,13 @@ export function TournamentMultiForm() {
             <Button
               type="button"
               disabled={
-                (page == 1 &&
+                (page === 1 &&
                   (formData.name === "" ||
                     formData.organizer === "" ||
                     formData.bio === "" ||
                     formData.location === "")) ||
-                (page == 5 && !isAllGroupsFilled) ||
-                (page == 3 &&
+                (page === 5 && !isAllGroupsFilled) ||
+                (page === 3 &&
                   teamsTournament.length !==
                     formData.groupsNum * formData.teamsPerGroup)
               }
@@ -651,28 +847,9 @@ export function TournamentMultiForm() {
               Next
             </Button>
           ) : (
-            <Button type="submit">Submit</Button>
-
-            // <AlertDialog>
-            //   <AlertDialogTrigger ref={ref} asChild>
-            //     <Button variant="outline">Submit</Button>
-            //   </AlertDialogTrigger>
-            //   <AlertDialogContent>
-            //     <AlertDialogHeader>
-            //       <AlertDialogTitle>Are you absolutely sure?</AlertDialogTitle>
-            //       <AlertDialogDescription>
-            //         You can not change tournament settings and tournament
-            //         structure after this step.
-            //       </AlertDialogDescription>
-            //     </AlertDialogHeader>
-            //     <AlertDialogFooter>
-            //       <AlertDialogCancel>Cancel</AlertDialogCancel>
-            //       <AlertDialogAction onClick={(e) => handleSubmit(e)}>
-            //         Submit
-            //       </AlertDialogAction>
-            //     </AlertDialogFooter>
-            //   </AlertDialogContent>
-            // </AlertDialog>
+            <Button type="button" onClick={(e) => handleSubmit(e)}>
+              Submit
+            </Button>
           )}
         </CardFooter>
       </form>

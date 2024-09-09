@@ -1,6 +1,7 @@
 import React from "react";
 import TournamentBracket from "./brackets/tournament-brackets";
 import SingleElimination from "./brackets/tournament-brackets";
+import { Badge } from "@/components/ui/badge";
 
 export default function TournamentPreview({
   groupMatch,
@@ -9,6 +10,8 @@ export default function TournamentPreview({
   semiMatch,
   thirdSwitch,
   formData,
+  startDate,
+  endDate,
 }) {
   const matches = [
     { team1: "A1", team2: "B2" },
@@ -26,8 +29,8 @@ export default function TournamentPreview({
       id: index + 1,
       date: new Date().toDateString(),
       teams: [
-        { id: index * 2 + 1, name: match.team1.name, score: 0 },
-        { id: index * 2 + 2, name: match.team2.name, score: 0 },
+        { id: index * 2 + 1, name: match.team1.qName, score: 0 },
+        { id: index * 2 + 2, name: match.team2.qName, score: 0 },
       ],
     }));
 
@@ -50,8 +53,8 @@ export default function TournamentPreview({
       const nextRoundMatches = [];
 
       for (let i = 0; i < currentRound.length; i += 2) {
-        const winner1 = currentRound[i].teams[0]; // Assume team1 is the winner
-        const winner2 = currentRound[i + 1]?.teams[0]; // Assume team1 is the winner
+        const winner1 = currentRound[i].teams[1]; // Assume team1 is the winner
+        const winner2 = currentRound[i + 1]?.teams[1]; // Assume team1 is the winner
 
         if (winner2) {
           nextRoundMatches.push({
@@ -82,23 +85,75 @@ export default function TournamentPreview({
 
     return rounds;
   };
+  // console.log(startDate);
+
+  const formatDate = (date) => {
+    const options = {
+      month: "short",
+      day: "2-digit",
+      year: "numeric",
+      hour: "2-digit",
+      minute: "2-digit",
+      second: "2-digit",
+      hour12: false,
+      timeZoneName: "short",
+    };
+
+    const formattedDate = new Intl.DateTimeFormat("en-US", options).format(
+      date
+    );
+
+    // Manually format the timezone offset
+    const timezoneOffset = -date.getTimezoneOffset() / 60;
+    const timezoneString = `GMT${
+      timezoneOffset >= 0 ? "+" : ""
+    }${timezoneOffset}`;
+
+    // Replace the default timezone name with the custom formatted timezone string
+    return formattedDate.replace(/GMT[+-]\d{1,2}/, timezoneString);
+  };
 
   return (
     <div className="container mx-auto p-4">
       <h1 className="text-2xl font-bold mb-4">Tournament Preview</h1>
 
-      <section className="mb-8">
-        <h2 className="text-xl font-semibold mb-2">Tournament Settings</h2>
-        <div className="bg-gray-100 p-4 rounded">
-          <p>
-            <strong>Name:</strong> {formData.name}
+      <section
+        className="mb-8 mt-10 p-6 bg-white rounded-lg transition duration-300 ease-in-out transform hover:-translate-y-1 hover:scale-105"
+        style={{
+          boxShadow:
+            "0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 -4px 6px -1px rgba(0, 0, 0, 0.1), 4px 0 6px -1px rgba(0, 0, 0, 0.1), -4px 0 6px -1px rgba(0, 0, 0, 0.1)",
+        }}
+      >
+        <h2 className="text-xl font-semibold py-2 mb-4 ">
+          Tournament Settings
+        </h2>
+        <div className="bg-gray-100 p-6 rounded-lg shadow-md ">
+          <p className="mb-2  hover:bg-slate-800 rounded-sm cursor-pointer hover:text-white transition duration-300 ease-in-out p-2">
+            <strong className="">Name:</strong>{" "}
+            <span className="">{formData.name}</span>
           </p>
-          <p>
-            <strong>Start Date:</strong> {formData.startDate}
+
+          <p className="mb-2  hover:bg-slate-800 rounded-sm cursor-pointer hover:text-white transition duration-300 ease-in-out p-2">
+            <strong className="">Description:</strong>{" "}
+            <span className="">{formData.bio}</span>
           </p>
-          <p>
-            <strong>Location:</strong> {formData.location}
+          <p className="mb-2 hover:bg-slate-800 rounded-sm cursor-pointer hover:text-white transition duration-300 ease-in-out p-2">
+            <strong className="">Location:</strong>{" "}
+            <span className="">{formData.location}</span>
           </p>
+          <p className="mb-2 hover:bg-slate-800 rounded-sm cursor-pointer hover:text-white transition duration-300 ease-in-out p-2">
+            <strong className="">Organized By:</strong>{" "}
+            <span className="">{formData.organizer}</span>
+          </p>
+          <p className="mb-2 hover:bg-slate-800 rounded-sm cursor-pointer hover:text-white transition duration-300 ease-in-out p-2">
+            <strong className="">Start Date:</strong>{" "}
+            <span className="">{formatDate(startDate)}</span>
+          </p>
+          <p className="mb-2 hover:bg-slate-800 rounded-sm cursor-pointer hover:text-white transition duration-300 ease-in-out p-2">
+            <strong className="">End Date:</strong>{" "}
+            <span className="">{formatDate(endDate)}</span>
+          </p>
+
           {/* Add more settings as needed */}
         </div>
       </section>
@@ -108,7 +163,7 @@ export default function TournamentPreview({
           {teamsTournament.map((team, index) => (
             <li
               key={index}
-              className="bg-white p-2 rounded shadow hover:bg-black hover:text-white  transition duration-300 ease-in-out"
+              className="bg-white p-2 mb-2 rounded shadow hover:bg-slate-800 hover:text-white  transition duration-300 ease-in-out"
             >
               {team.name}
             </li>
@@ -121,15 +176,15 @@ export default function TournamentPreview({
           {groupMatch.map((group, index) => (
             <div
               key={index}
-              className="bg-gray-100 p-4 rounded mb-4 w-1/3 hover:
-                
-                shadow-lg transition duration-300 ease-in-out transform hover:-translate-y-1 hover:scale-105
-            "
+              className=" bg-gray-100 p-4 rounded mb-4 w-1/3 hover:shadow-lg transition duration-300 ease-in-out transform hover:-translate-y-1 hover:scale-105"
             >
-              <h3 className="text-lg font-semibold pb-2">{group.name}</h3>
+              <h3 className=" pl-2 text-lg font-semibold pb-2">{group.name}</h3>
               <ul>
                 {group.teams.map((team, teamIndex) => (
-                  <li className="py-1" key={teamIndex}>
+                  <li
+                    className="py-2 pl-2 hover:bg-slate-800 rounded-sm cursor-pointer hover:text-white transition duration-300 ease-in-out"
+                    key={teamIndex}
+                  >
                     {team.name}
                   </li>
                 ))}
@@ -170,11 +225,15 @@ export default function TournamentPreview({
         </div>
       )}
 
-      <section className="mb-8 w-20">
+      <section className="mb-8 w-20 flex flex-row gap-10 items-center">
         <h2 className="text-xl font-semibold mb-2">Third Place</h2>
-        <div className="bg-gray-100 p-4 rounded">
-          <p>{thirdSwitch ? "Yes" : "No"}</p>
-        </div>
+        <Badge
+          className="px-6 py-1 text-base border-2 border-black  hover:bg-slate-800 hover:text-white"
+          variant="outline"
+        >
+          {thirdSwitch ? "YES" : "NO"}
+        </Badge>
+        {/* <p>{thirdSwitch ? "Yes" : "No"}</p> */}
       </section>
     </div>
   );

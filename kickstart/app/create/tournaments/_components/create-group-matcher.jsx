@@ -35,9 +35,9 @@ export default function GroupMatcher({
     }))
   );
 
-  console.log("groups");
-  console.log(teamsTournament);
-  console.log(groups);
+  // console.log("groups");
+  // console.log(teamsTournament);
+  // console.log(groups);
 
   useEffect(() => {
     setGroupMatch([]);
@@ -51,11 +51,11 @@ export default function GroupMatcher({
   }, [groups, config.teamsPerGroup]);
 
   const addTeamToGroup = (groupIndex, teamName) => {
-    console.log("team");
-    console.log(teamName);
+    // console.log("team");
+    // console.log(teamName);
     const selectedTeam = availableTeams.find((t) => t.name === teamName);
-    console.log("selectedTeam");
-    console.log(selectedTeam);
+    // console.log("selectedTeam");
+    // console.log(selectedTeam);
     if (groups[groupIndex].teams.length < config.teamsPerGroup) {
       setGroups(
         groups.map((group, i) =>
@@ -77,8 +77,8 @@ export default function GroupMatcher({
 
   const removeTeamFromGroup = (groupIndex, teamName) => {
     const selectedTeam = teamsTournament.find((t) => t.name === teamName);
-    console.log("selectedTeamremvoe");
-    console.log(selectedTeam);
+    // console.log("selectedTeamremvoe");
+    // console.log(selectedTeam);
 
     setGroups(
       groups.map((group, i) =>

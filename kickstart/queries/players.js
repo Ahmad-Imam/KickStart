@@ -41,3 +41,26 @@ export async function getAllPlayersByIds(ids) {
     throw new Error(error);
   }
 }
+
+export async function updatePlayerTeam(playersInTeam, teamsId) {
+  try {
+    // const newPlayers = await playersModel.updateMany(
+    //   { _id: { $in: playersInTeam } },
+    //   { team: teamsId }
+    // );
+    const newPlayers = await Promise.all(
+      playersInTeam.map(async (playerId) =>
+        playersModel.findByIdAndUpdate(
+          playerId,
+          { team: teamsId },
+          { new: false }
+        )
+      )
+    );
+
+    console.log("newPlayers query");
+    console.log(replaceMongoIdInArray(newPlayers));
+  } catch (error) {
+    throw new Error(error);
+  }
+}
