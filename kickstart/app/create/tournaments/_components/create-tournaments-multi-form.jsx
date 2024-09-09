@@ -837,7 +837,7 @@ export function TournamentMultiForm() {
                     formData.organizer === "" ||
                     formData.bio === "" ||
                     formData.location === "")) ||
-                (page === 5 && !isAllGroupsFilled) ||
+                (page === 4 && !isAllGroupsFilled) ||
                 (page === 3 &&
                   teamsTournament.length !==
                     formData.groupsNum * formData.teamsPerGroup)

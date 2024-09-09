@@ -16,6 +16,7 @@ export async function createTeamsTournamentList(data, tournamentId) {
         const tournamentData = {
           tournamentId: tournamentId,
           ...team,
+          points: 0,
         };
         return await teamsTournamentModel.create(tournamentData);
       })

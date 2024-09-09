@@ -1,6 +1,7 @@
 "use server";
 
 import { createGroups } from "@/queries/groups";
+import { createMatches } from "@/queries/matches";
 import { createPlayers, updatePlayerTeam } from "@/queries/players";
 import { createTeams, createTeamsN } from "@/queries/teams";
 import { createTeamsTournamentList } from "@/queries/teamsTournament";
@@ -69,7 +70,27 @@ export async function addTournaments(data) {
       data?.teamsTournament,
       tournament.id
     );
-    const groups = await createGroups(data?.groupMatch, tournament?.id);
+    const groups = await createGroups(
+      data?.groupMatch,
+      tournament?.id,
+      data?.teamsQPerGroup,
+      data?.teamsPerGroup
+    );
+
+    const allMatch = {
+      groupMatch: data?.groupMatch,
+      quarterMatch: data?.quarterMatch,
+      semiMatch: data?.semiMatch,
+      isThirdPlace: data?.isThirdPlace,
+      // teamsQPerGroup: data?.teamsQPerGroup,
+      teamsPerGroup: data?.teamsPerGroup,
+    };
+
+    const matches = await createMatches(
+      allMatch,
+      tournament?.id,
+      data?.startDate
+    );
 
     // console.log(teams);
     return tournament;

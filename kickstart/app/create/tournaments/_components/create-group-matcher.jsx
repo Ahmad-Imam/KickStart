@@ -41,12 +41,18 @@ export default function GroupMatcher({
 
   useEffect(() => {
     setGroupMatch([]);
+    const allFilled = groups.every(
+      (group) => group.teams.length === config.teamsPerGroup
+    );
+    setIsAllGroupsFilled(allFilled);
   }, []);
 
   useEffect(() => {
     const allFilled = groups.every(
       (group) => group.teams.length === config.teamsPerGroup
     );
+    // console.log("allFilled");
+    // console.log(allFilled);
     setIsAllGroupsFilled(allFilled);
   }, [groups, config.teamsPerGroup]);
 

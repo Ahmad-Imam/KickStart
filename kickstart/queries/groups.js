@@ -5,17 +5,24 @@ import {
   replaceMongoIdInObject,
 } from "@/utils/data-util";
 
-export async function createGroups(data, tournamentId) {
+export async function createGroups(
+  data,
+  tournamentId,
+  teamsQPerGroup,
+  teamsPerGroup
+) {
   console.log("createsTeamsTournamentList");
   console.log(tournamentId);
   console.log(data);
+  let groupsList = [];
   try {
-    const groupsList = await Promise.all(
+    groupsList = await Promise.all(
       data?.map(async (team) => {
         const groupData = {
           tournamentId: tournamentId,
-          ...team,
+          teamsQPerGroup: teamsQPerGroup,
           points: 0,
+          ...team,
         };
         return await groupsModel.create(groupData);
       })

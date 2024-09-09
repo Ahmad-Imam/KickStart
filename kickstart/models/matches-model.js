@@ -7,80 +7,36 @@ const matchSchema = new Schema({
     type: String,
   },
   name: {
-    required: false,
     type: String,
   },
-  team1: {
-    required: false,
-    type: String,
-  },
-  team2: {
-    required: false,
-    type: String,
-  },
-  qName: {
-    team1: String,
-    team2: String,
-  },
+  team1: {},
+  team2: {},
+  qName: {},
   groupName: {
-    required: false,
     type: String,
   },
   tournamentId: {
     required: true,
-    type: ObjectId,
+    type: String,
   },
   matchDate: {
-    required: false,
     type: String,
   },
   location: {
-    required: false,
     type: String,
   },
   status: {
     required: true,
     type: String,
   },
-  result: {
-    required: false,
-    goals: {
-      team1: Number,
-      team2: Number,
-    },
-  },
+  result: {},
 
-  scorer: {
-    required: false,
-    type: [
-      {
-        team1: [],
-      },
-      { team2: [] },
-    ],
-  },
+  scorer: {},
 
-  yellow: {
-    required: false,
-    type: [
-      {
-        team1: [],
-      },
-      { team2: [] },
-    ],
-  },
+  yellow: {},
 
-  red: {
-    required: false,
-    type: [
-      {
-        team1: [],
-      },
-      { team2: [] },
-    ],
-  },
+  red: {},
   referee: {
-    required: false,
     type: String,
   },
 });
