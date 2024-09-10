@@ -8,21 +8,44 @@ const teamsTournamentSchema = new Schema({
   location: {
     type: String,
   },
+  bio: {
+    type: String,
+  },
   groupName: {
     type: String,
   },
+
+  qName: {
+    type: String,
+  },
+
   tournamentId: {
     required: true,
     type: ObjectId,
   },
-  matchDate: {
-    type: String,
-  },
+
   players: [],
-  totalScored: {
+
+  points: {
     type: Number,
   },
-  totalConceded: {
+
+  matchPlayed: {
+    type: Number,
+  },
+  matchWon: {
+    type: Number,
+  },
+  matchDraw: {
+    type: Number,
+  },
+  matchLost: {
+    type: Number,
+  },
+  goalsFor: {
+    type: Number,
+  },
+  goalsAgainst: {
     type: Number,
   },
 

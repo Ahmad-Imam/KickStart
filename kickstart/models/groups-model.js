@@ -15,6 +15,9 @@ const groupsSchema = new Schema({
     //remember to add points section to each team
   ],
   matches: [],
+  teamsQPerGroup: {
+    type: Number,
+  },
 });
 
 export const groupsModel =

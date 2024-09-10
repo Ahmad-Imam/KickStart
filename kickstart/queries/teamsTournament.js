@@ -11,22 +11,22 @@ export async function createTeamsTournamentList(data, tournamentId) {
   console.log(tournamentId);
   console.log(data);
   try {
-    const teamsTournamentList = await Promise.all(
-      data?.map(async (team) => {
-        const tournamentData = {
-          tournamentId: tournamentId,
-          ...team,
-          points: 0,
-        };
-        return await teamsTournamentModel.create(tournamentData);
-      })
+    const tournamentDataList = data.map((team) => ({
+      tournamentId: tournamentId,
+      ...team,
+      points: 0,
+      matchPlayed: 0,
+      matchWon: 0,
+      matchDraw: 0,
+      matchLost: 0,
+      goalsFor: 0,
+      goalsAgainst: 0,
+    }));
+
+    const teamsTournamentList = await teamsTournamentModel.insertMany(
+      tournamentDataList
     );
 
-    // const teamsTournament = await teamsTournamentModel.create(tournamentData);
-    // const simpleTeamData = await teamsTournamentModel
-    //   .findById(teamsTournament._id)
-    //   .lean();
-    // console.log(replaceMongoIdInObject(simpleTeamData));
     return replaceMongoIdInArray(teamsTournamentList);
   } catch (error) {
     throw new Error(error);
