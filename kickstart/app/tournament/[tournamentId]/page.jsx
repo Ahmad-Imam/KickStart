@@ -17,16 +17,17 @@ export default async function TournamentPage({ params }) {
   if (tournament) {
     console.log("Tournament found");
     // console.log(tournament);
-    // console.log(groups);
+    console.log(typeof groups);
+    console.log(groups);
   }
 
-  console.log(tournamentId);
+  // console.log(tournamentId);
   return (
     <>
       <TournamentDetails
         tournamentDetails={tournament}
         matchesDetails={matches}
-        groupsDetails={groups}
+        groupsDetails={JSON.parse(JSON.stringify(groups))}
       />
     </>
   );

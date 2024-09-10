@@ -442,7 +442,9 @@ export default function TournamentDetails({
                   >
                     {match?.status}
                   </Badge>
-                  <Link href={`/match/${match?.id}`} passHref>
+                  <Link
+                    href={`/tournament/${tournamentDetails?.id}/match/${match?.id}`}
+                  >
                     <Button className="mt-4 bg-slate-800 hover:bg-black">
                       View Match Details
                     </Button>
@@ -454,13 +456,13 @@ export default function TournamentDetails({
         </TabsContent>
         <TabsContent value="groups" className="py-4">
           <div className="space-y-8">
-            {tournament.groupMatch.map((group) => (
+            {groupsDetails.map((group) => (
               <Card
-                key={group.name}
-                className="hover:shadow-lg transition-shadow duration-300"
+                key={group?.id}
+                className="border-2 border-slate-200 hover:shadow-lg transition-shadow duration-300"
               >
                 <CardHeader>
-                  <CardTitle>{group.name}</CardTitle>
+                  <CardTitle>{group?.name}</CardTitle>
                 </CardHeader>
                 <CardContent>
                   <Table>
@@ -480,8 +482,11 @@ export default function TournamentDetails({
                     </TableHeader>
                     <TableBody>
                       {group.teams.map((team, index) => (
-                        <TableRow key={team.id} className="hover:bg-muted/50">
-                          <TableCell className="font-medium">
+                        <TableRow
+                          key={team?._id}
+                          className="border-b-2 border-slate-200 hover:bg-slate-800 hover:text-white"
+                        >
+                          <TableCell className="font-bold">
                             {index + 1}
                           </TableCell>
                           <TableCell>
@@ -489,32 +494,32 @@ export default function TournamentDetails({
                               href={`/team/${team.id}`}
                               className="hover:underline"
                             >
-                              {team.name}
+                              {team?.name}
                             </Link>
                           </TableCell>
                           <TableCell className="text-right">
-                            {team.played}
+                            {team?.matchPlayed}
                           </TableCell>
                           <TableCell className="text-right">
-                            {team.won}
+                            {team?.matchWon}
                           </TableCell>
                           <TableCell className="text-right">
-                            {team.drawn}
+                            {team?.matchDraw}
                           </TableCell>
                           <TableCell className="text-right">
-                            {team.lost}
+                            {team?.matchLost}
                           </TableCell>
                           <TableCell className="text-right">
-                            {team.goalsFor}
+                            {team?.goalsFor}
                           </TableCell>
                           <TableCell className="text-right">
-                            {team.goalsAgainst}
+                            {team?.goalsAgainst}
                           </TableCell>
                           <TableCell className="text-right">
-                            {team.goalDifference}
+                            {team?.goalsFor - team?.goalsAgainst}
                           </TableCell>
                           <TableCell className="text-right font-bold">
-                            {team.points}
+                            {team?.points}
                           </TableCell>
                         </TableRow>
                       ))}
