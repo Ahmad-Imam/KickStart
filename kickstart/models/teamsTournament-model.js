@@ -23,6 +23,10 @@ const teamsTournamentSchema = new Schema({
     required: true,
     type: ObjectId,
   },
+  teamId: {
+    required: true,
+    type: ObjectId,
+  },
 
   players: [],
 

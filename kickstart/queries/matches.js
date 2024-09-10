@@ -131,7 +131,7 @@ export async function createMatches(allMatch, tournamentId, matchDate) {
       for (const match of semiMatch) {
         const matchData = {
           tournamentId: tournamentId,
-          qName: { ...match },
+          qName: { team1: match?.team1?.qName, team2: match?.team2?.qName },
           status: "pending",
           matchDate: matchDate,
           type: "semi",
@@ -166,6 +166,15 @@ export async function createMatches(allMatch, tournamentId, matchDate) {
     console.log("matchesList");
     // console.log(matchesList);
     // return replaceMongoIdInArray(matchesList);
+  } catch (error) {
+    throw new Error(error);
+  }
+}
+
+export async function getMatchesByTournamentId(tournamentId) {
+  try {
+    const matches = await matchModel.find({ tournamentId }).lean();
+    return replaceMongoIdInArray(matches);
   } catch (error) {
     throw new Error(error);
   }

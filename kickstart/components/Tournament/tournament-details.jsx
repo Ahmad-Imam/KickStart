@@ -27,8 +27,8 @@ const sampleTournament = {
   name: "World Cup 2024",
   bio: "The biggest football tournament in the world",
   location: "United States",
-  startDate: "2024-06-12T00:00:00.000Z",
-  endDate: "2024-07-12T00:00:00.000Z",
+  startDate: "Tue Sep 10 2024 00:00:00 GMT+0300 (Eastern European Summer Time)",
+  endDate: "Tue Sep 10 2024 00:00:00 GMT+0300 (Eastern European Summer Time)",
   status: "upcoming",
   organizer: "FIFA",
   groupsNum: 8,
@@ -199,80 +199,154 @@ const sampleTournament = {
   ],
 };
 
-export default function TournamentDetails() {
+//groupmatch - groups  table - teams -  info from teamsTournament table
+//matches - matches table
+
+export default function TournamentDetails({
+  tournamentDetails,
+  matchesDetails,
+  groupsDetails,
+}) {
   const [activeTab, setActiveTab] = useState("overview");
   const tournament = sampleTournament; // In a real app, you'd fetch this based on params.id
+  console.log("group");
+
+  console.log(groupsDetails);
 
   return (
     <div className="container mx-auto px-4 py-8">
-      <h1 className="text-4xl font-bold mb-6">{tournament.name}</h1>
+      <h1 className="text-4xl font-bold mb-6">{tournamentDetails?.name}</h1>
       <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
-        <Card>
+        <Card className="drop-shadow-sm hover:shadow-lg transition-shadow duration-300">
           <CardHeader>
             <CardTitle>Status</CardTitle>
           </CardHeader>
           <CardContent>
             <Badge
-              variant={
-                tournament.status === "upcoming" ? "secondary" : "default"
-              }
+            // variant={
+            //   tournament.status === "upcoming" ? "secondary" : "default"
+            // }
             >
-              {tournament.status}
+              {tournamentDetails?.status}
             </Badge>
           </CardContent>
         </Card>
-        <Card>
+        <Card className="drop-shadow-sm hover:shadow-lg transition-shadow duration-300">
           <CardHeader>
             <CardTitle>Date</CardTitle>
           </CardHeader>
           <CardContent className="flex items-center">
             <CalendarIcon className="mr-2" />
             <span>
-              {new Date(tournament.startDate).toLocaleDateString()} -{" "}
-              {new Date(tournament.endDate).toLocaleDateString()}
+              {new Date(tournamentDetails?.startDate).toLocaleDateString()} -{" "}
+              {new Date(tournamentDetails?.endDate).toLocaleDateString()}
             </span>
           </CardContent>
         </Card>
-        <Card>
+        <Card className="drop-shadow-sm hover:shadow-lg transition-shadow duration-300">
           <CardHeader>
             <CardTitle>Location</CardTitle>
           </CardHeader>
           <CardContent className="flex items-center">
             <MapPinIcon className="mr-2" />
-            <span>{tournament.location}</span>
+            <span>{tournamentDetails?.location}</span>
           </CardContent>
         </Card>
       </div>
 
       <Tabs value={activeTab} onValueChange={setActiveTab}>
-        <TabsList className="grid w-full grid-cols-4">
-          <TabsTrigger value="overview">Overview</TabsTrigger>
-          <TabsTrigger value="teams">Teams</TabsTrigger>
-          <TabsTrigger value="matches">Matches</TabsTrigger>
-          <TabsTrigger value="groups">Groups</TabsTrigger>
+        <TabsList className="grid w-full grid-cols-4 gap-2 px-2 h-auto py-2 ">
+          <TabsTrigger
+            value="overview"
+            style={{
+              "--tw-bg-opacity": 1,
+              backgroundColor:
+                activeTab === "overview"
+                  ? "rgb(30 41 59 / var(--tw-bg-opacity))"
+                  : "white",
+              color: activeTab === "overview" ? "white" : "black",
+              cursor: "pointer",
+              borderRadius: "5px",
+              transition: "background-color 0.3s",
+            }}
+          >
+            Overview
+          </TabsTrigger>
+          <TabsTrigger
+            style={{
+              "--tw-bg-opacity": 1,
+              backgroundColor:
+                activeTab === "teams"
+                  ? "rgb(30 41 59 / var(--tw-bg-opacity))"
+                  : "white",
+              color: activeTab === "teams" ? "white" : "black",
+              cursor: "pointer",
+              borderRadius: "5px",
+              transition: "background-color 0.3s",
+            }}
+            value="teams"
+          >
+            Teams
+          </TabsTrigger>
+          <TabsTrigger
+            style={{
+              "--tw-bg-opacity": 1,
+              backgroundColor:
+                activeTab === "matches"
+                  ? "rgb(30 41 59 / var(--tw-bg-opacity))"
+                  : "white",
+              color: activeTab === "matches" ? "white" : "black",
+              cursor: "pointer",
+              borderRadius: "5px",
+              transition: "background-color 0.3s",
+            }}
+            value="matches"
+          >
+            Matches
+          </TabsTrigger>
+          <TabsTrigger
+            style={{
+              "--tw-bg-opacity": 1,
+              backgroundColor:
+                activeTab === "groups"
+                  ? "rgb(30 41 59 / var(--tw-bg-opacity))"
+                  : "white",
+              color: activeTab === "groups" ? "white" : "black",
+              cursor: "pointer",
+              borderRadius: "5px",
+              transition: "background-color 0.3s",
+            }}
+            value="groups"
+          >
+            Groups
+          </TabsTrigger>
         </TabsList>
-        <TabsContent value="overview">
-          <Card className="hover:shadow-lg transition-shadow duration-300">
+        <TabsContent value="overview" className="py-4">
+          <Card className="border-2 border-slate-200 hover:shadow-lg transition-shadow duration-300">
             <CardHeader>
               <CardTitle>Tournament Overview</CardTitle>
-              <CardDescription>{tournament.bio}</CardDescription>
+              <CardDescription>{tournamentDetails?.bio}</CardDescription>
             </CardHeader>
             <CardContent>
-              <p>
-                <strong>Organizer:</strong> {tournament.organizer}
-              </p>
-              <p>
-                <strong>Number of Groups:</strong> {tournament.groupsNum}
-              </p>
-              <p>
-                <strong>Teams per Group:</strong> {tournament.teamsPerGroup}
-              </p>
-              <p>
-                <strong>Teams Qualifying per Group:</strong>{" "}
-                {tournament.teamsQPerGroup}
-              </p>
+              <div className="border-2 border-slate-200 bg-white p-6 rounded-lg shadow-md hover:shadow-lg transition-shadow duration-300  ">
+                <p className="hover:bg-slate-800 rounded-sm cursor-pointer hover:text-white transition duration-300 ease-in-out p-2">
+                  <strong>Organizer:</strong> {tournamentDetails?.organizer}
+                </p>
+                <p className="hover:bg-slate-800 rounded-sm cursor-pointer hover:text-white transition duration-300 ease-in-out p-2">
+                  <strong>Number of Groups:</strong>{" "}
+                  {tournamentDetails?.groupsNum}
+                </p>
+                <p className="hover:bg-slate-800 rounded-sm cursor-pointer hover:text-white transition duration-300 ease-in-out p-2">
+                  <strong>Teams per Group:</strong>{" "}
+                  {tournamentDetails?.teamsPerGroup}
+                </p>
+                <p className="hover:bg-slate-800 rounded-sm cursor-pointer hover:text-white transition duration-300 ease-in-out p-2">
+                  <strong>Teams Qualifying per Group:</strong>{" "}
+                  {tournamentDetails?.teamsQPerGroup}
+                </p>
+              </div>
 
-              <Card className="hover:shadow-lg transition-shadow duration-300 my-8">
+              <Card className="border-2 border-slate-200 hover:shadow-lg transition-shadow duration-300 my-8">
                 <CardHeader>
                   <CardTitle>Tournament Top Scorers</CardTitle>
                 </CardHeader>
@@ -299,12 +373,12 @@ export default function TournamentDetails() {
             </CardContent>
           </Card>
         </TabsContent>
-        <TabsContent value="teams">
+        <TabsContent value="teams" className="py-4">
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-            {tournament.teamsTournament.map((team) => (
+            {tournamentDetails?.teamsTournament.map((team) => (
               <Card
                 key={team.id}
-                className="hover:shadow-lg transition-shadow duration-300"
+                className="border-2 border-slate-200 hover:shadow-lg transition-shadow duration-300"
               >
                 <CardHeader>
                   <CardTitle>{team.name}</CardTitle>
@@ -313,40 +387,72 @@ export default function TournamentDetails() {
                 <CardContent>
                   <p className="mb-4">{team.bio}</p>
                   <Link href={`/team/${team.id}`} passHref>
-                    <Button>View Team Details</Button>
+                    <Button className="bg-slate-800 hover:bg-black">
+                      View Team Details
+                    </Button>
                   </Link>
                 </CardContent>
               </Card>
             ))}
           </div>
         </TabsContent>
-        <TabsContent value="matches">
+        <TabsContent value="matches" className="py-4">
           <div className="space-y-4">
-            {tournament.matches.map((match) => (
+            {matchesDetails.map((match) => (
               <Card
-                key={match.id}
-                className="hover:shadow-lg transition-shadow duration-300"
+                key={match?.id}
+                className="border-2 border-slate-200 hover:shadow-lg transition-shadow duration-300"
               >
                 <CardHeader>
-                  <CardTitle>
-                    {match.team1.name} vs {match.team2.name}
-                  </CardTitle>
+                  {match?.type === "group" ? (
+                    <CardTitle>
+                      {match?.team1?.name} vs {match?.team2?.name}
+                    </CardTitle>
+                  ) : (
+                    <CardTitle>
+                      {match?.qName?.team1.toUpperCase()} vs{" "}
+                      {match?.qName?.team2.toUpperCase()}
+                    </CardTitle>
+                  )}
                   <CardDescription>
-                    {new Date(match.matchDate).toLocaleString()}
+                    {new Date(match?.matchDate).toLocaleString()}
                   </CardDescription>
                 </CardHeader>
                 <CardContent>
-                  <Badge>{match.type}</Badge>
-                  <Badge className="ml-2">{match.status}</Badge>
-                  <Link href={`/match/${match.id}`} passHref>
-                    <Button className="mt-4">View Match Details</Button>
+                  <Badge
+                    className={
+                      match?.type === "group" ? "bg-blue-900" : "bg-amber-500"
+                    }
+                    style={{
+                      paddingLeft: 10,
+                      paddingRight: 10,
+                    }}
+                  >
+                    {match?.type}
+                  </Badge>
+                  <Badge
+                    variant={
+                      match?.type === "group" ? "outline" : "destructive"
+                    }
+                    className="mx-6 hover:bg-black hover:text-white"
+                    style={{
+                      paddingLeft: 10,
+                      paddingRight: 10,
+                    }}
+                  >
+                    {match?.status}
+                  </Badge>
+                  <Link href={`/match/${match?.id}`} passHref>
+                    <Button className="mt-4 bg-slate-800 hover:bg-black">
+                      View Match Details
+                    </Button>
                   </Link>
                 </CardContent>
               </Card>
             ))}
           </div>
         </TabsContent>
-        <TabsContent value="groups">
+        <TabsContent value="groups" className="py-4">
           <div className="space-y-8">
             {tournament.groupMatch.map((group) => (
               <Card

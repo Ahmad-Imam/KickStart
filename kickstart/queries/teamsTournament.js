@@ -9,10 +9,11 @@ import {
 export async function createTeamsTournamentList(data, tournamentId) {
   console.log("createsTeamsTournamentList");
   console.log(tournamentId);
-  console.log(data);
+
   try {
     const tournamentDataList = data.map((team) => ({
       tournamentId: tournamentId,
+      teamId: team.id,
       ...team,
       points: 0,
       matchPlayed: 0,
