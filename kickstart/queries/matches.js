@@ -63,9 +63,11 @@ export async function createMatches(allMatch, tournamentId, matchDate) {
       };
       const createdMatch = await matchModel.create(matchData);
       matchesList.push(replaceMongoIdInObject(createdMatch));
+    } else if (teamsPerGroup == 1 && groupsNum === 1) {
     } else if (teamsPerGroup == 1 && groupsNum === 4) {
       //semi. but no group matches
     } else if (teamsPerGroup == 1 && groupsNum === 8) {
+      //quarter. but no group matches
       //quarter. but no group matches
     }
 
@@ -82,7 +84,7 @@ export async function createMatches(allMatch, tournamentId, matchDate) {
         };
         quarterMatches.push(matchData);
       }
-      const semiMatches = [];
+      //   const semiMatches = [];
       for (let i = 0; i < 4; i = i + 2) {
         const matchData = {
           tournamentId: tournamentId,
@@ -94,13 +96,33 @@ export async function createMatches(allMatch, tournamentId, matchDate) {
           matchDate: matchDate,
           type: "semi",
         };
-        semiMatches.push(matchData);
+        quarterMatches.push(matchData);
+      }
+
+      //create final match
+      const matchData = {
+        tournamentId: tournamentId,
+        qName: { team1: "sf1", team2: "sf2" },
+        status: "pending",
+        matchDate: matchDate,
+        type: "final",
+      };
+      quarterMatches.push(matchData);
+      if (isThirdPlace) {
+        const matchData = {
+          tournamentId: tournamentId,
+          qName: { team1: "sf1", team2: "sf2" },
+          status: "pending",
+          matchDate: matchDate,
+          type: "third",
+        };
+        quarterMatches.push(matchData);
       }
 
       const createdMatchesQ = await matchModel.insertMany(quarterMatches);
-      const createdMatchesS = await matchModel.insertMany(semiMatches);
+      //   const createdMatchesS = await matchModel.insertMany(semiMatches);
       matchesList.push(...createdMatchesQ.map(replaceMongoIdInObject));
-      matchesList.push(...createdMatchesS.map(replaceMongoIdInObject));
+      //   matchesList.push(...createdMatchesS.map(replaceMongoIdInObject));
     }
 
     if (semiMatch.length > 0) {
@@ -116,6 +138,27 @@ export async function createMatches(allMatch, tournamentId, matchDate) {
         };
         semiMatches.push(matchData);
       }
+
+      //create final match
+      const matchData = {
+        tournamentId: tournamentId,
+        qName: { team1: "sf1", team2: "sf2" },
+        status: "pending",
+        matchDate: matchDate,
+        type: "final",
+      };
+      semiMatches.push(matchData);
+      if (isThirdPlace) {
+        const matchData = {
+          tournamentId: tournamentId,
+          qName: { team1: "sf1", team2: "sf2" },
+          status: "pending",
+          matchDate: matchDate,
+          type: "third",
+        };
+        semiMatches.push(matchData);
+      }
+
       const createdMatches = await matchModel.insertMany(semiMatches);
       matchesList.push(...createdMatches.map(replaceMongoIdInObject));
     }
