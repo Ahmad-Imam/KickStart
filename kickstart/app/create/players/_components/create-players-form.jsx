@@ -77,7 +77,7 @@ export function PlayersForm() {
     const nickName = formData.get("nickName");
     const country = formData.get("country");
     const jersey = formData.get("jersey");
-    const team = savedItems[0].id;
+    const team = savedItems[0]?.id;
     const playerData = {
       name,
       nickName,

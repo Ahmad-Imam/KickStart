@@ -15,20 +15,22 @@ export default async function TournamentPage({ params }) {
   const groups = await getGroupsByTournamentId(tournamentId);
 
   if (tournament) {
-    console.log("Tournament found");
+    // console.log("Tournament found");
     // console.log(tournament);
-    console.log(typeof groups);
-    console.log(groups);
+    // console.log(typeof groups);
+    // console.log(groups);
   }
 
   // console.log(tournamentId);
   return (
     <>
-      <TournamentDetails
-        tournamentDetails={tournament}
-        matchesDetails={matches}
-        groupsDetails={JSON.parse(JSON.stringify(groups))}
-      />
+      <div className="w-full px-6 py-10">
+        <TournamentDetails
+          tournamentDetails={tournament}
+          matchesDetails={matches}
+          groupsDetails={JSON.parse(JSON.stringify(groups))}
+        />
+      </div>
     </>
   );
 }

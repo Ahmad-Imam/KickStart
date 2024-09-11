@@ -20,9 +20,11 @@ export default function GroupMatcher({
   setGroupMatch,
   teamsTournament,
 }) {
+  const teamsPerGroupI = parseInt(teamsPerGroup);
+
   const [config, setConfig] = useState({
     numberOfGroups,
-    teamsPerGroup,
+    teamsPerGroupI,
     teamsQualified,
   });
   // console.log(config.numberOfGroups);
@@ -35,7 +37,9 @@ export default function GroupMatcher({
     }))
   );
 
-  // console.log("groups");
+  console.log("groups");
+  console.log(isAllGroupsFilled);
+  console.log(config);
   // console.log(teamsTournament);
   // console.log(groups);
 
@@ -49,12 +53,12 @@ export default function GroupMatcher({
 
   useEffect(() => {
     const allFilled = groups.every(
-      (group) => group.teams.length === config.teamsPerGroup
+      (group) => group.teams.length === config.teamsPerGroupI
     );
-    // console.log("allFilled");
-    // console.log(allFilled);
+    console.log("allFilled");
+    console.log(allFilled);
     setIsAllGroupsFilled(allFilled);
-  }, [groups, config.teamsPerGroup]);
+  }, [groups]);
 
   const addTeamToGroup = (groupIndex, teamName) => {
     // console.log("team");
@@ -62,7 +66,7 @@ export default function GroupMatcher({
     const selectedTeam = availableTeams.find((t) => t.name === teamName);
     // console.log("selectedTeam");
     // console.log(selectedTeam);
-    if (groups[groupIndex].teams.length < config.teamsPerGroup) {
+    if (groups[groupIndex].teams.length < config.teamsPerGroupI) {
       setGroups(
         groups.map((group, i) =>
           i === groupIndex
@@ -125,7 +129,7 @@ export default function GroupMatcher({
             <CardContent>
               <Select
                 onValueChange={(value) => addTeamToGroup(groupIndex, value)}
-                disabled={group.teams.length >= config.teamsPerGroup}
+                disabled={group.teams.length >= config.teamsPerGroupI}
                 className="m-0 p-0"
               >
                 <SelectTrigger>

@@ -1,5 +1,3 @@
-"use client";
-
 import Link from "next/link";
 import {
   Card,
@@ -11,6 +9,10 @@ import {
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { MapPinIcon, TrophyIcon, AlertTriangleIcon } from "lucide-react";
+
+import TeamsTPlayers from "./teamsT-players";
+import { getAllPlayersByIds } from "@/queries/players";
+import { dbConnect } from "@/service/mongo";
 
 const sampleTeam = {
   _id: { $oid: "66df7347926d7338e1d73065" },
@@ -37,17 +39,22 @@ const sampleTeam = {
   __v: 0,
 };
 
-export default function TeamDetails({ params }) {
+export default async function TeamDetails({ teamsTournament }) {
   const team = sampleTeam; // In a real app, you'd fetch this based on params.id
+
+  await dbConnect();
+  const playersInfo = await getAllPlayersByIds(teamsTournament.players);
+  // console.log("playersInfo query");
+  // console.log(playersInfo);
 
   return (
     <div className="container mx-auto px-4 py-8">
-      <Link href={`/tournament/${team.tournamentId.$oid}`} passHref>
+      <Link href={`/tournament/${teamsTournament?.tournamentId}`} passHref>
         <Button variant="outline" className="mb-4">
           Back to Tournament
         </Button>
       </Link>
-      <h1 className="text-4xl font-bold mb-6">{team.name}</h1>
+      <h1 className="text-4xl font-bold mb-6">{teamsTournament?.name}</h1>
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
         <Card>
           <CardHeader>
@@ -55,7 +62,7 @@ export default function TeamDetails({ params }) {
           </CardHeader>
           <CardContent className="flex items-center">
             <MapPinIcon className="mr-2" />
-            <span>{team.location}</span>
+            <span>{teamsTournament?.location}</span>
           </CardContent>
         </Card>
         <Card>
@@ -63,26 +70,15 @@ export default function TeamDetails({ params }) {
             <CardTitle>Tournament ID</CardTitle>
           </CardHeader>
           <CardContent>
-            <Badge>{team.tournamentId.$oid}</Badge>
+            <Badge>{teamsTournament.tournamentId}</Badge>
           </CardContent>
         </Card>
       </div>
 
-      <h2 className="text-2xl font-bold mt-8 mb-4">Players</h2>
-      <Card>
-        <CardContent>
-          <ul className="divide-y">
-            {team.players.map((player) => (
-              <li key={player.id} className="py-2">
-                <div className="flex justify-between items-center">
-                  <span>{player.name}</span>
-                  <Badge>{player.position}</Badge>
-                </div>
-              </li>
-            ))}
-          </ul>
-        </CardContent>
-      </Card>
+      <TeamsTPlayers
+        playersInfo={JSON.parse(JSON.stringify(playersInfo))}
+        teamsTournament={teamsTournament}
+      />
 
       <h2 className="text-2xl font-bold mt-8 mb-4">Top Scorers</h2>
       <Card>

@@ -23,9 +23,13 @@ export async function createMatches(allMatch, tournamentId, matchDate) {
           tournamentId: tournamentId,
           team1: groupMatch[0].teams[0],
           team2: groupMatch[0].teams[1],
-          status: "pending",
           matchDate: matchDate,
           type: "final",
+          status: "upcoming",
+          result: {
+            team1: 0,
+            team2: 0,
+          },
         };
         const createdMatch = await matchModel.create(matchData);
         matchesList.push(replaceMongoIdInObject(createdMatch));
@@ -39,7 +43,11 @@ export async function createMatches(allMatch, tournamentId, matchDate) {
                 tournamentId: tournamentId,
                 team1: teams[i],
                 team2: teams[j],
-                status: "pending",
+                status: "upcoming",
+                result: {
+                  team1: 0,
+                  team2: 0,
+                },
                 groupName: group?.groupName,
                 matchDate: matchDate,
                 type: "group",
@@ -57,7 +65,11 @@ export async function createMatches(allMatch, tournamentId, matchDate) {
         tournamentId: tournamentId,
         team1: groupMatch[0].teams[0],
         team2: groupMatch[1].teams[0],
-        status: "pending",
+        status: "upcoming",
+        result: {
+          team1: 0,
+          team2: 0,
+        },
         matchDate: matchDate,
         type: "final",
       };
@@ -78,7 +90,11 @@ export async function createMatches(allMatch, tournamentId, matchDate) {
         const matchData = {
           tournamentId: tournamentId,
           qName: { team1: match?.team1?.qName, team2: match?.team2?.qName },
-          status: "pending",
+          status: "upcoming",
+          result: {
+            team1: 0,
+            team2: 0,
+          },
           matchDate: matchDate,
           type: "quarter",
         };
@@ -92,7 +108,11 @@ export async function createMatches(allMatch, tournamentId, matchDate) {
             team1: `qf${i + 1}`,
             team2: `qf${i + 2}`,
           },
-          status: "pending",
+          status: "upcoming",
+          result: {
+            team1: 0,
+            team2: 0,
+          },
           matchDate: matchDate,
           type: "semi",
         };
@@ -103,7 +123,11 @@ export async function createMatches(allMatch, tournamentId, matchDate) {
       const matchData = {
         tournamentId: tournamentId,
         qName: { team1: "sf1", team2: "sf2" },
-        status: "pending",
+        status: "upcoming",
+        result: {
+          team1: 0,
+          team2: 0,
+        },
         matchDate: matchDate,
         type: "final",
       };
@@ -112,7 +136,11 @@ export async function createMatches(allMatch, tournamentId, matchDate) {
         const matchData = {
           tournamentId: tournamentId,
           qName: { team1: "sf1", team2: "sf2" },
-          status: "pending",
+          status: "upcoming",
+          result: {
+            team1: 0,
+            team2: 0,
+          },
           matchDate: matchDate,
           type: "third",
         };
@@ -132,7 +160,11 @@ export async function createMatches(allMatch, tournamentId, matchDate) {
         const matchData = {
           tournamentId: tournamentId,
           qName: { team1: match?.team1?.qName, team2: match?.team2?.qName },
-          status: "pending",
+          status: "upcoming",
+          result: {
+            team1: 0,
+            team2: 0,
+          },
           matchDate: matchDate,
           type: "semi",
         };
@@ -143,7 +175,11 @@ export async function createMatches(allMatch, tournamentId, matchDate) {
       const matchData = {
         tournamentId: tournamentId,
         qName: { team1: "sf1", team2: "sf2" },
-        status: "pending",
+        status: "upcoming",
+        result: {
+          team1: 0,
+          team2: 0,
+        },
         matchDate: matchDate,
         type: "final",
       };
@@ -152,7 +188,11 @@ export async function createMatches(allMatch, tournamentId, matchDate) {
         const matchData = {
           tournamentId: tournamentId,
           qName: { team1: "sf1", team2: "sf2" },
-          status: "pending",
+          status: "upcoming",
+          result: {
+            team1: 0,
+            team2: 0,
+          },
           matchDate: matchDate,
           type: "third",
         };
@@ -175,6 +215,15 @@ export async function getMatchesByTournamentId(tournamentId) {
   try {
     const matches = await matchModel.find({ tournamentId }).lean();
     return replaceMongoIdInArray(matches);
+  } catch (error) {
+    throw new Error(error);
+  }
+}
+
+export async function getMatchById(matchId) {
+  try {
+    const match = await matchModel.findById(matchId).lean();
+    return replaceMongoIdInObject(match);
   } catch (error) {
     throw new Error(error);
   }

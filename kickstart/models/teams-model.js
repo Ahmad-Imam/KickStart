@@ -14,7 +14,7 @@ const teamsSchema = new Schema({
     required: true,
     type: String,
   },
-  players: [{ type: Schema.ObjectId, ref: "players" }],
+  players: [],
 });
 
 export const teamsModel =

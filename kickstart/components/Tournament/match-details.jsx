@@ -54,18 +54,18 @@ const sampleMatch = {
   ],
 };
 
-export default function MatchDetails({ params }) {
+export default function MatchDetails({ matchDetails }) {
   const match = sampleMatch; // In a real app, you'd fetch this based on params.id
 
   return (
     <div className="container mx-auto px-4 py-8">
-      <Link href={`/tournament/${match.tournamentId}`} passHref>
+      <Link href={`/tournament/${matchDetails?.tournamentId}`} passHref>
         <Button variant="outline" className="mb-4">
           Back to Tournament
         </Button>
       </Link>
       <h1 className="text-4xl font-bold mb-6">
-        {match.team1.name} vs {match.team2.name}
+        {matchDetails?.team1.name} vs {matchDetails?.team2.name}
       </h1>
       <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
         <Card>
@@ -73,7 +73,7 @@ export default function MatchDetails({ params }) {
             <CardTitle>Match Type</CardTitle>
           </CardHeader>
           <CardContent>
-            <Badge>{match.type}</Badge>
+            <Badge>{matchDetails?.type}</Badge>
           </CardContent>
         </Card>
         <Card>
@@ -82,18 +82,20 @@ export default function MatchDetails({ params }) {
           </CardHeader>
           <CardContent className="flex items-center">
             <CalendarIcon className="mr-2" />
-            <span>{new Date(match.matchDate).toLocaleString()}</span>
+            <span>{new Date(matchDetails?.matchDate).toLocaleString()}</span>
           </CardContent>
         </Card>
-        <Card>
+        <Card className="drop-shadow-sm hover:shadow-lg transition-shadow duration-300">
           <CardHeader>
             <CardTitle>Status</CardTitle>
           </CardHeader>
           <CardContent>
             <Badge
-              variant={match.status === "pending" ? "secondary" : "default"}
+            // variant={
+            //   tournament.status === "upcoming" ? "secondary" : "default"
+            // }
             >
-              {match.status}
+              {matchDetails?.status}
             </Badge>
           </CardContent>
         </Card>
@@ -102,27 +104,27 @@ export default function MatchDetails({ params }) {
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
         <Card className="hover:shadow-lg transition-shadow duration-300">
           <CardHeader>
-            <CardTitle>{match.team1.name}</CardTitle>
-            <CardDescription>{match.team1.location}</CardDescription>
+            <CardTitle>{matchDetails?.team1.name}</CardTitle>
+            <CardDescription>{matchDetails?.team1.location}</CardDescription>
           </CardHeader>
           <CardContent>
-            <p className="mb-2">{match.team1.bio}</p>
+            <p className="mb-2">{matchDetails?.team1.bio}</p>
             <div className="flex items-center">
               <MapPinIcon className="mr-2" />
-              <span>{match.team1.location}</span>
+              <span>{matchDetails?.team1.location}</span>
             </div>
           </CardContent>
         </Card>
         <Card className="hover:shadow-lg transition-shadow duration-300">
           <CardHeader>
-            <CardTitle>{match.team2.name}</CardTitle>
-            <CardDescription>{match.team2.location}</CardDescription>
+            <CardTitle>{matchDetails?.team2.name}</CardTitle>
+            <CardDescription>{matchDetails?.team2.location}</CardDescription>
           </CardHeader>
           <CardContent>
-            <p className="mb-2">{match.team2.bio}</p>
+            <p className="mb-2">{matchDetails?.team2.bio}</p>
             <div className="flex items-center">
               <MapPinIcon className="mr-2" />
-              <span>{match.team2.location}</span>
+              <span>{matchDetails?.team2.location}</span>
             </div>
           </CardContent>
         </Card>
@@ -132,8 +134,8 @@ export default function MatchDetails({ params }) {
       <Card>
         <CardContent className="text-center py-6">
           <p className="text-3xl font-bold">
-            {match.team1.name} {match.score.team1} - {match.score.team2}{" "}
-            {match.team2.name}
+            {matchDetails?.team1.name} {matchDetails?.result?.team1} -{" "}
+            {matchDetails?.result?.team2} {matchDetails?.team2.name}
           </p>
         </CardContent>
       </Card>

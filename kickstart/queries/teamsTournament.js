@@ -33,3 +33,25 @@ export async function createTeamsTournamentList(data, tournamentId) {
     throw new Error(error);
   }
 }
+
+export async function getTeamsTournamentByTournamentId(tournamentId) {
+  try {
+    const teamsTournament = await teamsTournamentModel
+      .find({ tournamentId })
+      .lean();
+    return replaceMongoIdInArray(teamsTournament);
+  } catch (error) {
+    throw new Error(error);
+  }
+}
+
+export async function getTeamsTournamentById(teamId) {
+  try {
+    const teamTournament = await teamsTournamentModel
+      .findOne({ teamId })
+      .lean();
+    return replaceMongoIdInObject(teamTournament);
+  } catch (error) {
+    throw new Error(error);
+  }
+}

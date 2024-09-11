@@ -2,12 +2,17 @@
 
 import { createGroups } from "@/queries/groups";
 import { createMatches } from "@/queries/matches";
-import { createPlayers, updatePlayerTeam } from "@/queries/players";
+import {
+  createPlayers,
+  removeAddPlayersFromPrevCurrentTeam,
+  updatePlayerTeam,
+} from "@/queries/players";
 import { createTeams, createTeamsN } from "@/queries/teams";
 import { createTeamsTournamentList } from "@/queries/teamsTournament";
 import { createTournaments } from "@/queries/tournaments";
 import { dbConnect } from "@/service/mongo";
 import { ca } from "date-fns/locale";
+import { revalidatePath } from "next/cache";
 
 export async function addTeams(data) {
   try {
@@ -94,6 +99,27 @@ export async function addTournaments(data) {
 
     // console.log(teams);
     return tournament;
+  } catch (error) {
+    throw new Error(error);
+  }
+}
+
+export async function deleteAddPlayersFromPrevCurrentTeam(
+  playersInTeam,
+  teamsTournament
+) {
+  try {
+    await dbConnect();
+    console.log(playersInTeam);
+    // console.log(teamsTournament.id);
+    const playersUpdated = await removeAddPlayersFromPrevCurrentTeam(
+      playersInTeam,
+      teamsTournament
+    );
+    revalidatePath(`/tournament/${teamsTournament.id}`);
+    // revalidatePath(`/tournament/${teamsTournament.id}/team/[teamId]`);
+    console.log("newPlayers");
+    console.log(playersUpdated);
   } catch (error) {
     throw new Error(error);
   }

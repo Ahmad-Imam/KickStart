@@ -209,12 +209,12 @@ export default function TournamentDetails({
 }) {
   const [activeTab, setActiveTab] = useState("overview");
   const tournament = sampleTournament; // In a real app, you'd fetch this based on params.id
-  console.log("group");
+  // console.log("group");
 
-  console.log(groupsDetails);
+  // console.log(groupsDetails);
 
   return (
-    <div className="container mx-auto px-4 py-8">
+    <div className="container mx-auto px-4 py-6">
       <h1 className="text-4xl font-bold mb-6">{tournamentDetails?.name}</h1>
       <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
         <Card className="drop-shadow-sm hover:shadow-lg transition-shadow duration-300">
@@ -386,7 +386,10 @@ export default function TournamentDetails({
                 </CardHeader>
                 <CardContent>
                   <p className="mb-4">{team.bio}</p>
-                  <Link href={`/team/${team.id}`} passHref>
+                  <Link
+                    href={`/tournament/${tournamentDetails?.id}/team/${team.id}`}
+                    passHref
+                  >
                     <Button className="bg-slate-800 hover:bg-black">
                       View Team Details
                     </Button>
@@ -456,78 +459,92 @@ export default function TournamentDetails({
         </TabsContent>
         <TabsContent value="groups" className="py-4">
           <div className="space-y-8">
-            {groupsDetails.map((group) => (
-              <Card
-                key={group?.id}
-                className="border-2 border-slate-200 hover:shadow-lg transition-shadow duration-300"
-              >
-                <CardHeader>
-                  <CardTitle>{group?.name}</CardTitle>
-                </CardHeader>
-                <CardContent>
-                  <Table>
-                    <TableHeader>
-                      <TableRow>
-                        <TableHead className="w-[100px]">Position</TableHead>
-                        <TableHead>Team</TableHead>
-                        <TableHead className="text-right">Played</TableHead>
-                        <TableHead className="text-right">Won</TableHead>
-                        <TableHead className="text-right">Drawn</TableHead>
-                        <TableHead className="text-right">Lost</TableHead>
-                        <TableHead className="text-right">GF</TableHead>
-                        <TableHead className="text-right">GA</TableHead>
-                        <TableHead className="text-right">GD</TableHead>
-                        <TableHead className="text-right">Points</TableHead>
-                      </TableRow>
-                    </TableHeader>
-                    <TableBody>
-                      {group.teams.map((team, index) => (
-                        <TableRow
-                          key={team?._id}
-                          className="border-b-2 border-slate-200 hover:bg-slate-800 hover:text-white"
-                        >
-                          <TableCell className="font-bold">
-                            {index + 1}
-                          </TableCell>
-                          <TableCell>
-                            <Link
-                              href={`/team/${team.id}`}
-                              className="hover:underline"
-                            >
-                              {team?.name}
-                            </Link>
-                          </TableCell>
-                          <TableCell className="text-right">
-                            {team?.matchPlayed}
-                          </TableCell>
-                          <TableCell className="text-right">
-                            {team?.matchWon}
-                          </TableCell>
-                          <TableCell className="text-right">
-                            {team?.matchDraw}
-                          </TableCell>
-                          <TableCell className="text-right">
-                            {team?.matchLost}
-                          </TableCell>
-                          <TableCell className="text-right">
-                            {team?.goalsFor}
-                          </TableCell>
-                          <TableCell className="text-right">
-                            {team?.goalsAgainst}
-                          </TableCell>
-                          <TableCell className="text-right">
-                            {team?.goalsFor - team?.goalsAgainst}
-                          </TableCell>
-                          <TableCell className="text-right font-bold">
-                            {team?.points}
-                          </TableCell>
+            {groupsDetails
+              .slice() // Create a shallow copy to avoid mutating the original array
+              .sort((a, b) => a.name.localeCompare(b.name))
+              .map((group) => (
+                <Card
+                  key={group?.id}
+                  className="border-2 border-slate-200 hover:shadow-lg transition-shadow duration-300"
+                >
+                  <CardHeader>
+                    <CardTitle>{group?.name}</CardTitle>
+                  </CardHeader>
+                  <CardContent>
+                    <Table>
+                      <TableHeader>
+                        <TableRow>
+                          <TableHead className="w-[100px]">Position</TableHead>
+                          <TableHead>Team</TableHead>
+                          <TableHead className="text-right">Played</TableHead>
+                          <TableHead className="text-right">Won</TableHead>
+                          <TableHead className="text-right">Drawn</TableHead>
+                          <TableHead className="text-right">Lost</TableHead>
+                          <TableHead className="text-right">GF</TableHead>
+                          <TableHead className="text-right">GA</TableHead>
+                          <TableHead className="text-right">GD</TableHead>
+                          <TableHead className="text-right">Points</TableHead>
                         </TableRow>
-                      ))}
-                    </TableBody>
-                  </Table>
-                </CardContent>
-              </Card>
-            ))}
+                      </TableHeader>
+                      <TableBody>
+                        {group.teams.map((team, index) => (
+                          <TableRow
+                            key={team?._id}
+                            className="border-b-2 border-slate-200 hover:bg-slate-800 hover:text-white"
+                            style={{
+                              background:
+                                index + 1 <= group.teamsQPerGroup
+                                  ? "rgb(30 41 59 / 1)"
+                                  : "white",
+                              color:
+                                index + 1 <= group.teamsQPerGroup
+                                  ? "white"
+                                  : "black",
+                              cursor: "pointer",
+                            }}
+                          >
+                            <TableCell className="font-bold">
+                              {index + 1}
+                            </TableCell>
+                            <TableCell>
+                              <Link
+                                href={`/team/${team.id}`}
+                                className="hover:underline"
+                              >
+                                {team?.name}
+                              </Link>
+                            </TableCell>
+                            <TableCell className="text-right">
+                              {team?.matchPlayed}
+                            </TableCell>
+                            <TableCell className="text-right">
+                              {team?.matchWon}
+                            </TableCell>
+                            <TableCell className="text-right">
+                              {team?.matchDraw}
+                            </TableCell>
+                            <TableCell className="text-right">
+                              {team?.matchLost}
+                            </TableCell>
+                            <TableCell className="text-right">
+                              {team?.goalsFor}
+                            </TableCell>
+                            <TableCell className="text-right">
+                              {team?.goalsAgainst}
+                            </TableCell>
+                            <TableCell className="text-right">
+                              {team?.goalsFor - team?.goalsAgainst}
+                            </TableCell>
+                            <TableCell className="text-right font-bold">
+                              {team?.points}
+                            </TableCell>
+                          </TableRow>
+                        ))}
+                      </TableBody>
+                    </Table>
+                  </CardContent>
+                </Card>
+              ))}
           </div>
         </TabsContent>
       </Tabs>

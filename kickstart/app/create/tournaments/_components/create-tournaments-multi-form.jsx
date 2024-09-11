@@ -36,6 +36,7 @@ import TournamentPreview from "./create-tournament-preview";
 import { DateTimePicker } from "./date-time-picker";
 import { Alert, AlertDescription } from "@/components/ui/alert";
 import { addTournaments } from "@/app/actions";
+import { useRouter } from "next/navigation";
 
 export function TournamentMultiForm() {
   const [page, setPage] = useState(1);
@@ -66,6 +67,7 @@ export function TournamentMultiForm() {
   const [endDate, setEndDate] = useState(
     new Date(new Date().setHours(0, 0, 0, 0))
   );
+  const router = useRouter();
 
   // console.log("semi");
   // console.log(quarterMatch);
@@ -219,7 +221,8 @@ export function TournamentMultiForm() {
 
   // console.log(startDate);
   // console.log(endDate);
-  console.log("page " + page);
+  // console.log("page " + page);
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     if (page < totalPages) {
@@ -239,7 +242,7 @@ export function TournamentMultiForm() {
       return;
     }
 
-    const tournamentStatus = "pending";
+    const tournamentStatus = "upcoming";
     const tournamentData = {
       ...formData,
       startDate: startDate,
@@ -257,6 +260,7 @@ export function TournamentMultiForm() {
     const createdTournament = await addTournaments(tournamentData);
     console.log("createdTournament");
     console.log(createdTournament);
+    router.push(`/tournament/${createdTournament.id}`);
 
     //     {
     //     "name": "tname",
