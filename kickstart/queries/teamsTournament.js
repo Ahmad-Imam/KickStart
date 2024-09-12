@@ -11,7 +11,7 @@ export async function createTeamsTournamentList(data, tournamentId) {
   console.log(tournamentId);
 
   try {
-    const tournamentDataList = data.map((team) => ({
+    const tournamentDataList = data?.map((team) => ({
       tournamentId: tournamentId,
       teamId: team.id,
       ...team,
@@ -28,7 +28,13 @@ export async function createTeamsTournamentList(data, tournamentId) {
       tournamentDataList
     );
 
-    return replaceMongoIdInArray(teamsTournamentList);
+    console.log("teamsTournamentList created");
+
+    const teamsTournament = await teamsTournamentModel
+      .find({ tournamentId })
+      .lean();
+
+    return replaceMongoIdInArray(teamsTournament);
   } catch (error) {
     throw new Error(error);
   }

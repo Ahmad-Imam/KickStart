@@ -5,6 +5,7 @@ import { createMatches } from "@/queries/matches";
 import {
   createPlayers,
   removeAddPlayersFromPrevCurrentTeam,
+  updatePlayersTournament,
   updatePlayerTeam,
 } from "@/queries/players";
 import { createTeams, createTeamsN } from "@/queries/teams";
@@ -70,11 +71,19 @@ export async function addTournaments(data) {
     console.log(data);
     const tournament = await createTournaments(data);
     console.log("tournamentData action");
-    console.log(data?.teamsTournament);
+    console.log(tournament);
     const teamsTournament = await createTeamsTournamentList(
       data?.teamsTournament,
       tournament.id
     );
+    console.log("teamsTournament");
+    console.log(teamsTournament);
+
+    const playersInTournamnet = await updatePlayersTournament(
+      teamsTournament,
+      tournament
+    );
+
     const groups = await createGroups(
       data?.groupMatch,
       tournament?.id,
@@ -111,15 +120,19 @@ export async function deleteAddPlayersFromPrevCurrentTeam(
   try {
     await dbConnect();
     console.log(playersInTeam);
+
     // console.log(teamsTournament.id);
     const playersUpdated = await removeAddPlayersFromPrevCurrentTeam(
       playersInTeam,
       teamsTournament
     );
+
+    // console.log(playersUpdated);
+
     revalidatePath(`/tournament/${teamsTournament.id}`);
     // revalidatePath(`/tournament/${teamsTournament.id}/team/[teamId]`);
     console.log("newPlayers");
-    console.log(playersUpdated);
+    // console.log(playersUpdated);
   } catch (error) {
     throw new Error(error);
   }

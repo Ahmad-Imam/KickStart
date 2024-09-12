@@ -34,8 +34,8 @@ export default function TeamsTPlayersForm({
       const filtered = playerList.filter((item) =>
         item?.name.toLowerCase().includes(query.toLowerCase())
       );
-      // console.log("filtered");
-      // console.log(filtered);
+      console.log("filtered");
+      console.log(filtered);
       // console.log(playerList);
       setResults(filtered);
     }, 300); // Simulate a slight delay
@@ -59,8 +59,8 @@ export default function TeamsTPlayersForm({
     }
   };
 
-  console.log("saved");
-  console.log(savedItems);
+  // console.log("saved");
+  // console.log(savedItems);
   const removeSavedItem = (item) => {
     console.log(item);
 
@@ -83,6 +83,8 @@ export default function TeamsTPlayersForm({
   const fetchPlayers = async () => {
     const res = await fetch("/api/players");
     const data = await res.json();
+    console.log("data");
+    // console.log(data);
     setPlayerList(data);
     setLoading(false);
     // console.log(data);
@@ -132,7 +134,7 @@ export default function TeamsTPlayersForm({
             className="w-full"
             // disabled={savedItems.length === groupsNum * teamsPerGroup}
           />
-          {query.trim() !== "" && savedItems.length !== 0 && (
+          {query.trim() !== "" && (
             <ScrollArea className="h-[200px] w-full rounded-md border">
               {results?.length > 0 ? (
                 <ul className="p-4">

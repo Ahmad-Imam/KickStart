@@ -22,6 +22,7 @@ const playerSchema = new Schema({
     required: false,
     type: {},
   },
+  tournament: { type: Schema.ObjectId, ref: "tournaments", required: false },
   team: { type: Schema.ObjectId, ref: "teams", required: false },
 });
 
