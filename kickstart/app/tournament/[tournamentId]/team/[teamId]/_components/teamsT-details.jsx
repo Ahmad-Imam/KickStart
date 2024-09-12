@@ -56,7 +56,7 @@ export default async function TeamDetails({ teamsTournament }) {
       </Link>
       <h1 className="text-4xl font-bold mb-6">{teamsTournament?.name}</h1>
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
-        <Card>
+        <Card className=" border-slate-200 border-2 rounded-xl hover:shadow-lg transition-shadow duration-300">
           <CardHeader>
             <CardTitle>Location</CardTitle>
           </CardHeader>
@@ -65,14 +65,25 @@ export default async function TeamDetails({ teamsTournament }) {
             <span>{teamsTournament?.location}</span>
           </CardContent>
         </Card>
-        <Card>
-          <CardHeader>
-            <CardTitle>Tournament ID</CardTitle>
-          </CardHeader>
-          <CardContent>
-            <Badge>{teamsTournament.tournamentId}</Badge>
-          </CardContent>
-        </Card>
+
+        <div className="flex flex-row justify-between items-center p-4 shadow-sm  border-slate-200 border-2 rounded-xl hover:shadow-lg transition-shadow duration-300 ">
+          <div className="flex flex-col justify-end items-center">
+            <div className="font-semibold text-lg">Played</div>
+            <div className="font-semibold">{teamsTournament?.matchPlayed}</div>
+          </div>
+          <div className="flex flex-col justify-end items-center">
+            <div className="font-semibold text-lg">Won</div>
+            <div className="font-semibold">{teamsTournament?.matchPlayed}</div>
+          </div>
+          <div className="flex flex-col justify-end items-center">
+            <div className="font-semibold text-lg">Draw</div>
+            <div className="font-semibold">{teamsTournament?.matchPlayed}</div>
+          </div>
+          <div className="flex flex-col justify-end items-center">
+            <div className="font-semibold text-lg">Lost</div>
+            <div className="font-semibold">{teamsTournament?.matchPlayed}</div>
+          </div>
+        </div>
       </div>
 
       <TeamsTPlayers

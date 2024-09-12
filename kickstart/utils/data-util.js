@@ -34,3 +34,8 @@ export const getDayDifference = (from, to) => {
 export const getDiscountedPrice = (price, discountPercentage) => {
   return price - price * (discountPercentage / 100).toFixed(1);
 };
+
+export function capitalizeFirstLetter(str) {
+  if (!str) return ""; // Handle empty string or null
+  return str.charAt(0).toUpperCase() + str.slice(1).toLowerCase();
+}

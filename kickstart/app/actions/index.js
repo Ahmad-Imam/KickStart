@@ -4,7 +4,8 @@ import { createGroups } from "@/queries/groups";
 import { createMatches } from "@/queries/matches";
 import {
   createPlayers,
-  removeAddPlayersFromPrevCurrentTeam,
+  removeFromPrevAddPlayersToCurrentTeam,
+  removePlayersFromCurrentTeam,
   updatePlayersTournament,
   updatePlayerTeam,
 } from "@/queries/players";
@@ -113,7 +114,7 @@ export async function addTournaments(data) {
   }
 }
 
-export async function deleteAddPlayersFromPrevCurrentTeam(
+export async function deleteFromPrevAddPlayersToCurrentTeam(
   playersInTeam,
   teamsTournament
 ) {
@@ -122,7 +123,32 @@ export async function deleteAddPlayersFromPrevCurrentTeam(
     console.log(playersInTeam);
 
     // console.log(teamsTournament.id);
-    const playersUpdated = await removeAddPlayersFromPrevCurrentTeam(
+    const playersUpdated = await removeFromPrevAddPlayersToCurrentTeam(
+      playersInTeam,
+      teamsTournament
+    );
+
+    // console.log(playersUpdated);
+
+    revalidatePath(`/tournament/${teamsTournament.id}`);
+    // revalidatePath(`/tournament/${teamsTournament.id}/team/[teamId]`);
+    console.log("newPlayers");
+    // console.log(playersUpdated);
+  } catch (error) {
+    throw new Error(error);
+  }
+}
+
+export async function deletePlayersFromCurrentTeam(
+  playersInTeam,
+  teamsTournament
+) {
+  try {
+    await dbConnect();
+    console.log(playersInTeam);
+
+    // console.log(teamsTournament.id);
+    const playersUpdated = await removePlayersFromCurrentTeam(
       playersInTeam,
       teamsTournament
     );

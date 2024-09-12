@@ -10,7 +10,10 @@ import { set } from "mongoose";
 import React, { useEffect, useState } from "react";
 import { toast } from "sonner";
 import { cn } from "@/lib/utils";
-import { deleteAddPlayersFromPrevCurrentTeam } from "@/app/actions";
+import {
+  deleteFromPrevAddPlayersToCurrentTeam,
+  deletePlayersFromCurrentTeam,
+} from "@/app/actions";
 
 export default function TeamsTPlayersForm({
   playersInfo,
@@ -23,6 +26,8 @@ export default function TeamsTPlayersForm({
   const [savedItems, setSavedItems] = useState(playersInfo ?? []);
 
   const [loading, setLoading] = useState(false);
+
+  const [squadChangeLoading, setSquadChangeLoading] = useState(false);
 
   useEffect(() => {
     if (query.trim() === "") {
@@ -55,7 +60,7 @@ export default function TeamsTPlayersForm({
         prevResults.filter((result) => result.id !== item.id)
       );
     } else {
-      toast.info("Team already added");
+      toast.info("Player already in the squad");
     }
   };
 
@@ -99,7 +104,7 @@ export default function TeamsTPlayersForm({
   const handleSubmit = async (e) => {
     e.preventDefault();
     console.log("submitted");
-
+    setSquadChangeLoading(true);
     const newPlayers = savedItems.filter(
       (item) => !playersInfo.some((player) => player.id === item.id)
     );
@@ -110,13 +115,26 @@ export default function TeamsTPlayersForm({
     console.log(newPlayers);
     console.log(removedPlayers);
 
-    const test = await deleteAddPlayersFromPrevCurrentTeam(
-      newPlayers,
-      teamsTournament
-    );
+    if (newPlayers.length > 0) {
+      const test = await deleteFromPrevAddPlayersToCurrentTeam(
+        newPlayers,
+        teamsTournament
+      );
+      console.log("test");
+      console.log(test);
+    }
+    if (removedPlayers.length > 0) {
+      const test = await deletePlayersFromCurrentTeam(
+        removedPlayers,
+        teamsTournament
+      );
+      console.log("test");
+      console.log(test);
+    }
 
-    console.log("test");
-    console.log(test);
+    setSquadChangeLoading(false);
+
+    toast.success("New Squad is saved successfully");
 
     setOpen(false);
   };
@@ -208,13 +226,21 @@ export default function TeamsTPlayersForm({
           </ul>
         </div>
       )}
-      <Button
-        variant="outline"
-        className="w-1/2 my-4 bg-slate-800 text-white"
-        onClick={handleSubmit}
-      >
-        Save Squad
-      </Button>
+
+      {squadChangeLoading ? (
+        <div className="flex flex-col justify-center items-center gap-2">
+          <div className="animate-spin rounded-full h-10 w-10 border-t-2 border-b-2 border-gray-900"></div>
+          <div>Saving Squad</div>
+        </div>
+      ) : (
+        <Button
+          variant="outline"
+          className="w-1/2 my-4 bg-slate-800 text-white"
+          onClick={handleSubmit}
+        >
+          Save Squad
+        </Button>
+      )}
     </div>
   );
 }

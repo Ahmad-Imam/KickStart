@@ -11,6 +11,8 @@ import {
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { TeamsTPlayersDrawer } from "./teamT-players-drawer";
+import { capitalizeFirstLetter } from "@/utils/data-util";
+import { MapPinIcon } from "lucide-react";
 
 export default function TeamsTPlayers({ playersInfo, teamsTournament }) {
   //   const [playersInfo, setPlayersInfo] = useState([]);
@@ -42,21 +44,30 @@ export default function TeamsTPlayers({ playersInfo, teamsTournament }) {
           teamsTournament={teamsTournament}
         />
       </div>
-      <Card>
+      <Card className="border-slate-200 border-2 rounded-xl hover:shadow-lg transition-shadow duration-300">
         <CardContent className="py-2 px-2">
           <ul className="">
             {playersInfo?.length === 0 ? (
               <div>No players found</div>
             ) : (
-              playersInfo?.map((player) => (
-                <li
-                  key={player.id}
-                  className="p-2 hover:bg-slate-800 hover:text-white rounded"
-                >
-                  <div>{player?.name}</div>
-                  {/* <Badge>{player.position}</Badge> */}
-                </li>
-              ))
+              playersInfo
+                ?.sort((a, b) => a.name.localeCompare(b.name))
+                .map((player) => (
+                  <li
+                    key={player.id}
+                    className="p-2 hover:bg-slate-800 hover:text-white rounded flex flex-row justify-between items-center"
+                  >
+                    <div>{`${capitalizeFirstLetter(player?.name)} #${
+                      player?.jersey
+                    }`}</div>
+                    <div>{`(${capitalizeFirstLetter(player?.nickName)})`}</div>
+                    <div className="flex justify-center items-center gap-2">
+                      <MapPinIcon /> {capitalizeFirstLetter(player?.country)}
+                    </div>
+
+                    {/* <Badge>{player.position}</Badge> */}
+                  </li>
+                ))
             )}
           </ul>
         </CardContent>
