@@ -7,12 +7,18 @@ import {
 } from "@/utils/data-util";
 
 export async function createMatches(allMatch, tournamentId, matchDate) {
-  console.log("createsTeamsTournamentList");
+  console.log("creating matches");
   console.log(tournamentId);
-
-  const { groupMatch, quarterMatch, semiMatch, isThirdPlace, teamsPerGroup } =
-    allMatch;
-  const groupsNum = groupMatch.length;
+  console.log(allMatch);
+  const {
+    groupMatch,
+    quarterMatch,
+    semiMatch,
+    isThirdPlace,
+    teamsPerGroup,
+    groupsNum,
+  } = allMatch;
+  // const groupsNum = groupMatch.length;
 
   try {
     let matchesList = [];
@@ -31,8 +37,9 @@ export async function createMatches(allMatch, tournamentId, matchDate) {
             team2: 0,
           },
         };
+        console.log("hereeeeeeeeeeeeeeeeeeeeee");
         const createdMatch = await matchModel.create(matchData);
-        matchesList.push(replaceMongoIdInObject(createdMatch));
+        // matchesList.push(replaceMongoIdInObject(createdMatch));
       } else {
         for (const group of groupMatch) {
           const groupMatches = [];

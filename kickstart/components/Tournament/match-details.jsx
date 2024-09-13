@@ -1,5 +1,3 @@
-"use client";
-
 import Link from "next/link";
 import {
   Card,
@@ -10,7 +8,22 @@ import {
 } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
+import {
+  Sheet,
+  SheetClose,
+  SheetContent,
+  SheetDescription,
+  SheetFooter,
+  SheetHeader,
+  SheetTitle,
+  SheetTrigger,
+} from "@/components/ui/sheet";
 import { CalendarIcon, MapPinIcon } from "lucide-react";
+
+import MatchSheet from "@/app/tournament/[tournamentId]/match/[matchId]/_components/MatchSheet";
+import { getTeamsTByTeamId } from "@/queries/teams";
 
 const sampleMatch = {
   _id: { $oid: "66e03cfd8a3204743253932e" },
@@ -54,8 +67,15 @@ const sampleMatch = {
   ],
 };
 
-export default function MatchDetails({ matchDetails }) {
+export default async function MatchDetails({ matchDetails }) {
   const match = sampleMatch; // In a real app, you'd fetch this based on params.id
+
+  const team1 = await getTeamsTByTeamId(matchDetails?.team1.id);
+  const team2 = await getTeamsTByTeamId(matchDetails?.team2.id);
+
+  // console.log("team1");
+  // console.log(team1);
+  // console.log(team2);
 
   return (
     <div className="container mx-auto px-4 py-8">
@@ -139,6 +159,36 @@ export default function MatchDetails({ matchDetails }) {
           </p>
         </CardContent>
       </Card>
+
+      {/* <div className="grid grid-cols-2 gap-2">
+        <Sheet open={isOpen} onOpenChange={setIsOpen}>
+          <SheetTrigger asChild>
+            <Button variant="outline">Open Bottom Sheet</Button>
+          </SheetTrigger>
+          <SheetContent className="bg-white" side="bottom">
+            <SheetHeader>
+              <SheetTitle>Bottom Sheet</SheetTitle>
+              <SheetDescription>
+                Click the button to close after a delay.
+              </SheetDescription>
+            </SheetHeader>
+            <div className="p-4 pb-8">
+              <Button
+                onClick={handleButtonClick}
+                disabled={isLoading}
+                className="w-full"
+              >
+                {isLoading ? "Closing..." : "Close After Delay"}
+              </Button>
+            </div>
+          </SheetContent>
+        </Sheet>
+      </div> */}
+
+      <MatchSheet
+        team1={JSON.parse(JSON.stringify(team1))}
+        team2={JSON.parse(JSON.stringify(team2))}
+      />
 
       <h2 className="text-2xl font-bold mt-8 mb-4">Match Events</h2>
       <Card>

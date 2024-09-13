@@ -52,16 +52,9 @@ const teamsTournamentSchema = new Schema({
   goalsAgainst: {
     type: Number,
   },
-
-  scorer: {
-    players: [],
-  },
-  yellow: {
-    players: [],
-  },
-  red: {
-    players: [],
-  },
+  scorers: [],
+  yellow: [],
+  red: [],
 });
 
 export const teamsTournamentModel =

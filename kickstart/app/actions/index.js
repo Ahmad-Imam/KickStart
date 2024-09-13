@@ -85,12 +85,14 @@ export async function addTournaments(data) {
       tournament
     );
 
-    const groups = await createGroups(
-      data?.groupMatch,
-      tournament?.id,
-      data?.teamsQPerGroup,
-      data?.teamsPerGroup
-    );
+    if (data?.groupsNum * data?.teamsPerGroup > 2) {
+      const groups = await createGroups(
+        data?.groupMatch,
+        tournament?.id,
+        data?.teamsQPerGroup,
+        data?.teamsPerGroup
+      );
+    }
 
     const allMatch = {
       groupMatch: data?.groupMatch,
@@ -98,6 +100,7 @@ export async function addTournaments(data) {
       semiMatch: data?.semiMatch,
       isThirdPlace: data?.isThirdPlace,
       // teamsQPerGroup: data?.teamsQPerGroup,
+      groupsNum: data?.groupsNum,
       teamsPerGroup: data?.teamsPerGroup,
     };
 

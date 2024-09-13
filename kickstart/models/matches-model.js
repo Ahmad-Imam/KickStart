@@ -31,11 +31,13 @@ const matchSchema = new Schema({
   },
   result: {},
 
-  scorer: {},
+  scorers: [],
 
-  yellow: {},
+  yellow: [],
 
-  red: {},
+  red: [],
+  events: [],
+
   referee: {
     type: String,
   },

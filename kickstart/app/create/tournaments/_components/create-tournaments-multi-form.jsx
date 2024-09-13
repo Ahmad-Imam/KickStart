@@ -260,7 +260,7 @@ export function TournamentMultiForm() {
     const createdTournament = await addTournaments(tournamentData);
     console.log("createdTournament");
     console.log(createdTournament);
-    router.push(`/tournament/${createdTournament.id}`);
+    // router.push(`/tournament/${createdTournament.id}`);
 
     //     {
     //     "name": "tname",
@@ -747,6 +747,22 @@ export function TournamentMultiForm() {
               teamsTournament={teamsTournament}
             />
           )}
+
+          {page === 4 && (
+            <div className="grid w-full items-center gap-4">
+              <GroupMatcher
+                numberOfGroups={formData.groupsNum}
+                teamsPerGroup={formData.teamsPerGroup}
+                teamsQualified={formData.teamsQPerGroup}
+                isAllGroupsFilled={isAllGroupsFilled}
+                setIsAllGroupsFilled={setIsAllGroupsFilled}
+                groupMatch={groupMatch}
+                setGroupMatch={setGroupMatch}
+                teamsTournament={teamsTournament}
+              />
+            </div>
+          )}
+
           {page === 5 && (
             <div className="grid w-full items-center gap-4">
               <div className="flex flex-col items-start">
@@ -797,20 +813,6 @@ export function TournamentMultiForm() {
             </div>
           )}
 
-          {page === 4 && (
-            <div className="grid w-full items-center gap-4">
-              <GroupMatcher
-                numberOfGroups={formData.groupsNum}
-                teamsPerGroup={formData.teamsPerGroup}
-                teamsQualified={formData.teamsQPerGroup}
-                isAllGroupsFilled={isAllGroupsFilled}
-                setIsAllGroupsFilled={setIsAllGroupsFilled}
-                groupMatch={groupMatch}
-                setGroupMatch={setGroupMatch}
-                teamsTournament={teamsTournament}
-              />
-            </div>
-          )}
           {page == 6 && (
             <TournamentPreview
               groupMatch={groupMatch}

@@ -1,9 +1,11 @@
 import { playersModel } from "@/models/players-model";
 import { teamsModel } from "@/models/teams-model";
+import { teamsTournamentModel } from "@/models/teamsTournament-model";
 import {
   replaceMongoIdInArray,
   replaceMongoIdInObject,
 } from "@/utils/data-util";
+import { getAllPlayersByIds } from "./players";
 
 export async function createTeams(data) {
   try {
@@ -50,6 +52,28 @@ export async function getTeamById(id) {
       })
       .lean();
     return replaceMongoIdInArray(teams);
+  } catch (error) {
+    throw new Error(error);
+  }
+}
+
+export async function getTeamsTByTeamId(id) {
+  try {
+    //find from teamsT table where teamId = id
+    const teamsT = await teamsTournamentModel.findOne({ teamId: id }).lean();
+    // console.log("teamsT");
+    // console.log(teamsT);
+    let teamPlayers = [];
+    if (teamsT?.players?.length > 0) {
+      teamPlayers = await getAllPlayersByIds(teamsT?.players);
+    } else {
+      teamPlayers = [];
+    }
+
+    // console.log("teamPlayers");
+    // console.log(teamPlayers);
+
+    return { ...teamsT, players: teamPlayers };
   } catch (error) {
     throw new Error(error);
   }

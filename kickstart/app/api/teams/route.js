@@ -9,7 +9,7 @@ export const GET = async (req, res) => {
     await dbConnect();
 
     const teams = await getTeams();
-    console.log(teams);
+    // console.log(teams);
     return NextResponse.json(teams);
   } catch (error) {
     return NextResponse.error(error);
