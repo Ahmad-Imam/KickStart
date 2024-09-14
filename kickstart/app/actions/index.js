@@ -1,7 +1,11 @@
 "use server";
 
 import { createGroups } from "@/queries/groups";
-import { createMatches } from "@/queries/matches";
+import {
+  createMatches,
+  updateMatchGoal,
+  updateMatchStatus,
+} from "@/queries/matches";
 import {
   createPlayers,
   removeFromPrevAddPlayersToCurrentTeam,
@@ -11,8 +15,9 @@ import {
 } from "@/queries/players";
 import { createTeams, createTeamsN } from "@/queries/teams";
 import { createTeamsTournamentList } from "@/queries/teamsTournament";
-import { createTournaments } from "@/queries/tournaments";
+import { createTournaments, getTournamentById } from "@/queries/tournaments";
 import { dbConnect } from "@/service/mongo";
+import { replaceMongoIdInObject } from "@/utils/data-util";
 import { ca } from "date-fns/locale";
 import { revalidatePath } from "next/cache";
 
@@ -104,6 +109,9 @@ export async function addTournaments(data) {
       teamsPerGroup: data?.teamsPerGroup,
     };
 
+    console.log("allMatch");
+    // console.log(allMatch);
+
     const matches = await createMatches(
       allMatch,
       tournament?.id,
@@ -162,6 +170,52 @@ export async function deletePlayersFromCurrentTeam(
     // revalidatePath(`/tournament/${teamsTournament.id}/team/[teamId]`);
     console.log("newPlayers");
     // console.log(playersUpdated);
+  } catch (error) {
+    throw new Error(error);
+  }
+}
+
+export async function editMatchStatus(matchDetails, status) {
+  try {
+    await dbConnect();
+    // console.log(matchId);
+    console.log(status);
+    // const player = await createPlayers(data);
+    // console.log(teams);
+    // return user;
+    const tournament = await getTournamentById(matchDetails?.tournamentId);
+
+    console.log("tournament");
+    console.log(tournament);
+    const newMatch = await updateMatchStatus(matchDetails, status, tournament);
+
+    revalidatePath(`/tournament/${tournament.id}`);
+    revalidatePath(`/tournament/${tournament.id}/match/${matchDetails.id}`);
+  } catch (error) {
+    throw new Error(error);
+  }
+}
+
+export async function addGoalToMatch(gfTeam, gaTeam, player, matchDetails) {
+  try {
+    await dbConnect();
+    console.log(gfTeam);
+    console.log(gaTeam);
+    console.log(player);
+    console.log(matchDetails);
+    const match = await updateMatchGoal(
+      replaceMongoIdInObject(gfTeam),
+      replaceMongoIdInObject(gaTeam),
+      player,
+      matchDetails
+    );
+    console.log("match");
+    console.log(match);
+
+    revalidatePath(`/tournament/${matchDetails.tournamentId}`);
+    revalidatePath(
+      `/tournament/${matchDetails.tournamentId}/match/${matchDetails.id}`
+    );
   } catch (error) {
     throw new Error(error);
   }

@@ -20,10 +20,25 @@ import {
   SheetTitle,
   SheetTrigger,
 } from "@/components/ui/sheet";
-import { CalendarIcon, MapPinIcon } from "lucide-react";
+
+import {
+  CalendarIcon,
+  MapPinIcon,
+  UserIcon,
+  TrophyIcon,
+  GoalIcon,
+  Goal,
+  PartyPopper,
+  PartyPopperIcon,
+  TriangleAlertIcon,
+  PlayIcon,
+  BadgeCheckIcon,
+  BadgeXIcon,
+} from "lucide-react";
 
 import MatchSheet from "@/app/tournament/[tournamentId]/match/[matchId]/_components/MatchSheet";
 import { getTeamsTByTeamId } from "@/queries/teams";
+import MatchSettings from "@/app/tournament/[tournamentId]/match/[matchId]/_components/MatchSettings";
 
 const sampleMatch = {
   _id: { $oid: "66e03cfd8a3204743253932e" },
@@ -185,29 +200,72 @@ export default async function MatchDetails({ matchDetails }) {
         </Sheet>
       </div> */}
 
-      <MatchSheet
+      <MatchSettings
         team1={JSON.parse(JSON.stringify(team1))}
         team2={JSON.parse(JSON.stringify(team2))}
+        matchDetails={matchDetails}
       />
 
       <h2 className="text-2xl font-bold mt-8 mb-4">Match Events</h2>
-      <Card>
-        <CardContent>
-          <ul className="divide-y">
-            {match.events.map((event, index) => (
-              <li key={index} className="py-2 flex items-center">
-                <Badge variant="outline" className="mr-2">
-                  {event.time}
-                </Badge>
-                <span className="font-semibold mr-2">{event.type}:</span>
-                <span>
-                  {event.description || `${event.player} (${event.team})`}
-                </span>
-              </li>
-            ))}
-          </ul>
-        </CardContent>
-      </Card>
+      {matchDetails?.events?.length > 0 && (
+        <Card>
+          <CardContent className="p-0 m-0">
+            <ul className="p-0 m-0">
+              {matchDetails.events?.map((event, index) => (
+                <div
+                  key={index}
+                  className="py-2 px-1 m-2  rounded-md border-1 hover:bg-slate-800 hover:text-white group"
+                >
+                  <li className="flex items-center">
+                    <Badge
+                      variant="outline"
+                      className="mr-2 group-hover:bg-slate-800 group-hover:text-white text-nowrap"
+                    >
+                      {event.time}
+                    </Badge>
+
+                    {event.type === "kickoff" ? (
+                      <BadgeCheckIcon
+                        size={20}
+                        className="mr-2 text-blue-600 group-hover:text-blue-400"
+                      />
+                    ) : event.type === "goal" ? (
+                      <PartyPopperIcon
+                        size={20}
+                        className="mr-2 text-green-600 group-hover:text-green-400"
+                      />
+                    ) : event.type === "yellow" ? (
+                      <TriangleAlertIcon
+                        size={20}
+                        className="mr-2 text-yellow-600 group-hover:text-yellow-400"
+                      />
+                    ) : event.type === "red" ? (
+                      <TriangleAlertIcon
+                        size={20}
+                        className="mr-2 text-red-600 group-hover:text-red-400"
+                      />
+                    ) : event.type === "fulltime" ? (
+                      <BadgeXIcon
+                        size={20}
+                        className="mr-2 text-red-600 group-hover:text-red-400"
+                      />
+                    ) : (
+                      <div></div>
+                    )}
+                    <span className="font-semibold mr-2">
+                      {event.type.toUpperCase()}:
+                    </span>
+                    <span>
+                      {/* {event.description || `${event.player} (${event.team})`} */}
+                      {event.description}
+                    </span>
+                  </li>
+                </div>
+              ))}
+            </ul>
+          </CardContent>
+        </Card>
+      )}
     </div>
   );
 }

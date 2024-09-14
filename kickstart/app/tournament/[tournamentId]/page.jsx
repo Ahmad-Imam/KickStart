@@ -24,7 +24,7 @@ export default async function TournamentPage({ params }) {
   // console.log(tournamentId);
   return (
     <>
-      <div className="w-full px-6 py-10">
+      <div className="w-full px-6 py-10 h-full">
         <TournamentDetails
           tournamentDetails={tournament}
           matchesDetails={matches}

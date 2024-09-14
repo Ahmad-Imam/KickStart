@@ -13,8 +13,8 @@ export async function createGroups(
   teamsPerGroup
 ) {
   console.log("createsTeamsTournamentList");
-  console.log(tournamentId);
-  console.log(data);
+  // console.log(tournamentId);
+  // console.log(data);
   let groupsList = [];
   try {
     groupsList = await Promise.all(

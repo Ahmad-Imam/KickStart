@@ -19,52 +19,68 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
+import { addGoalToMatch } from "@/app/actions";
 
-export default function MatchSheet({ team1, team2 }) {
+export default function MatchSheet({ team1, team2, matchDetails }) {
   const [isOpen, setIsOpen] = useState(false);
   const [selectedTeam, setSelectedTeam] = useState(null);
   const [selectedPlayer, setSelectedPlayer] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
+  const teams = [team1, team2];
 
-  const handleSubmit = () => {
+  const handleSubmit = async () => {
     if (selectedTeam && selectedPlayer) {
       const selectedPlayerObject = selectedTeam.players.find(
         (player) => player.name === selectedPlayer
       );
 
+      const notSelectedTeam = teams.find(
+        (team) => team.name !== selectedTeam.name
+      );
+
       console.log("Selected Team:", selectedTeam);
       console.log("Selected Player:", selectedPlayerObject);
+      console.log("Not Selected Team:", notSelectedTeam);
+
+      setIsLoading(true);
+
+      await addGoalToMatch(
+        selectedTeam,
+        notSelectedTeam,
+        selectedPlayerObject,
+        matchDetails
+      );
+
+      console.log("Goal added successfully");
+
       setIsOpen(false);
       setSelectedTeam(null);
       setSelectedPlayer(null);
+      setIsLoading(false);
     }
   };
 
-  useEffect(() => {
-    if (isLoading) {
-      const timer = setTimeout(() => {
-        setIsLoading(false);
-        setIsOpen(false);
-      }, 2000); // Wait for 2 seconds before closing
+  // useEffect(() => {
+  //   if (isLoading) {
+  //     const timer = setTimeout(() => {
+  //       setIsLoading(false);
+  //       setIsOpen(false);
+  //     }, 2000); // Wait for 2 seconds before closing
 
-      return () => clearTimeout(timer);
-    }
-  }, [isLoading]);
+  //     return () => clearTimeout(timer);
+  //   }
+  // }, [isLoading]);
 
   const handleButtonClick = () => {
     setIsLoading(true);
   };
 
   // Combining the two teams into an array for easier mapping
-  const teams = [team1, team2];
 
   return (
     <Sheet open={isOpen} onOpenChange={setIsOpen}>
       <SheetTrigger asChild>
-        <Button
-          variant="outline"
-          className="bg-gradient-to-r from-blue-500 to-purple-500 text-white border-none hover:from-blue-600 hover:to-purple-600"
-        >
+        <Button variant="outline" className=" bg-slate-800 text-white">
           Select Team & Player
         </Button>
       </SheetTrigger>
@@ -73,11 +89,9 @@ export default function MatchSheet({ team1, team2 }) {
         className="sm:max-w-[425px] mx-auto bg-gradient-to-b from-gray-50 to-white"
       >
         <SheetHeader className="mb-6">
-          <SheetTitle className="text-3xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-blue-500 to-purple-500">
-            Team & Player Selection
-          </SheetTitle>
+          <SheetTitle className="text-3xl font-bold">Add Score</SheetTitle>
           <SheetDescription className="text-lg text-gray-600">
-            Choose your favorite team and player.
+            Choose the team and player.
           </SheetDescription>
         </SheetHeader>
         <div className="space-y-8">
@@ -99,8 +113,8 @@ export default function MatchSheet({ team1, team2 }) {
                   key={team.name}
                   className={`flex items-center justify-center p-4 rounded-lg transition-all ${
                     selectedTeam?.name === team.name
-                      ? "bg-gradient-to-r from-blue-500 to-purple-500 text-white shadow-lg"
-                      : "bg-white border-2 border-gray-200 hover:border-blue-300"
+                      ? "bg-slate-800 text-white shadow-lg"
+                      : "bg-white border-2 border-gray-200 hover:border-slate-800"
                   }`}
                 >
                   <RadioGroupItem
@@ -130,7 +144,7 @@ export default function MatchSheet({ team1, team2 }) {
               >
                 <SelectTrigger
                   id="player-select"
-                  className="w-full bg-white border-2 border-gray-200 hover:border-blue-300"
+                  className="w-full bg-white border-2 border-gray-200 "
                 >
                   <SelectValue placeholder="Choose a player" />
                 </SelectTrigger>
@@ -139,7 +153,7 @@ export default function MatchSheet({ team1, team2 }) {
                     <SelectItem
                       key={player.id}
                       value={player.name}
-                      className="text-lg"
+                      className="text-lg  "
                     >
                       {player.name}
                     </SelectItem>
@@ -148,19 +162,19 @@ export default function MatchSheet({ team1, team2 }) {
               </Select>
             </div>
           )}
-          <Button
+          {/* <Button
             onClick={handleButtonClick}
             disabled={isLoading}
             className="w-full"
           >
             {isLoading ? "Closing..." : "Close After Delay"}
-          </Button>
+          </Button> */}
           <Button
             onClick={handleSubmit}
-            disabled={!selectedTeam || !selectedPlayer}
-            className="w-full bg-gradient-to-r from-blue-500 to-purple-500 text-white text-lg py-6 rounded-lg transition-all hover:from-blue-600 hover:to-purple-600 disabled:opacity-50 disabled:cursor-not-allowed"
+            disabled={!selectedTeam || !selectedPlayer || isLoading}
+            className="w-full bg-slate-800 text-white text-lg py-6 rounded-lg transition-all disabled:opacity-50 disabled:cursor-not-allowed"
           >
-            Confirm Selection
+            {isLoading ? "Updating match ..." : "Confirm changes"}
           </Button>
         </div>
       </SheetContent>

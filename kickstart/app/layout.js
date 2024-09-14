@@ -41,11 +41,11 @@ export default function RootLayout({ children }) {
             </div>
           </header>
           {children}
-          <footer className="bg-background/80 text-foreground/60 py-4 text-center">
-            <div className="container">
+          {/* <footer className="bg-background/80 text-foreground/60 py-4 text-center bg-red-500 w-full">
+            <div className="">
               <p>&copy; 2022</p>
             </div>
-          </footer>
+          </footer> */}
         </div>
       </body>
     </html>

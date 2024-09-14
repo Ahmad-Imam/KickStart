@@ -20,7 +20,20 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
-import { CalendarIcon, MapPinIcon, UserIcon, TrophyIcon } from "lucide-react";
+import {
+  CalendarIcon,
+  MapPinIcon,
+  UserIcon,
+  TrophyIcon,
+  GoalIcon,
+  Goal,
+  PartyPopper,
+  PartyPopperIcon,
+  TriangleAlertIcon,
+  PlayIcon,
+  BadgeCheckIcon,
+  BadgeXIcon,
+} from "lucide-react";
 
 const sampleTournament = {
   id: "t1",
@@ -209,9 +222,9 @@ export default function TournamentDetails({
 }) {
   const [activeTab, setActiveTab] = useState("overview");
   const tournament = sampleTournament; // In a real app, you'd fetch this based on params.id
-  console.log("group");
+  // console.log("group");
 
-  console.log(matchesDetails);
+  // console.log(matchesDetails);
 
   return (
     <div className="container mx-auto px-4 py-6">
@@ -370,6 +383,72 @@ export default function TournamentDetails({
                   </ul>
                 </CardContent>
               </Card>
+
+              <h2 className="text-2xl font-bold mt-8 mb-4">Live Updates</h2>
+              {tournamentDetails?.events?.length > 0 && (
+                <Card>
+                  <CardContent className="p-0 m-0">
+                    <ul className="p-0 m-0">
+                      {tournamentDetails.events?.map((event, index) => (
+                        <div
+                          key={index}
+                          className="py-2 px-1 m-2  rounded-md border-1 hover:bg-slate-800 hover:text-white group"
+                        >
+                          <Link
+                            href={`/tournament/${tournamentDetails.id}/match/${event.matchId}`}
+                          >
+                            <li className="flex items-center">
+                              <Badge
+                                variant="outline"
+                                className="mx-2 group-hover:bg-slate-800 group-hover:text-white text-nowrap "
+                              >
+                                {event.time}
+                              </Badge>
+
+                              {event.type === "kickoff" ? (
+                                <BadgeCheckIcon
+                                  size={20}
+                                  className="mr-2 text-blue-600 group-hover:text-blue-400"
+                                />
+                              ) : event.type === "goal" ? (
+                                <PartyPopperIcon
+                                  size={20}
+                                  className="mr-2 text-green-600 group-hover:text-green-400"
+                                />
+                              ) : event.type === "yellow" ? (
+                                <TriangleAlertIcon
+                                  size={20}
+                                  className="mr-2 text-yellow-600 group-hover:text-yellow-400"
+                                />
+                              ) : event.type === "red" ? (
+                                <TriangleAlertIcon
+                                  size={20}
+                                  className="mr-2 text-red-600 group-hover:text-red-400"
+                                />
+                              ) : event.type === "fulltime" ? (
+                                <BadgeXIcon
+                                  size={20}
+                                  className="mr-2 text-red-600 group-hover:text-red-400"
+                                />
+                              ) : (
+                                <div></div>
+                              )}
+
+                              <span className="font-semibold mr-2 px-1">
+                                {event.type.toUpperCase()}:
+                              </span>
+                              <span>
+                                {/* {event.description || `${event.player} (${event.team})`} */}
+                                {event.description}
+                              </span>
+                            </li>
+                          </Link>
+                        </div>
+                      ))}
+                    </ul>
+                  </CardContent>
+                </Card>
+              )}
             </CardContent>
           </Card>
         </TabsContent>
@@ -485,7 +564,7 @@ export default function TournamentDetails({
                     <CardContent>
                       <Table>
                         <TableHeader>
-                          <TableRow>
+                          <TableRow className="text-center">
                             <TableHead className="w-[100px]">
                               Position
                             </TableHead>
@@ -504,7 +583,7 @@ export default function TournamentDetails({
                           {group.teams.map((team, index) => (
                             <TableRow
                               key={team?._id}
-                              className="border-b-2 border-slate-200 hover:bg-slate-800 hover:text-white"
+                              className="text-center"
                               style={{
                                 background:
                                   index + 1 <= group.teamsQPerGroup
@@ -520,10 +599,10 @@ export default function TournamentDetails({
                               <TableCell className="font-bold">
                                 {index + 1}
                               </TableCell>
-                              <TableCell>
+                              <TableCell className="w-auto p-0">
                                 <Link
-                                  href={`/team/${team.id}`}
-                                  className="hover:underline"
+                                  href={`/tournament/${tournamentDetails?.id}/team/${team?.teamId}`}
+                                  className="hover:underline text-xs "
                                 >
                                   {team?.name}
                                 </Link>

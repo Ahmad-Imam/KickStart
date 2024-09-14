@@ -37,5 +37,8 @@ export const getDiscountedPrice = (price, discountPercentage) => {
 
 export function capitalizeFirstLetter(str) {
   if (!str) return ""; // Handle empty string or null
-  return str.charAt(0).toUpperCase() + str.slice(1).toLowerCase();
+  return str
+    .split(" ")
+    .map((word) => word.charAt(0).toUpperCase() + word.slice(1).toLowerCase())
+    .join(" ");
 }
