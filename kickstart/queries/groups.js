@@ -69,45 +69,79 @@ export async function updateMatchPlayedGroups(matchDetails, tournament) {
     // console.log(groups);
     const newGroups = await Promise.all(
       groups.map(async (group) => {
-        const newGroup = await groupsModel.findOneAndUpdate(
-          { _id: group.id },
-          {
-            $set: {
-              teams: group.teams.map((team) => {
-                if (
-                  team.teamId.toString() === matchDetails.team1.id.toString()
-                ) {
-                  console.log("team1");
+        const newGroup = await groupsModel
+          .findOneAndUpdate(
+            { _id: group.id },
+            {
+              $set: {
+                teams: group.teams.map((team) => {
+                  let updateFields = {
+                    matchPlayed: team.matchPlayed,
+                    goalsFor: team.goalsFor,
+                    goalsAgainst: team.goalsAgainst,
+                    matchWon: team.matchWon,
+                    matchDraw: team.matchDraw,
+                    matchLost: team.matchLost,
+                    points: team.points,
+                  };
+
+                  if (
+                    team.teamId.toString() === matchDetails.team1.id.toString()
+                  ) {
+                    console.log("team1");
+                    updateFields.matchPlayed += 1;
+                    updateFields.goalsFor += matchDetails.result.team1;
+                    updateFields.goalsAgainst += matchDetails.result.team2;
+
+                    if (matchDetails.result.team1 > matchDetails.result.team2) {
+                      updateFields.matchWon += 1;
+                      updateFields.points += 3;
+                    } else if (
+                      matchDetails.result.team1 < matchDetails.result.team2
+                    ) {
+                      updateFields.matchLost += 1;
+                    } else {
+                      updateFields.matchDraw += 1;
+                      updateFields.points += 1;
+                    }
+                  } else if (
+                    team.teamId.toString() === matchDetails.team2.id.toString()
+                  ) {
+                    console.log("team2");
+                    updateFields.matchPlayed += 1;
+                    updateFields.goalsFor += matchDetails.result.team2;
+                    updateFields.goalsAgainst += matchDetails.result.team1;
+
+                    if (matchDetails.result.team2 > matchDetails.result.team1) {
+                      updateFields.matchWon += 1;
+                      updateFields.points += 3;
+                    } else if (
+                      matchDetails.result.team2 < matchDetails.result.team1
+                    ) {
+                      updateFields.matchLost += 1;
+                    } else {
+                      updateFields.matchDraw += 1;
+                      updateFields.points += 1;
+                    }
+                  }
+
                   return {
                     ...team,
-                    matchPlayed: team.matchPlayed + 1,
-                    // goalsFor: team.goalsFor + matchDetails.team1.goals,
-                    // goalsAgainst: team.goalsAgainst + matchDetails.team2.goals,
+                    ...updateFields,
                   };
-                } else if (
-                  team.teamId.toString() === matchDetails.team2.id.toString()
-                ) {
-                  console.log("team2");
-                  return {
-                    ...team,
-                    matchPlayed: team.matchPlayed + 1,
-                    // goalsFor: team.goalsFor + matchDetails.team2.goals,
-                    // goalsAgainst: team.goalsAgainst + matchDetails.team1.goals,
-                  };
-                }
-                return team;
-              }),
+                }),
+              },
             },
-          },
-          { new: true }
-        );
+            { new: true }
+          )
+          .lean();
         return newGroup;
       })
     );
 
     console.log("group updated");
     // console.log(newGroups[0].teams);
-    // return replaceMongoIdInArray(newGroups);
+    return replaceMongoIdInArray(newGroups);
   } catch (error) {
     throw new Error(error);
   }

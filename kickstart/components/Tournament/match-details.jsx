@@ -85,22 +85,23 @@ const sampleMatch = {
 export default async function MatchDetails({ matchDetails }) {
   const match = sampleMatch; // In a real app, you'd fetch this based on params.id
 
-  const team1 = await getTeamsTByTeamId(matchDetails?.team1.id);
-  const team2 = await getTeamsTByTeamId(matchDetails?.team2.id);
+  const team1 = await getTeamsTByTeamId(matchDetails?.team1?.id);
+  const team2 = await getTeamsTByTeamId(matchDetails?.team2?.id);
 
   // console.log("team1");
   // console.log(team1);
   // console.log(team2);
 
   return (
-    <div className="container mx-auto px-4 py-8">
+    <div className="container mx-auto px-4 py-8  h-full">
       <Link href={`/tournament/${matchDetails?.tournamentId}`} passHref>
         <Button variant="outline" className="mb-4">
           Back to Tournament
         </Button>
       </Link>
       <h1 className="text-4xl font-bold mb-6">
-        {matchDetails?.team1.name} vs {matchDetails?.team2.name}
+        {matchDetails?.team1?.name || matchDetails?.qName?.team1} vs{" "}
+        {matchDetails?.team2?.name || matchDetails?.qName?.team2}
       </h1>
       <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
         <Card>
@@ -136,46 +137,52 @@ export default async function MatchDetails({ matchDetails }) {
         </Card>
       </div>
 
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
-        <Card className="hover:shadow-lg transition-shadow duration-300">
-          <CardHeader>
-            <CardTitle>{matchDetails?.team1.name}</CardTitle>
-            <CardDescription>{matchDetails?.team1.location}</CardDescription>
-          </CardHeader>
-          <CardContent>
-            <p className="mb-2">{matchDetails?.team1.bio}</p>
-            <div className="flex items-center">
-              <MapPinIcon className="mr-2" />
-              <span>{matchDetails?.team1.location}</span>
-            </div>
-          </CardContent>
-        </Card>
-        <Card className="hover:shadow-lg transition-shadow duration-300">
-          <CardHeader>
-            <CardTitle>{matchDetails?.team2.name}</CardTitle>
-            <CardDescription>{matchDetails?.team2.location}</CardDescription>
-          </CardHeader>
-          <CardContent>
-            <p className="mb-2">{matchDetails?.team2.bio}</p>
-            <div className="flex items-center">
-              <MapPinIcon className="mr-2" />
-              <span>{matchDetails?.team2.location}</span>
-            </div>
-          </CardContent>
-        </Card>
-      </div>
+      {matchDetails?.team1?.name && matchDetails?.team2?.name && (
+        <div>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
+            <Card className="hover:shadow-lg transition-shadow duration-300">
+              <CardHeader>
+                <CardTitle>{matchDetails?.team1.name}</CardTitle>
+                <CardDescription>
+                  {matchDetails?.team1.location}
+                </CardDescription>
+              </CardHeader>
+              <CardContent>
+                <p className="mb-2">{matchDetails?.team1.bio}</p>
+                <div className="flex items-center">
+                  <MapPinIcon className="mr-2" />
+                  <span>{matchDetails?.team1.location}</span>
+                </div>
+              </CardContent>
+            </Card>
+            <Card className="hover:shadow-lg transition-shadow duration-300">
+              <CardHeader>
+                <CardTitle>{matchDetails?.team2.name}</CardTitle>
+                <CardDescription>
+                  {matchDetails?.team2.location}
+                </CardDescription>
+              </CardHeader>
+              <CardContent>
+                <p className="mb-2">{matchDetails?.team2.bio}</p>
+                <div className="flex items-center">
+                  <MapPinIcon className="mr-2" />
+                  <span>{matchDetails?.team2.location}</span>
+                </div>
+              </CardContent>
+            </Card>
+          </div>
 
-      <h2 className="text-2xl font-bold mt-8 mb-4">Score</h2>
-      <Card>
-        <CardContent className="text-center py-6">
-          <p className="text-3xl font-bold">
-            {matchDetails?.team1.name} {matchDetails?.result?.team1} -{" "}
-            {matchDetails?.result?.team2} {matchDetails?.team2.name}
-          </p>
-        </CardContent>
-      </Card>
+          <h2 className="text-2xl font-bold mt-8 mb-4">Score</h2>
+          <Card>
+            <CardContent className="text-center py-6">
+              <p className="text-3xl font-bold">
+                {matchDetails?.team1?.name} {matchDetails?.result?.team1} -{" "}
+                {matchDetails?.result?.team2} {matchDetails?.team2?.name}
+              </p>
+            </CardContent>
+          </Card>
 
-      {/* <div className="grid grid-cols-2 gap-2">
+          {/* <div className="grid grid-cols-2 gap-2">
         <Sheet open={isOpen} onOpenChange={setIsOpen}>
           <SheetTrigger asChild>
             <Button variant="outline">Open Bottom Sheet</Button>
@@ -200,71 +207,73 @@ export default async function MatchDetails({ matchDetails }) {
         </Sheet>
       </div> */}
 
-      <MatchSettings
-        team1={JSON.parse(JSON.stringify(team1))}
-        team2={JSON.parse(JSON.stringify(team2))}
-        matchDetails={matchDetails}
-      />
+          <MatchSettings
+            team1={JSON.parse(JSON.stringify(team1))}
+            team2={JSON.parse(JSON.stringify(team2))}
+            matchDetails={matchDetails}
+          />
 
-      <h2 className="text-2xl font-bold mt-8 mb-4">Match Events</h2>
-      {matchDetails?.events?.length > 0 && (
-        <Card>
-          <CardContent className="p-0 m-0">
-            <ul className="p-0 m-0">
-              {matchDetails.events?.map((event, index) => (
-                <div
-                  key={index}
-                  className="py-2 px-1 m-2  rounded-md border-1 hover:bg-slate-800 hover:text-white group"
-                >
-                  <li className="flex items-center">
-                    <Badge
-                      variant="outline"
-                      className="mr-2 group-hover:bg-slate-800 group-hover:text-white text-nowrap"
+          <h2 className="text-2xl font-bold mt-8 mb-4">Match Events</h2>
+          {matchDetails?.events?.length > 0 && (
+            <Card>
+              <CardContent className="p-0 m-0">
+                <ul className="p-0 m-0">
+                  {matchDetails.events?.map((event, index) => (
+                    <div
+                      key={index}
+                      className="py-2 px-1 m-2  rounded-md border-1 hover:bg-slate-800 hover:text-white group"
                     >
-                      {event.time}
-                    </Badge>
+                      <li className="flex items-center">
+                        <Badge
+                          variant="outline"
+                          className="mr-2 group-hover:bg-slate-800 group-hover:text-white text-nowrap"
+                        >
+                          {event.time}
+                        </Badge>
 
-                    {event.type === "kickoff" ? (
-                      <BadgeCheckIcon
-                        size={20}
-                        className="mr-2 text-blue-600 group-hover:text-blue-400"
-                      />
-                    ) : event.type === "goal" ? (
-                      <PartyPopperIcon
-                        size={20}
-                        className="mr-2 text-green-600 group-hover:text-green-400"
-                      />
-                    ) : event.type === "yellow" ? (
-                      <TriangleAlertIcon
-                        size={20}
-                        className="mr-2 text-yellow-600 group-hover:text-yellow-400"
-                      />
-                    ) : event.type === "red" ? (
-                      <TriangleAlertIcon
-                        size={20}
-                        className="mr-2 text-red-600 group-hover:text-red-400"
-                      />
-                    ) : event.type === "fulltime" ? (
-                      <BadgeXIcon
-                        size={20}
-                        className="mr-2 text-red-600 group-hover:text-red-400"
-                      />
-                    ) : (
-                      <div></div>
-                    )}
-                    <span className="font-semibold mr-2">
-                      {event.type.toUpperCase()}:
-                    </span>
-                    <span>
-                      {/* {event.description || `${event.player} (${event.team})`} */}
-                      {event.description}
-                    </span>
-                  </li>
-                </div>
-              ))}
-            </ul>
-          </CardContent>
-        </Card>
+                        {event.type === "kickoff" ? (
+                          <BadgeCheckIcon
+                            size={20}
+                            className="mr-2 text-blue-600 group-hover:text-blue-400"
+                          />
+                        ) : event.type === "goal" ? (
+                          <PartyPopperIcon
+                            size={20}
+                            className="mr-2 text-green-600 group-hover:text-green-400"
+                          />
+                        ) : event.type === "yellow" ? (
+                          <TriangleAlertIcon
+                            size={20}
+                            className="mr-2 text-yellow-600 group-hover:text-yellow-400"
+                          />
+                        ) : event.type === "red" ? (
+                          <TriangleAlertIcon
+                            size={20}
+                            className="mr-2 text-red-600 group-hover:text-red-400"
+                          />
+                        ) : event.type === "fulltime" ? (
+                          <BadgeXIcon
+                            size={20}
+                            className="mr-2 text-red-600 group-hover:text-red-400"
+                          />
+                        ) : (
+                          <div></div>
+                        )}
+                        <span className="font-semibold mr-2">
+                          {event.type.toUpperCase()}:
+                        </span>
+                        <span>
+                          {/* {event.description || `${event.player} (${event.team})`} */}
+                          {event.description}
+                        </span>
+                      </li>
+                    </div>
+                  ))}
+                </ul>
+              </CardContent>
+            </Card>
+          )}
+        </div>
       )}
     </div>
   );

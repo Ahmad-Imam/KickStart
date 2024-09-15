@@ -72,22 +72,38 @@ export async function updateMatchPlayedTeamsT(matchDetails, tournament) {
 
     const teamsTournamentUpdated = teamsTournament
       .map((team) => {
+        let updateFields = { matchPlayed: 1 };
+
         if (team.teamId.toString() === matchDetails.team1.id.toString()) {
           console.log("team1");
+          if (matchDetails.result.team1 > matchDetails.result.team2) {
+            updateFields.matchWon = 1;
+          } else if (matchDetails.result.team1 < matchDetails.result.team2) {
+            updateFields.matchLost = 1;
+          } else {
+            updateFields.matchDraw = 1;
+          }
           return {
             updateOne: {
               filter: { _id: team.id },
-              update: { $inc: { matchPlayed: 1 } },
+              update: { $inc: updateFields },
             },
           };
         }
 
         if (team.teamId.toString() === matchDetails.team2.id.toString()) {
           console.log("team2");
+          if (matchDetails.result.team2 > matchDetails.result.team1) {
+            updateFields.matchWon = 1;
+          } else if (matchDetails.result.team2 < matchDetails.result.team1) {
+            updateFields.matchLost = 1;
+          } else {
+            updateFields.matchDraw = 1;
+          }
           return {
             updateOne: {
               filter: { _id: team.id },
-              update: { $inc: { matchPlayed: 1 } },
+              update: { $inc: updateFields },
             },
           };
         }

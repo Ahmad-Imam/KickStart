@@ -552,6 +552,32 @@ export default function TournamentDetails({
             <div className="space-y-8">
               {groupsDetails
                 .slice() // Create a shallow copy to avoid mutating the original array
+                .map((group) => {
+                  return {
+                    ...group,
+                    teams: group.teams
+                      .slice() // Create a shallow copy of the teams array
+                      .sort((a, b) => {
+                        if (a.points !== b.points) {
+                          return b.points - a.points; // Sort by points in descending order
+                        }
+                        if (
+                          a.goalsFor - a.goalsAgainst !==
+                          b.goalsFor - b.goalsAgainst
+                        ) {
+                          return (
+                            b.goalsFor -
+                            b.goalsAgainst -
+                            (a.goalsFor - a.goalsAgainst)
+                          ); // Sort by goal difference in descending order
+                        }
+                        if (a.goalsFor !== b.goalsFor) {
+                          return b.goalsFor - a.goalsFor; // Sort by goals for in descending order
+                        }
+                        return a.name.localeCompare(b.name); // Sort by name in ascending order if all else is equal
+                      }),
+                  };
+                })
                 .sort((a, b) => a.name.localeCompare(b.name))
                 .map((group) => (
                   <Card

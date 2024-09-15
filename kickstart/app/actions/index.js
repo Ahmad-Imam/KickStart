@@ -3,6 +3,7 @@
 import { createGroups, updateMatchPlayedGroups } from "@/queries/groups";
 import {
   createMatches,
+  getMatchesLeftGroup,
   updateMatchGoal,
   updateMatchStatus,
 } from "@/queries/matches";
@@ -192,12 +193,23 @@ export async function editMatchStatus(matchDetails, status) {
     // console.log(tournament);
     const newMatch = await updateMatchStatus(matchDetails, status, tournament);
     console.log("status updated");
-    if (status === "live") {
-      console.log("inside live");
+    if (status === "finished") {
+      console.log("inside finished");
       const newTeamsT = await updateMatchPlayedTeamsT(matchDetails, tournament);
       console.log("newTeamsT");
-      const newGroups = await updateMatchPlayedGroups(matchDetails, tournament);
-      console.log("newGroups");
+      if (matchDetails?.type === "group") {
+        const newGroups = await updateMatchPlayedGroups(
+          matchDetails,
+          tournament
+        );
+
+        console.log("newGroups");
+        // console.log(newGroups);
+
+        const matchesLeft = await getMatchesLeftGroup(matchDetails);
+        console.log("matchesLeft");
+        console.log(matchesLeft);
+      }
     }
 
     console.log("after live");
@@ -233,3 +245,5 @@ export async function addGoalToMatch(gfTeam, gaTeam, player, matchDetails) {
     throw new Error(error);
   }
 }
+
+export async function handleResult(matchDetails) {}

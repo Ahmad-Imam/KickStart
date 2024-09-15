@@ -58,7 +58,7 @@ export async function createMatches(allMatch, tournamentId, matchDate) {
                   team1: 0,
                   team2: 0,
                 },
-                groupName: group?.groupName,
+                groupName: group?.name,
                 matchDate: matchDate,
                 type: "group",
               };
@@ -487,6 +487,39 @@ export async function updateMatchGoal(gfTeam, gaTeam, player, matchDetails) {
     console.log("tournEvent updated");
 
     return replaceMongoIdInObject(updatedMatch);
+  } catch (error) {
+    throw new Error(error);
+  }
+}
+
+export async function getMatchesLeftGroup(matchDetails) {
+  try {
+    const matchesFinished = await matchModel
+      .find({
+        tournamentId: matchDetails.tournamentId,
+        type: "group",
+        status: "finished",
+        groupName: matchDetails?.groupName,
+      })
+      .lean();
+    // console.log(matchesFinished);
+
+    const allGroupMatches = await matchModel
+      .find({
+        tournamentId: matchDetails.tournamentId,
+        type: "group",
+        groupName: matchDetails?.groupName,
+      })
+      .lean();
+
+    console.log(allGroupMatches.length);
+    console.log(matchesFinished.length);
+    if (allGroupMatches.length === matchesFinished.length) {
+      console.log("all matches finished");
+      return "done";
+    } else return "not done";
+
+    // return replaceMongoIdInArray(matches);
   } catch (error) {
     throw new Error(error);
   }
