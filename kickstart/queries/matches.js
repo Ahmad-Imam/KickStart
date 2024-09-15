@@ -428,7 +428,7 @@ export async function updateMatchGoal(gfTeam, gaTeam, player, matchDetails) {
     console.log(gfTeam);
 
     await teamsTournamentModel.findByIdAndUpdate(
-      gfTeam.id,
+      { _id: gfTeam.id, tournamentId: matchDetails.tournamentId },
       {
         $inc: { "scorers.$[elem].score": 1, goalsFor: 1 },
       },
@@ -454,7 +454,7 @@ export async function updateMatchGoal(gfTeam, gaTeam, player, matchDetails) {
       console.log("if no prev teamsT scorers, goals for updated");
       // Add the player to the scorers array with an initial score of 1
       await teamsTournamentModel.findByIdAndUpdate(
-        gfTeam.id,
+        { _id: gfTeam.id, tournamentId: matchDetails.tournamentId },
         {
           $addToSet: { scorers: { playerId: player.id, score: 1 } },
         },
@@ -464,7 +464,7 @@ export async function updateMatchGoal(gfTeam, gaTeam, player, matchDetails) {
 
     console.log("teamsT scorers for updated");
     await teamsTournamentModel.findByIdAndUpdate(
-      gaTeam.id,
+      { _id: gaTeam.id, tournamentId: matchDetails.tournamentId },
       {
         $inc: { goalsAgainst: 1 },
       },

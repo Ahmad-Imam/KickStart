@@ -61,3 +61,56 @@ export async function getTeamsTournamentById(teamId) {
     throw new Error(error);
   }
 }
+
+export async function updateMatchPlayedTeamsT(matchDetails, tournament) {
+  try {
+    const teamsTournament = await getTeamsTournamentByTournamentId(
+      tournament.id
+    );
+    // console.log(teamsTournament);
+    // console.log(matchDetails);
+
+    const teamsTournamentUpdated = teamsTournament
+      .map((team) => {
+        if (team.teamId.toString() === matchDetails.team1.id.toString()) {
+          console.log("team1");
+          return {
+            updateOne: {
+              filter: { _id: team.id },
+              update: { $inc: { matchPlayed: 1 } },
+            },
+          };
+        }
+
+        if (team.teamId.toString() === matchDetails.team2.id.toString()) {
+          console.log("team2");
+          return {
+            updateOne: {
+              filter: { _id: team.id },
+              update: { $inc: { matchPlayed: 1 } },
+            },
+          };
+        }
+
+        return null;
+      })
+      .filter(Boolean);
+
+    console.log("teasmtournament updated");
+    // console.log(teamsTournamentUpdated);
+    if (teamsTournamentUpdated.length > 0) {
+      const result = await teamsTournamentModel.bulkWrite(
+        teamsTournamentUpdated
+      );
+      console.log("match Played updated");
+      // return replaceMongoIdInArray(result);
+    } else {
+      console.log("No teams to update");
+      return [];
+    }
+
+    // return replaceMongoIdInArray(teamsTournamentUpdatedList);
+  } catch (error) {
+    throw new Error(error);
+  }
+}

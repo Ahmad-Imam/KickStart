@@ -62,3 +62,53 @@ export async function getGroupsByTournamentId(tournamentId) {
     throw new Error(error);
   }
 }
+
+export async function updateMatchPlayedGroups(matchDetails, tournament) {
+  try {
+    const groups = await getGroupsByTournamentId(tournament.id);
+    // console.log(groups);
+    const newGroups = await Promise.all(
+      groups.map(async (group) => {
+        const newGroup = await groupsModel.findOneAndUpdate(
+          { _id: group.id },
+          {
+            $set: {
+              teams: group.teams.map((team) => {
+                if (
+                  team.teamId.toString() === matchDetails.team1.id.toString()
+                ) {
+                  console.log("team1");
+                  return {
+                    ...team,
+                    matchPlayed: team.matchPlayed + 1,
+                    // goalsFor: team.goalsFor + matchDetails.team1.goals,
+                    // goalsAgainst: team.goalsAgainst + matchDetails.team2.goals,
+                  };
+                } else if (
+                  team.teamId.toString() === matchDetails.team2.id.toString()
+                ) {
+                  console.log("team2");
+                  return {
+                    ...team,
+                    matchPlayed: team.matchPlayed + 1,
+                    // goalsFor: team.goalsFor + matchDetails.team2.goals,
+                    // goalsAgainst: team.goalsAgainst + matchDetails.team1.goals,
+                  };
+                }
+                return team;
+              }),
+            },
+          },
+          { new: true }
+        );
+        return newGroup;
+      })
+    );
+
+    console.log("group updated");
+    // console.log(newGroups[0].teams);
+    // return replaceMongoIdInArray(newGroups);
+  } catch (error) {
+    throw new Error(error);
+  }
+}

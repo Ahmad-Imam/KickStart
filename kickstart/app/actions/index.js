@@ -1,6 +1,6 @@
 "use server";
 
-import { createGroups } from "@/queries/groups";
+import { createGroups, updateMatchPlayedGroups } from "@/queries/groups";
 import {
   createMatches,
   updateMatchGoal,
@@ -14,7 +14,10 @@ import {
   updatePlayerTeam,
 } from "@/queries/players";
 import { createTeams, createTeamsN } from "@/queries/teams";
-import { createTeamsTournamentList } from "@/queries/teamsTournament";
+import {
+  createTeamsTournamentList,
+  updateMatchPlayedTeamsT,
+} from "@/queries/teamsTournament";
 import { createTournaments, getTournamentById } from "@/queries/tournaments";
 import { dbConnect } from "@/service/mongo";
 import { replaceMongoIdInObject } from "@/utils/data-util";
@@ -186,8 +189,18 @@ export async function editMatchStatus(matchDetails, status) {
     const tournament = await getTournamentById(matchDetails?.tournamentId);
 
     console.log("tournament");
-    console.log(tournament);
+    // console.log(tournament);
     const newMatch = await updateMatchStatus(matchDetails, status, tournament);
+    console.log("status updated");
+    if (status === "live") {
+      console.log("inside live");
+      const newTeamsT = await updateMatchPlayedTeamsT(matchDetails, tournament);
+      console.log("newTeamsT");
+      const newGroups = await updateMatchPlayedGroups(matchDetails, tournament);
+      console.log("newGroups");
+    }
+
+    console.log("after live");
 
     revalidatePath(`/tournament/${tournament.id}`);
     revalidatePath(`/tournament/${tournament.id}/match/${matchDetails.id}`);
