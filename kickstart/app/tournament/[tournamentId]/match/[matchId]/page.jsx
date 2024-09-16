@@ -23,6 +23,7 @@ export default async function MatchPage({ params }) {
   // }
 
   const match = await getMatchById(params.matchId);
+  console.log("match");
   // console.log(match);
 
   // console.log(tournamentId);
@@ -34,7 +35,7 @@ export default async function MatchPage({ params }) {
         groupsDetails={JSON.parse(JSON.stringify(groups))}
       /> */}
 
-      <MatchDetails matchDetails={match} />
+      <MatchDetails matchDetails={JSON.parse(JSON.stringify(match))} />
     </>
   );
 }

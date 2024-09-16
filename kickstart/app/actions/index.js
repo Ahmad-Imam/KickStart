@@ -4,8 +4,11 @@ import { createGroups, updateMatchPlayedGroups } from "@/queries/groups";
 import {
   createMatches,
   getMatchesLeftGroup,
+  getMatchesLeftQuarter,
+  getMatchesLeftSemi,
   updateGroupEnd,
   updateMatchGoal,
+  updateMatchPlayedQuarter,
   updateMatchStatus,
 } from "@/queries/matches";
 import {
@@ -19,6 +22,8 @@ import { createTeams, createTeamsN } from "@/queries/teams";
 import {
   createTeamsTournamentList,
   updateMatchPlayedTeamsT,
+  updateQuarterEnd,
+  updateSemiEnd,
 } from "@/queries/teamsTournament";
 import { createTournaments, getTournamentById } from "@/queries/tournaments";
 import { dbConnect } from "@/service/mongo";
@@ -205,16 +210,34 @@ export async function editMatchStatus(matchDetails, status) {
           matchDetails,
           tournament
         );
-
         console.log("newGroups");
         // console.log(newGroups);
-
         const matchesLeft = await getMatchesLeftGroup(tournament);
         console.log("matchesLeft");
         console.log(matchesLeft);
-
         if (matchesLeft === "done") {
           const newTeamsList = await updateGroupEnd(tournament);
+          console.log("newTeamsList");
+        }
+      } else if (matchDetails?.type === "quarter") {
+        console.log("quarter");
+
+        const matchesLeftQ = await getMatchesLeftQuarter(tournament);
+        console.log("matchesLeft");
+        console.log(matchesLeftQ);
+
+        if (matchesLeftQ === "done") {
+          const newTeamsList = await updateQuarterEnd(tournament);
+          console.log("newTeamsList");
+        }
+      } else if (matchDetails?.type === "semi") {
+        console.log("semi");
+        const matchesLeftS = await getMatchesLeftSemi(tournament);
+        console.log("matchesLeft");
+        console.log(matchesLeftS);
+
+        if (matchesLeftS === "done") {
+          const newTeamsList = await updateSemiEnd(tournament);
           console.log("newTeamsList");
         }
       }

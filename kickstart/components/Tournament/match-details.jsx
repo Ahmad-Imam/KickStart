@@ -39,6 +39,7 @@ import {
 import MatchSheet from "@/app/tournament/[tournamentId]/match/[matchId]/_components/MatchSheet";
 import { getTeamsTByTeamId } from "@/queries/teams";
 import MatchSettings from "@/app/tournament/[tournamentId]/match/[matchId]/_components/MatchSettings";
+import { replaceMongoIdInObject } from "@/utils/data-util";
 
 const sampleMatch = {
   _id: { $oid: "66e03cfd8a3204743253932e" },
@@ -85,10 +86,18 @@ const sampleMatch = {
 export default async function MatchDetails({ matchDetails }) {
   const match = sampleMatch; // In a real app, you'd fetch this based on params.id
 
-  const team1 = await getTeamsTByTeamId(matchDetails?.team1?.id);
-  const team2 = await getTeamsTByTeamId(matchDetails?.team2?.id);
+  let team1;
+  let team2;
 
-  // console.log("team1");
+  if (matchDetails?.type === "group") {
+    team1 = await getTeamsTByTeamId(matchDetails?.team1?.id);
+    team2 = await getTeamsTByTeamId(matchDetails?.team2?.id);
+  } else {
+    team1 = await getTeamsTByTeamId(matchDetails?.team1?.teamId);
+    team2 = await getTeamsTByTeamId(matchDetails?.team2?.teamId);
+  }
+  console.log("team2");
+  // console.log(matchDetails?.team2);
   // console.log(team1);
   // console.log(team2);
 

@@ -74,6 +74,9 @@ export async function getPlayerById(id) {
 
 export async function getAllPlayersByIds(ids) {
   try {
+    if (ids?.length === 0) {
+      return [];
+    }
     const players = await playersModel
       .find({ _id: { $in: ids } })
       .populate({
@@ -82,6 +85,44 @@ export async function getAllPlayersByIds(ids) {
       })
       .lean();
     return replaceMongoIdInArray(players);
+  } catch (error) {
+    throw new Error(error);
+  }
+}
+
+export async function getTopScorers(playerScores) {
+  console.log(playerScores.length);
+  try {
+    if (playerScores?.length === 0) {
+      return [];
+    }
+
+    // Extract player IDs from the input array
+    const playerIds = playerScores?.map((player) => player.playerId);
+
+    // Fetch player information from the playersModel
+    const players = await playersModel
+      .find({ _id: { $in: playerIds } })
+      .populate({
+        path: "team",
+        model: teamsModel,
+      })
+      .lean();
+
+    // Create a map of playerId to score for quick lookup
+    const scoreMap = playerScores?.reduce((map, player) => {
+      map[player.playerId] = player.score;
+      return map;
+    }, {});
+
+    // Merge player information with the corresponding score
+    const playersWithScores = players.map((player) => ({
+      ...player,
+      score: scoreMap[player._id],
+    }));
+    playersWithScores.sort((a, b) => b.score - a.score);
+
+    return replaceMongoIdInArray(playersWithScores);
   } catch (error) {
     throw new Error(error);
   }

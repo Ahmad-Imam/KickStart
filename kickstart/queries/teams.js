@@ -63,6 +63,7 @@ export async function getTeamsTByTeamId(id) {
     const teamsT = await teamsTournamentModel.findOne({ teamId: id }).lean();
     // console.log("teamsT");
     // console.log(teamsT);
+
     let teamPlayers = [];
     if (teamsT?.players?.length > 0) {
       teamPlayers = await getAllPlayersByIds(teamsT?.players);

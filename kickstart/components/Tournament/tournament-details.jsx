@@ -34,6 +34,8 @@ import {
   BadgeCheckIcon,
   BadgeXIcon,
 } from "lucide-react";
+import { Separator } from "../ui/separator";
+import MatchTab from "@/app/tournament/[tournamentId]/_components/MatchTab";
 
 const sampleTournament = {
   id: "t1",
@@ -219,6 +221,8 @@ export default function TournamentDetails({
   tournamentDetails,
   matchesDetails,
   groupsDetails,
+  topScorers,
+  sortedEvents,
 }) {
   const [activeTab, setActiveTab] = useState("overview");
   const tournament = sampleTournament; // In a real app, you'd fetch this based on params.id
@@ -365,31 +369,31 @@ export default function TournamentDetails({
                 </CardHeader>
                 <CardContent>
                   <ul className="space-y-2">
-                    {tournament.scorers.map((scorer, index) => (
-                      <li
-                        key={index}
-                        className="flex items-center justify-between p-2 hover:bg-gray-100 rounded"
-                      >
-                        <span>{scorer.name}</span>
-                        <Badge
-                          variant="secondary"
-                          className="flex items-center"
-                        >
-                          <TrophyIcon className="mr-1 h-4 w-4" />
-                          {scorer.goals}
-                        </Badge>
-                      </li>
+                    {topScorers.slice(0, 3)?.map((scorer, index) => (
+                      <div key={index}>
+                        <li className="flex items-center justify-between p-2 hover:bg-slate-800 hover:text-white rounded">
+                          <span>{scorer?.name}</span>
+                          <Badge
+                            variant="secondary"
+                            className="flex items-center"
+                          >
+                            <TrophyIcon className="mr-1 h-4 w-4" />
+                            {scorer?.score}
+                          </Badge>
+                        </li>
+                        <Separator className="" />
+                      </div>
                     ))}
                   </ul>
                 </CardContent>
               </Card>
 
               <h2 className="text-2xl font-bold mt-8 mb-4">Live Updates</h2>
-              {tournamentDetails?.events?.length > 0 && (
+              {sortedEvents?.length > 0 && (
                 <Card>
                   <CardContent className="p-0 m-0">
                     <ul className="p-0 m-0">
-                      {tournamentDetails.events?.map((event, index) => (
+                      {sortedEvents?.map((event, index) => (
                         <div
                           key={index}
                           className="py-2 px-1 m-2  rounded-md border-1 hover:bg-slate-800 hover:text-white group"
@@ -479,73 +483,10 @@ export default function TournamentDetails({
           </div>
         </TabsContent>
         <TabsContent value="matches" className="py-4">
-          <div className="space-y-4">
-            {matchesDetails?.length > 0 ? (
-              matchesDetails.map((match) => (
-                <Card
-                  key={match?.id}
-                  className="border-2 border-slate-200 hover:shadow-lg transition-shadow duration-300"
-                >
-                  <CardHeader>
-                    {match?.type === "group" ? (
-                      <CardTitle>
-                        {match?.team1?.name} vs {match?.team2?.name}
-                      </CardTitle>
-                    ) : (
-                      <CardTitle>
-                        {match?.team1?.name.toUpperCase() ||
-                          match?.qName?.team1.toUpperCase()}{" "}
-                        vs{" "}
-                        {match?.team2?.name.toUpperCase() ||
-                          match?.qName?.team2.toUpperCase()}
-                      </CardTitle>
-                    )}
-                    <CardDescription>
-                      {new Date(match?.matchDate).toLocaleString()}
-                    </CardDescription>
-                  </CardHeader>
-                  <CardContent>
-                    <Badge
-                      className={
-                        match?.type === "group" ? "bg-blue-900" : "bg-amber-500"
-                      }
-                      style={{
-                        paddingLeft: 10,
-                        paddingRight: 10,
-                      }}
-                    >
-                      {match?.type}
-                    </Badge>
-                    <Badge
-                      variant={
-                        match?.type === "group" ? "outline" : "destructive"
-                      }
-                      className="mx-6 hover:bg-black hover:text-white"
-                      style={{
-                        paddingLeft: 10,
-                        paddingRight: 10,
-                      }}
-                    >
-                      {match?.status}
-                    </Badge>
-                    <Link
-                      href={`/tournament/${tournamentDetails?.id}/match/${match?.id}`}
-                    >
-                      <Button className="mt-4 bg-slate-800 hover:bg-black">
-                        View Match Details
-                      </Button>
-                    </Link>
-                  </CardContent>
-                </Card>
-              ))
-            ) : (
-              <div className=" p-4 border-2 rounded-md shadow-sm border-slate-100 hover:shadow-lg transition-shadow duration-300">
-                <p className="text-gray-700 text-center font-semibold">
-                  There are no matches available for this tournament.
-                </p>
-              </div>
-            )}
-          </div>
+          <MatchTab
+            matchesDetails={matchesDetails}
+            tournamentDetails={tournamentDetails}
+          />
         </TabsContent>
         <TabsContent value="groups" className="py-4">
           {groupsDetails?.length > 0 ? (

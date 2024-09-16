@@ -8,6 +8,7 @@ import {
   replaceMongoIdInArray,
   replaceMongoIdInObject,
 } from "@/utils/data-util";
+import { da } from "date-fns/locale";
 
 export async function createMatches(allMatch, tournamentId, matchDate) {
   console.log("creating matches");
@@ -248,6 +249,7 @@ export async function updateMatchStatus(matchDetails, status, tournament) {
     let tournamentEvent;
 
     const currentTime = new Date().toLocaleTimeString();
+    const currentDate = new Date().toLocaleDateString();
     const matchType = capitalizeFirstLetter(matchDetails?.type);
 
     if (status === "live") {
@@ -255,12 +257,14 @@ export async function updateMatchStatus(matchDetails, status, tournament) {
       matchEvent = {
         type: "kickoff",
         time: currentTime,
+        date: currentDate,
         description: "Match started",
       };
 
       tournamentEvent = {
         type: "kickoff",
         time: currentTime,
+        date: currentDate,
         description: `${matchType} Match - (${capitalizeFirstLetter(
           matchDetails?.team1?.name
         )} vs ${capitalizeFirstLetter(matchDetails?.team2?.name)}) started`,
@@ -272,10 +276,12 @@ export async function updateMatchStatus(matchDetails, status, tournament) {
         type: "fulltime",
         time: currentTime,
         description: "Match ended",
+        date: currentDate,
       };
       tournamentEvent = {
         type: "fulltime",
         time: currentTime,
+        date: currentDate,
         description: `${matchType} Match ended. Score: ${capitalizeFirstLetter(
           matchDetails?.team1?.name
         )} ${matchDetails?.result?.team1} - ${
@@ -354,10 +360,11 @@ export async function updateMatchGoal(gfTeam, gaTeam, player, matchDetails) {
   try {
     const matchId = matchDetails?.id;
     const currentTime = new Date().toLocaleTimeString();
-
+    const currentDate = new Date().toLocaleDateString();
     const matchEvent = {
       type: "goal",
       time: currentTime,
+      date: currentDate,
       description: `${gfTeam.name} Scored! Goal by ${player.name}`,
     };
 
@@ -475,6 +482,7 @@ export async function updateMatchGoal(gfTeam, gaTeam, player, matchDetails) {
     const tournamentEvent = {
       type: "goal",
       time: currentTime,
+      date: currentDate,
       description: `${gfTeam.name} Scored! Goal by ${player.name}. Current score: ${updatedMatch.team1.name} ${updatedMatch.result.team1} - ${updatedMatch.result.team2} ${updatedMatch.team2.name}`,
       matchId,
     };
@@ -498,6 +506,51 @@ export async function getMatchesLeftGroup(tournament) {
       .find({
         tournamentId: tournament.id,
         type: "group",
+        status: { $in: ["upcoming", "live"] },
+      })
+      .lean();
+    // console.log(matchesFinished);
+
+    console.log(matchesUpcomingOrLive.length);
+    if (matchesUpcomingOrLive.length === 0) {
+      console.log("all matches finished");
+      return "done";
+    } else return "not done";
+
+    // return replaceMongoIdInArray(matches);
+  } catch (error) {
+    throw new Error(error);
+  }
+}
+
+export async function getMatchesLeftQuarter(tournament) {
+  try {
+    const matchesUpcomingOrLive = await matchModel
+      .find({
+        tournamentId: tournament.id,
+        type: "quarter",
+        status: { $in: ["upcoming", "live"] },
+      })
+      .lean();
+    // console.log(matchesFinished);
+
+    console.log(matchesUpcomingOrLive.length);
+    if (matchesUpcomingOrLive.length === 0) {
+      console.log("all matches finished");
+      return "done";
+    } else return "not done";
+
+    // return replaceMongoIdInArray(matches);
+  } catch (error) {
+    throw new Error(error);
+  }
+}
+export async function getMatchesLeftSemi(tournament) {
+  try {
+    const matchesUpcomingOrLive = await matchModel
+      .find({
+        tournamentId: tournament.id,
+        type: "semi",
         status: { $in: ["upcoming", "live"] },
       })
       .lean();
