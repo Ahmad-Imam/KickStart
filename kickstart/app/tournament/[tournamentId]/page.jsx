@@ -26,8 +26,8 @@ export default async function TournamentPage({ params }) {
     <>
       <div className="w-full px-6 py-10 h-full">
         <TournamentDetails
-          tournamentDetails={tournament}
-          matchesDetails={matches}
+          tournamentDetails={JSON.parse(JSON.stringify(tournament))}
+          matchesDetails={JSON.parse(JSON.stringify(matches))}
           groupsDetails={JSON.parse(JSON.stringify(groups))}
         />
       </div>

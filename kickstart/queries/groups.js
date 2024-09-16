@@ -12,18 +12,19 @@ export async function createGroups(
   teamsQPerGroup,
   teamsPerGroup
 ) {
-  console.log("createsTeamsTournamentList");
+  console.log("createsgroups");
   // console.log(tournamentId);
   // console.log(data);
   let groupsList = [];
   try {
     groupsList = await Promise.all(
-      data?.map(async (team) => {
-        const teamsDataObj = await team.teams.reduce(
+      data?.map(async (group) => {
+        const teamsDataObj = await group.teams.reduce(
           async (accPromise, team) => {
             const acc = await accPromise;
             const teamData = await teamsTournamentModel.findOne({
               teamId: team.id,
+              tournamentId: tournamentId,
             });
             acc[team.id] = teamData;
             return acc;
@@ -32,10 +33,12 @@ export async function createGroups(
         );
         const teamsDataArray = Object.values(teamsDataObj);
 
+        console.log(teamsDataArray);
+
         const groupData = {
           tournamentId: tournamentId,
           teamsQPerGroup: teamsQPerGroup,
-          ...team,
+          ...group,
           teams: teamsDataArray,
         };
 
@@ -71,7 +74,7 @@ export async function updateMatchPlayedGroups(matchDetails, tournament) {
       groups.map(async (group) => {
         const newGroup = await groupsModel
           .findOneAndUpdate(
-            { _id: group.id },
+            { _id: group.id, tournamentId: tournament.id },
             {
               $set: {
                 teams: group.teams.map((team) => {

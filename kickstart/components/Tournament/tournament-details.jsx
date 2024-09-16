@@ -341,7 +341,7 @@ export default function TournamentDetails({
               <CardDescription>{tournamentDetails?.bio}</CardDescription>
             </CardHeader>
             <CardContent>
-              <div className="border-2 border-slate-200 bg-white p-6 rounded-lg shadow-md hover:shadow-lg transition-shadow duration-300  ">
+              <div className="border-2 border-slate-200 bg-white p-6 rounded-lg shadow-sm hover:shadow-lg transition-shadow duration-300  ">
                 <p className="hover:bg-slate-800 rounded-sm cursor-pointer hover:text-white transition duration-300 ease-in-out p-2">
                   <strong>Organizer:</strong> {tournamentDetails?.organizer}
                 </p>
@@ -493,11 +493,11 @@ export default function TournamentDetails({
                       </CardTitle>
                     ) : (
                       <CardTitle>
-                        {match?.qName?.team1.toUpperCase() ||
-                          match?.team1?.name.toUpperCase()}{" "}
+                        {match?.team1?.name.toUpperCase() ||
+                          match?.qName?.team1.toUpperCase()}{" "}
                         vs{" "}
-                        {match?.qName?.team2.toUpperCase() ||
-                          match?.team2?.name.toUpperCase()}
+                        {match?.team2?.name.toUpperCase() ||
+                          match?.qName?.team2.toUpperCase()}
                       </CardTitle>
                     )}
                     <CardDescription>

@@ -4,6 +4,7 @@ import { createGroups, updateMatchPlayedGroups } from "@/queries/groups";
 import {
   createMatches,
   getMatchesLeftGroup,
+  updateGroupEnd,
   updateMatchGoal,
   updateMatchStatus,
 } from "@/queries/matches";
@@ -102,6 +103,8 @@ export async function addTournaments(data) {
         data?.teamsPerGroup
       );
     }
+
+    console.log("groups created");
 
     const allMatch = {
       groupMatch: data?.groupMatch,
@@ -206,9 +209,14 @@ export async function editMatchStatus(matchDetails, status) {
         console.log("newGroups");
         // console.log(newGroups);
 
-        const matchesLeft = await getMatchesLeftGroup(matchDetails);
+        const matchesLeft = await getMatchesLeftGroup(tournament);
         console.log("matchesLeft");
         console.log(matchesLeft);
+
+        if (matchesLeft === "done") {
+          const newTeamsList = await updateGroupEnd(tournament);
+          console.log("newTeamsList");
+        }
       }
     }
 

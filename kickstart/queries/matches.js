@@ -492,29 +492,19 @@ export async function updateMatchGoal(gfTeam, gaTeam, player, matchDetails) {
   }
 }
 
-export async function getMatchesLeftGroup(matchDetails) {
+export async function getMatchesLeftGroup(tournament) {
   try {
-    const matchesFinished = await matchModel
+    const matchesUpcomingOrLive = await matchModel
       .find({
-        tournamentId: matchDetails.tournamentId,
+        tournamentId: tournament.id,
         type: "group",
-        status: "finished",
-        groupName: matchDetails?.groupName,
+        status: { $in: ["upcoming", "live"] },
       })
       .lean();
     // console.log(matchesFinished);
 
-    const allGroupMatches = await matchModel
-      .find({
-        tournamentId: matchDetails.tournamentId,
-        type: "group",
-        groupName: matchDetails?.groupName,
-      })
-      .lean();
-
-    console.log(allGroupMatches.length);
-    console.log(matchesFinished.length);
-    if (allGroupMatches.length === matchesFinished.length) {
+    console.log(matchesUpcomingOrLive.length);
+    if (matchesUpcomingOrLive.length === 0) {
       console.log("all matches finished");
       return "done";
     } else return "not done";
@@ -523,4 +513,101 @@ export async function getMatchesLeftGroup(matchDetails) {
   } catch (error) {
     throw new Error(error);
   }
+}
+
+export async function updateGroupEnd(tournament) {
+  const teamsQualifiedPerGroup = tournament?.teamsQPerGroup; // Example value, replace with actual value
+  const groupNumber = tournament?.groupsNum; // Example value, replace with actual value
+  const totalTeams = teamsQualifiedPerGroup * groupNumber;
+
+  if (totalTeams !== 8 && totalTeams !== 4) {
+    throw new Error(
+      "Invalid number of total teams for quarter or semi-finals."
+    );
+  }
+
+  console.log("tournament.id");
+  console.log(tournament.id);
+  const groups = await groupsModel
+    .find({ tournamentId: tournament.id.toString() })
+    .lean();
+  console.log(groups);
+
+  if (!groups || groups.length === 0) {
+    throw new Error(`No groups found for tournament ${tournament.id}.`);
+  }
+
+  const groupMap = {};
+  for (let i = 0; i < groupNumber; i++) {
+    const groupKey = `Group ${String.fromCharCode(65 + i)}`; // Group A, B, C, etc.
+    console.log(groupKey);
+    const group = groups.find((group) => group.name === groupKey);
+    if (!group) {
+      throw new Error(`Group ${groupKey} not found.`);
+    }
+
+    const rankedTeamList = group.teams.slice().sort((a, b) => {
+      if (a.points !== b.points) {
+        return b.points - a.points; // Sort by points in descending order
+      }
+      if (a.goalsFor - a.goalsAgainst !== b.goalsFor - b.goalsAgainst) {
+        return b.goalsFor - b.goalsAgainst - (a.goalsFor - a.goalsAgainst); // Sort by goal difference in descending order
+      }
+      if (a.goalsFor !== b.goalsFor) {
+        return b.goalsFor - a.goalsFor; // Sort by goals for in descending order
+      }
+      return a.name.localeCompare(b.name); // Sort by name in ascending order if all else is equal
+    });
+
+    groupMap[groupKey] = rankedTeamList.slice(0, teamsQualifiedPerGroup);
+    // console.log(rankedTeamList)
+  }
+
+  console.log("groupMap");
+  console.log(groupMap);
+
+  const matchTypes = totalTeams === 8 ? ["quarter"] : ["semi"];
+  const matches = await matchModel
+    .find({ type: { $in: matchTypes }, tournamentId: tournament.id })
+    .lean();
+  console.log(matches?.length);
+
+  for (const match of matches) {
+    const { qName } = match;
+    console.log(qName);
+    const team1Key = qName.team1;
+    const team2Key = qName.team2;
+
+    const group1 = `Group ${team1Key[0]}`;
+    const group2 = `Group ${team2Key[0]}`;
+
+    const team1Index = parseInt(team1Key[1], 10) - 1;
+    const team2Index = parseInt(team2Key[1], 10) - 1;
+
+    const team1 = groupMap[group1][team1Index];
+    const team2 = groupMap[group2][team2Index];
+
+    console.log("team1");
+    console.log(team1);
+    console.log(team2);
+
+    const teamsT1 = await teamsTournamentModel
+      .findOne({ teamId: team1.teamId, tournamentId: tournament.id })
+      .lean();
+
+    const teamsT2 = await teamsTournamentModel
+      .findOne({ teamId: team2.teamId, tournamentId: tournament.id })
+      .lean();
+
+    await matchModel.updateOne(
+      { _id: match._id },
+      {
+        $set: {
+          team1: teamsT1,
+          team2: teamsT2,
+        },
+      }
+    );
+  }
+  console.log("matches updated");
 }
