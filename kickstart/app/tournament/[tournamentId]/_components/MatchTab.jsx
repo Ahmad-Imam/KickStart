@@ -15,13 +15,20 @@ import React, { useState } from "react";
 
 export default function MatchTab({ matchesDetails, tournamentDetails }) {
   const [activeTab, setActiveTab] = useState("group");
+  const order = ["live", "upcoming", "finished"];
 
   const groupMatches = matchesDetails?.filter(
     (match) => match?.type === "group"
   );
-  const knockoutMatches = matchesDetails?.filter(
-    (match) => match?.type !== "group"
-  );
+  const knockoutMatches = matchesDetails
+    ?.filter((match) => match?.type !== "group")
+    .sort((a, b) => {
+      return order.indexOf(a.status) - order.indexOf(b.status);
+    });
+
+  const sortedKnockoutMatches = knockoutMatches.sort((a, b) => {
+    return order.indexOf(a.status) - order.indexOf(b.status);
+  });
 
   return (
     <div className="space-y-4">
@@ -190,7 +197,11 @@ export default function MatchTab({ matchesDetails, tournamentDetails }) {
                 <CardContent>
                   <Badge
                     className={
-                      match?.type === "group" ? "bg-blue-900" : "bg-amber-500"
+                      match?.type === "quarter"
+                        ? "bg-blue-900"
+                        : match?.type === "semi"
+                        ? "bg-amber-500"
+                        : "bg-indigo-700"
                     }
                     style={{
                       paddingLeft: 10,
@@ -200,13 +211,19 @@ export default function MatchTab({ matchesDetails, tournamentDetails }) {
                     {match?.type}
                   </Badge>
                   <Badge
-                    variant={
-                      match?.type === "group" ? "outline" : "destructive"
+                    // variant={
+                    //   match?.type === "quarter" ? "outline" : "secondary"
+                    // }
+                    className={
+                      match?.status === "live"
+                        ? "bg-red-800 hover:bg-black hover:text-white"
+                        : "bg-slate-800 text-white hover:bg-black hover:text-white"
                     }
-                    className="mx-6 hover:bg-black hover:text-white"
                     style={{
                       paddingLeft: 10,
                       paddingRight: 10,
+                      marginLeft: 10,
+                      marginRight: 10,
                     }}
                   >
                     {match?.status}

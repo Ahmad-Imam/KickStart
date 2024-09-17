@@ -751,3 +751,49 @@ export async function updateTiebreaker(matchDetails, teamId, index, result) {
     throw new Error(error);
   }
 }
+
+export async function finishTieBreaker(matchDetails) {
+  try {
+    const matchId = matchDetails?.id;
+    const currentTime = new Date().toLocaleTimeString();
+    const currentDate = new Date().toLocaleDateString();
+
+    const team1Result = matchDetails.tiebreaker.teamA.filter(
+      (result) => result === "scored"
+    ).length;
+
+    const team2Result = matchDetails.tiebreaker.teamB.filter(
+      (result) => result === "scored"
+    ).length;
+
+    const matchResult = {
+      team1: matchDetails?.result?.team1 + team1Result,
+      team2: matchDetails?.result?.team2 + team2Result,
+    };
+    console.log(matchResult);
+
+    const matchEvent = {
+      type: "tiebreaker",
+      time: currentTime,
+      date: currentDate,
+      description: "Tiebreaker ended",
+    };
+
+    const updatedMatch = await matchModel.findByIdAndUpdate(
+      matchId,
+      {
+        $push: { events: matchEvent },
+        $set: {
+          result: matchResult,
+        },
+      },
+      { new: true }
+    );
+
+    console.log("Tiebreaker finished");
+
+    return replaceMongoIdInObject(updatedMatch);
+  } catch (error) {
+    throw new Error(error);
+  }
+}

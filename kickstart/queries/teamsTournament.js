@@ -68,7 +68,9 @@ export async function updateMatchPlayedTeamsT(matchDetails, tournament) {
     const teamsTournament = await getTeamsTournamentByTournamentId(
       tournament.id
     );
-    // console.log(teamsTournament);
+
+    console.log("teamsTournament");
+    console.log(teamsTournament);
     // console.log(matchDetails);
 
     const teamsTournamentUpdated = teamsTournament
@@ -76,7 +78,7 @@ export async function updateMatchPlayedTeamsT(matchDetails, tournament) {
         let updateFields = { matchPlayed: 1 };
 
         if (matchDetails?.type === "group") {
-          if (team.teamId.toString() === matchDetails.team1.id.toString()) {
+          if (team?.teamId.toString() === matchDetails?.team1.id.toString()) {
             console.log("team1");
             if (matchDetails.result.team1 > matchDetails.result.team2) {
               updateFields.matchWon = 1;
@@ -110,11 +112,17 @@ export async function updateMatchPlayedTeamsT(matchDetails, tournament) {
             };
           }
         } else {
-          if (team.teamId.toString() === matchDetails.team1.teamId.toString()) {
+          console.log("not group");
+
+          if (
+            team?.teamId.toString() === matchDetails?.team1?.teamId.toString()
+          ) {
             console.log("team1");
-            if (matchDetails.result.team1 > matchDetails.result.team2) {
+            if (matchDetails?.result?.team1 > matchDetails?.result?.team2) {
               updateFields.matchWon = 1;
-            } else if (matchDetails.result.team1 < matchDetails.result.team2) {
+            } else if (
+              matchDetails?.result?.team1 < matchDetails?.result?.team2
+            ) {
               updateFields.matchLost = 1;
             } else {
               updateFields.matchDraw = 1;
@@ -127,7 +135,9 @@ export async function updateMatchPlayedTeamsT(matchDetails, tournament) {
             };
           }
 
-          if (team.teamId.toString() === matchDetails.team2.teamId.toString()) {
+          if (
+            team?.teamId.toString() === matchDetails?.team2?.teamId.toString()
+          ) {
             console.log("team2");
             if (matchDetails.result.team2 > matchDetails.result.team1) {
               updateFields.matchWon = 1;

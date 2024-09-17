@@ -20,22 +20,12 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
-import {
-  CalendarIcon,
-  MapPinIcon,
-  UserIcon,
-  TrophyIcon,
-  GoalIcon,
-  Goal,
-  PartyPopper,
-  PartyPopperIcon,
-  TriangleAlertIcon,
-  PlayIcon,
-  BadgeCheckIcon,
-  BadgeXIcon,
-} from "lucide-react";
-import { Separator } from "../ui/separator";
+import { CalendarIcon, MapPinIcon } from "lucide-react";
+
 import MatchTab from "@/app/tournament/[tournamentId]/_components/MatchTab";
+import OverViewTab from "@/app/tournament/[tournamentId]/_components/OverViewTab";
+import TeamsTab from "@/app/tournament/[tournamentId]/_components/TeamsTab";
+import GroupsTab from "@/app/tournament/[tournamentId]/_components/GroupsTab";
 
 const sampleTournament = {
   id: "t1",
@@ -339,148 +329,14 @@ export default function TournamentDetails({
           </TabsTrigger>
         </TabsList>
         <TabsContent value="overview" className="py-4">
-          <Card className="border-2 border-slate-200 hover:shadow-lg transition-shadow duration-300">
-            <CardHeader>
-              <CardTitle>Tournament Overview</CardTitle>
-              <CardDescription>{tournamentDetails?.bio}</CardDescription>
-            </CardHeader>
-            <CardContent>
-              <div className="border-2 border-slate-200 bg-white p-6 rounded-lg shadow-sm hover:shadow-lg transition-shadow duration-300  ">
-                <p className="hover:bg-slate-800 rounded-sm cursor-pointer hover:text-white transition duration-300 ease-in-out p-2">
-                  <strong>Organizer:</strong> {tournamentDetails?.organizer}
-                </p>
-                <p className="hover:bg-slate-800 rounded-sm cursor-pointer hover:text-white transition duration-300 ease-in-out p-2">
-                  <strong>Number of Groups:</strong>{" "}
-                  {tournamentDetails?.groupsNum}
-                </p>
-                <p className="hover:bg-slate-800 rounded-sm cursor-pointer hover:text-white transition duration-300 ease-in-out p-2">
-                  <strong>Teams per Group:</strong>{" "}
-                  {tournamentDetails?.teamsPerGroup}
-                </p>
-                <p className="hover:bg-slate-800 rounded-sm cursor-pointer hover:text-white transition duration-300 ease-in-out p-2">
-                  <strong>Teams Qualifying per Group:</strong>{" "}
-                  {tournamentDetails?.teamsQPerGroup}
-                </p>
-              </div>
-
-              <Card className="border-2 border-slate-200 hover:shadow-lg transition-shadow duration-300 my-8">
-                <CardHeader>
-                  <CardTitle>Tournament Top Scorers</CardTitle>
-                </CardHeader>
-                <CardContent>
-                  <ul className="space-y-2">
-                    {topScorers.slice(0, 3)?.map((scorer, index) => (
-                      <div key={index}>
-                        <li className="flex items-center justify-between p-2 hover:bg-slate-800 hover:text-white rounded">
-                          <span>{scorer?.name}</span>
-                          <Badge
-                            variant="secondary"
-                            className="flex items-center"
-                          >
-                            <TrophyIcon className="mr-1 h-4 w-4" />
-                            {scorer?.score}
-                          </Badge>
-                        </li>
-                        <Separator className="" />
-                      </div>
-                    ))}
-                  </ul>
-                </CardContent>
-              </Card>
-
-              <h2 className="text-2xl font-bold mt-8 mb-4">Live Updates</h2>
-              {sortedEvents?.length > 0 && (
-                <Card>
-                  <CardContent className="p-0 m-0">
-                    <ul className="p-0 m-0">
-                      {sortedEvents?.map((event, index) => (
-                        <div
-                          key={index}
-                          className="py-2 px-1 m-2  rounded-md border-1 hover:bg-slate-800 hover:text-white group"
-                        >
-                          <Link
-                            href={`/tournament/${tournamentDetails.id}/match/${event.matchId}`}
-                          >
-                            <li className="flex items-center">
-                              <Badge
-                                variant="outline"
-                                className="mx-2 group-hover:bg-slate-800 group-hover:text-white text-nowrap "
-                              >
-                                {event.time}
-                              </Badge>
-
-                              {event.type === "kickoff" ? (
-                                <BadgeCheckIcon
-                                  size={20}
-                                  className="mr-2 text-blue-600 group-hover:text-blue-400"
-                                />
-                              ) : event.type === "goal" ? (
-                                <PartyPopperIcon
-                                  size={20}
-                                  className="mr-2 text-green-600 group-hover:text-green-400"
-                                />
-                              ) : event.type === "yellow" ? (
-                                <TriangleAlertIcon
-                                  size={20}
-                                  className="mr-2 text-yellow-600 group-hover:text-yellow-400"
-                                />
-                              ) : event.type === "red" ? (
-                                <TriangleAlertIcon
-                                  size={20}
-                                  className="mr-2 text-red-600 group-hover:text-red-400"
-                                />
-                              ) : event.type === "fulltime" ? (
-                                <BadgeXIcon
-                                  size={20}
-                                  className="mr-2 text-red-600 group-hover:text-red-400"
-                                />
-                              ) : (
-                                <div></div>
-                              )}
-
-                              <span className="font-semibold mr-2 px-1">
-                                {event.type.toUpperCase()}:
-                              </span>
-                              <span>
-                                {/* {event.description || `${event.player} (${event.team})`} */}
-                                {event.description}
-                              </span>
-                            </li>
-                          </Link>
-                        </div>
-                      ))}
-                    </ul>
-                  </CardContent>
-                </Card>
-              )}
-            </CardContent>
-          </Card>
+          <OverViewTab
+            tournamentDetails={tournamentDetails}
+            topScorers={topScorers}
+            sortedEvents={sortedEvents}
+          />
         </TabsContent>
         <TabsContent value="teams" className="py-4">
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-            {tournamentDetails?.teamsTournament.map((team) => (
-              <Card
-                key={team.id}
-                className="border-2 border-slate-200 hover:shadow-lg transition-shadow duration-300"
-              >
-                <CardHeader>
-                  <CardTitle>{team.name}</CardTitle>
-                  <CardDescription>{team.location}</CardDescription>
-                </CardHeader>
-                <CardContent>
-                  <p className="mb-4">{team.bio}</p>
-                  <Link
-                    href={`/tournament/${tournamentDetails?.id}/team/${team.id}`}
-                    passHref
-                  >
-                    <Button className="bg-slate-800 hover:bg-black">
-                      View Team Details
-                    </Button>
-                  </Link>
-                </CardContent>
-              </Card>
-            ))}
-          </div>
+          <TeamsTab tournamentDetails={tournamentDetails} />
         </TabsContent>
         <TabsContent value="matches" className="py-4">
           <MatchTab
@@ -489,130 +345,10 @@ export default function TournamentDetails({
           />
         </TabsContent>
         <TabsContent value="groups" className="py-4">
-          {groupsDetails?.length > 0 ? (
-            <div className="space-y-8">
-              {groupsDetails
-                .slice() // Create a shallow copy to avoid mutating the original array
-                .map((group) => {
-                  return {
-                    ...group,
-                    teams: group.teams
-                      .slice() // Create a shallow copy of the teams array
-                      .sort((a, b) => {
-                        if (a.points !== b.points) {
-                          return b.points - a.points; // Sort by points in descending order
-                        }
-                        if (
-                          a.goalsFor - a.goalsAgainst !==
-                          b.goalsFor - b.goalsAgainst
-                        ) {
-                          return (
-                            b.goalsFor -
-                            b.goalsAgainst -
-                            (a.goalsFor - a.goalsAgainst)
-                          ); // Sort by goal difference in descending order
-                        }
-                        if (a.goalsFor !== b.goalsFor) {
-                          return b.goalsFor - a.goalsFor; // Sort by goals for in descending order
-                        }
-                        return a.name.localeCompare(b.name); // Sort by name in ascending order if all else is equal
-                      }),
-                  };
-                })
-                .sort((a, b) => a.name.localeCompare(b.name))
-                .map((group) => (
-                  <Card
-                    key={group?.id}
-                    className="border-2 border-slate-200 hover:shadow-lg transition-shadow duration-300"
-                  >
-                    <CardHeader>
-                      <CardTitle>{group?.name}</CardTitle>
-                    </CardHeader>
-                    <CardContent>
-                      <Table>
-                        <TableHeader>
-                          <TableRow className="text-center">
-                            <TableHead className="w-[100px]">
-                              Position
-                            </TableHead>
-                            <TableHead>Team</TableHead>
-                            <TableHead className="text-right">Played</TableHead>
-                            <TableHead className="text-right">Won</TableHead>
-                            <TableHead className="text-right">Drawn</TableHead>
-                            <TableHead className="text-right">Lost</TableHead>
-                            <TableHead className="text-right">GF</TableHead>
-                            <TableHead className="text-right">GA</TableHead>
-                            <TableHead className="text-right">GD</TableHead>
-                            <TableHead className="text-right">Points</TableHead>
-                          </TableRow>
-                        </TableHeader>
-                        <TableBody>
-                          {group.teams.map((team, index) => (
-                            <TableRow
-                              key={team?._id}
-                              className="text-center"
-                              style={{
-                                background:
-                                  index + 1 <= group.teamsQPerGroup
-                                    ? "rgb(30 41 59 / 1)"
-                                    : "white",
-                                color:
-                                  index + 1 <= group.teamsQPerGroup
-                                    ? "white"
-                                    : "black",
-                                cursor: "pointer",
-                              }}
-                            >
-                              <TableCell className="font-bold">
-                                {index + 1}
-                              </TableCell>
-                              <TableCell className="w-auto p-0">
-                                <Link
-                                  href={`/tournament/${tournamentDetails?.id}/team/${team?.teamId}`}
-                                  className="hover:underline text-xs "
-                                >
-                                  {team?.name}
-                                </Link>
-                              </TableCell>
-                              <TableCell className="text-right">
-                                {team?.matchPlayed}
-                              </TableCell>
-                              <TableCell className="text-right">
-                                {team?.matchWon}
-                              </TableCell>
-                              <TableCell className="text-right">
-                                {team?.matchDraw}
-                              </TableCell>
-                              <TableCell className="text-right">
-                                {team?.matchLost}
-                              </TableCell>
-                              <TableCell className="text-right">
-                                {team?.goalsFor}
-                              </TableCell>
-                              <TableCell className="text-right">
-                                {team?.goalsAgainst}
-                              </TableCell>
-                              <TableCell className="text-right">
-                                {team?.goalsFor - team?.goalsAgainst}
-                              </TableCell>
-                              <TableCell className="text-right font-bold">
-                                {team?.points}
-                              </TableCell>
-                            </TableRow>
-                          ))}
-                        </TableBody>
-                      </Table>
-                    </CardContent>
-                  </Card>
-                ))}
-            </div>
-          ) : (
-            <div className=" p-4 border-2 rounded-md shadow-sm border-slate-100 hover:shadow-lg transition-shadow duration-300">
-              <p className="text-gray-700 text-center font-semibold">
-                There are no groups available for this tournament.
-              </p>
-            </div>
-          )}
+          <GroupsTab
+            groupsDetails={groupsDetails}
+            tournamentDetails={tournamentDetails}
+          />
         </TabsContent>
       </Tabs>
     </div>

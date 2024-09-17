@@ -90,17 +90,20 @@ export default async function MatchDetails({ matchDetails, sortedEvents }) {
   let team2;
   //todo check for all match types
 
-  if (matchDetails?.type === "group" || matchDetails?.type === "final") {
+  if (matchDetails?.team1?.id) {
+    console.log("in id");
     team1 = await getTeamsTByTeamId(matchDetails?.team1?.id);
     team2 = await getTeamsTByTeamId(matchDetails?.team2?.id);
-  } else if (matchDetails?.type === "quarter") {
+  } else if (matchDetails?.team1?.teamId) {
+    console.log("in teamid");
     team1 = await getTeamsTByTeamId(matchDetails?.team1?.teamId);
     team2 = await getTeamsTByTeamId(matchDetails?.team2?.teamId);
   }
+
   console.log("team2");
   // console.log(matchDetails?.team2);
   // console.log(matchDetails?.team1);
-  // console.log(team1);
+  console.log(team1);
 
   return (
     <div className="container mx-auto px-4 py-8  h-full">
@@ -225,63 +228,65 @@ export default async function MatchDetails({ matchDetails, sortedEvents }) {
 
           <h2 className="text-2xl font-bold mt-8 mb-4">Match Events</h2>
           {sortedEvents?.length > 0 && (
-            <Card>
-              <CardContent className="p-0 m-0">
-                <ul className="p-0 m-0">
-                  {sortedEvents?.map((event, index) => (
-                    <div
-                      key={index}
-                      className="py-2 px-1 m-2  rounded-md border-1 hover:bg-slate-800 hover:text-white group"
-                    >
-                      <li className="flex items-center">
-                        <Badge
-                          variant="outline"
-                          className="mr-2 group-hover:bg-slate-800 group-hover:text-white text-nowrap"
-                        >
-                          {event.time}
-                        </Badge>
+            <div className="pb-6">
+              <Card>
+                <CardContent className="p-0 m-0">
+                  <ul className="p-0 m-0">
+                    {sortedEvents?.map((event, index) => (
+                      <div
+                        key={index}
+                        className="py-2 px-1 m-2  rounded-md border-1 hover:bg-slate-800 hover:text-white group"
+                      >
+                        <li className="flex items-center">
+                          <Badge
+                            variant="outline"
+                            className="mr-2 group-hover:bg-slate-800 group-hover:text-white text-nowrap"
+                          >
+                            {event.time}
+                          </Badge>
 
-                        {event.type === "kickoff" ? (
-                          <BadgeCheckIcon
-                            size={20}
-                            className="mr-2 text-blue-600 group-hover:text-blue-400"
-                          />
-                        ) : event.type === "goal" ? (
-                          <PartyPopperIcon
-                            size={20}
-                            className="mr-2 text-green-600 group-hover:text-green-400"
-                          />
-                        ) : event.type === "yellow" ? (
-                          <TriangleAlertIcon
-                            size={20}
-                            className="mr-2 text-yellow-600 group-hover:text-yellow-400"
-                          />
-                        ) : event.type === "red" ? (
-                          <TriangleAlertIcon
-                            size={20}
-                            className="mr-2 text-red-600 group-hover:text-red-400"
-                          />
-                        ) : event.type === "fulltime" ? (
-                          <BadgeXIcon
-                            size={20}
-                            className="mr-2 text-red-600 group-hover:text-red-400"
-                          />
-                        ) : (
-                          <div></div>
-                        )}
-                        <span className="font-semibold mr-2">
-                          {event.type.toUpperCase()}:
-                        </span>
-                        <span>
-                          {/* {event.description || `${event.player} (${event.team})`} */}
-                          {event.description}
-                        </span>
-                      </li>
-                    </div>
-                  ))}
-                </ul>
-              </CardContent>
-            </Card>
+                          {event.type === "kickoff" ? (
+                            <BadgeCheckIcon
+                              size={20}
+                              className="mr-2 text-blue-600 group-hover:text-blue-400"
+                            />
+                          ) : event.type === "goal" ? (
+                            <PartyPopperIcon
+                              size={20}
+                              className="mr-2 text-green-600 group-hover:text-green-400"
+                            />
+                          ) : event.type === "yellow" ? (
+                            <TriangleAlertIcon
+                              size={20}
+                              className="mr-2 text-yellow-600 group-hover:text-yellow-400"
+                            />
+                          ) : event.type === "red" ? (
+                            <TriangleAlertIcon
+                              size={20}
+                              className="mr-2 text-red-600 group-hover:text-red-400"
+                            />
+                          ) : event.type === "fulltime" ? (
+                            <BadgeXIcon
+                              size={20}
+                              className="mr-2 text-red-600 group-hover:text-red-400"
+                            />
+                          ) : (
+                            <div></div>
+                          )}
+                          <span className="font-semibold mr-2">
+                            {event.type.toUpperCase()}:
+                          </span>
+                          <span>
+                            {/* {event.description || `${event.player} (${event.team})`} */}
+                            {event.description}
+                          </span>
+                        </li>
+                      </div>
+                    ))}
+                  </ul>
+                </CardContent>
+              </Card>
+            </div>
           )}
         </div>
       )}

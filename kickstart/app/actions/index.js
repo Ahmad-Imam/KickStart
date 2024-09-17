@@ -4,6 +4,7 @@ import { createGroups, updateMatchPlayedGroups } from "@/queries/groups";
 import {
   addTiebreaker,
   createMatches,
+  finishTieBreaker,
   getMatchesLeftGroup,
   getMatchesLeftQuarter,
   getMatchesLeftSemi,
@@ -200,7 +201,9 @@ export async function editMatchStatus(matchDetails, status) {
     const tournament = await getTournamentById(matchDetails?.tournamentId);
 
     console.log("tournament");
-    // console.log(tournament);
+    // console.log(tournament.name);
+    // console.log(matchDetails);
+    // console.log(status);
     const newMatch = await updateMatchStatus(matchDetails, status, tournament);
     console.log("status updated");
     if (status === "finished") {
@@ -242,6 +245,8 @@ export async function editMatchStatus(matchDetails, status) {
           const newTeamsList = await updateSemiEnd(tournament);
           console.log("newTeamsList");
         }
+      } else if (matchDetails?.type === "final") {
+        console.log("final");
       }
     }
 
@@ -310,6 +315,23 @@ export async function editTiebreaker(matchDetails, teamId, index, result) {
       index,
       result
     );
+    console.log("tiebreaker");
+    console.log(tiebreaker);
+
+    revalidatePath(`/tournament/${matchDetails.tournamentId}`);
+    revalidatePath(
+      `/tournament/${matchDetails.tournamentId}/match/${matchDetails.id}`
+    );
+  } catch (error) {
+    throw new Error(error);
+  }
+}
+
+export async function endTiebreaker(matchDetails) {
+  try {
+    await dbConnect();
+    console.log(matchDetails);
+    const tiebreaker = await finishTieBreaker(matchDetails);
     console.log("tiebreaker");
     console.log(tiebreaker);
 

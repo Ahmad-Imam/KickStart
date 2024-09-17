@@ -111,7 +111,7 @@ export default function MatchSheet({ team1, team2, matchDetails }) {
             >
               {teams.map((team) => (
                 <Label
-                  key={team?._id}
+                  key={team?.name}
                   className={`flex items-center justify-center p-4 rounded-lg transition-all ${
                     selectedTeam?.name === team.name
                       ? "bg-slate-800 text-white shadow-lg"
@@ -152,7 +152,7 @@ export default function MatchSheet({ team1, team2, matchDetails }) {
                 <SelectContent>
                   {selectedTeam.players.map((player) => (
                     <SelectItem
-                      key={player?._id}
+                      key={player?.name}
                       value={player.name}
                       className="text-lg  "
                     >
