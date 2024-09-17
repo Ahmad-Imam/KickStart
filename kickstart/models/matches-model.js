@@ -37,10 +37,7 @@ const matchSchema = new Schema({
 
   red: [],
   events: [],
-
-  referee: {
-    type: String,
-  },
+  tiebreaker: {},
 });
 
 export const matchModel =

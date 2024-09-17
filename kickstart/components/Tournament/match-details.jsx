@@ -83,23 +83,24 @@ const sampleMatch = {
   ],
 };
 
-export default async function MatchDetails({ matchDetails }) {
+export default async function MatchDetails({ matchDetails, sortedEvents }) {
   const match = sampleMatch; // In a real app, you'd fetch this based on params.id
 
   let team1;
   let team2;
+  //todo check for all match types
 
-  if (matchDetails?.type === "group") {
+  if (matchDetails?.type === "group" || matchDetails?.type === "final") {
     team1 = await getTeamsTByTeamId(matchDetails?.team1?.id);
     team2 = await getTeamsTByTeamId(matchDetails?.team2?.id);
-  } else {
+  } else if (matchDetails?.type === "quarter") {
     team1 = await getTeamsTByTeamId(matchDetails?.team1?.teamId);
     team2 = await getTeamsTByTeamId(matchDetails?.team2?.teamId);
   }
   console.log("team2");
   // console.log(matchDetails?.team2);
+  // console.log(matchDetails?.team1);
   // console.log(team1);
-  // console.log(team2);
 
   return (
     <div className="container mx-auto px-4 py-8  h-full">
@@ -223,11 +224,11 @@ export default async function MatchDetails({ matchDetails }) {
           />
 
           <h2 className="text-2xl font-bold mt-8 mb-4">Match Events</h2>
-          {matchDetails?.events?.length > 0 && (
+          {sortedEvents?.length > 0 && (
             <Card>
               <CardContent className="p-0 m-0">
                 <ul className="p-0 m-0">
-                  {matchDetails.events?.map((event, index) => (
+                  {sortedEvents?.map((event, index) => (
                     <div
                       key={index}
                       className="py-2 px-1 m-2  rounded-md border-1 hover:bg-slate-800 hover:text-white group"

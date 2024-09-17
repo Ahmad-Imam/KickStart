@@ -27,6 +27,7 @@ export default function MatchSheet({ team1, team2, matchDetails }) {
   const [selectedPlayer, setSelectedPlayer] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
   const teams = [team1, team2];
+  console.log(teams);
 
   const handleSubmit = async () => {
     if (selectedTeam && selectedPlayer) {
@@ -110,7 +111,7 @@ export default function MatchSheet({ team1, team2, matchDetails }) {
             >
               {teams.map((team) => (
                 <Label
-                  key={team.name}
+                  key={team?._id}
                   className={`flex items-center justify-center p-4 rounded-lg transition-all ${
                     selectedTeam?.name === team.name
                       ? "bg-slate-800 text-white shadow-lg"
@@ -151,7 +152,7 @@ export default function MatchSheet({ team1, team2, matchDetails }) {
                 <SelectContent>
                   {selectedTeam.players.map((player) => (
                     <SelectItem
-                      key={player.id}
+                      key={player?._id}
                       value={player.name}
                       className="text-lg  "
                     >

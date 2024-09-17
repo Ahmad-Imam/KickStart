@@ -40,6 +40,7 @@ export async function createMatches(allMatch, tournamentId, matchDate) {
             team1: 0,
             team2: 0,
           },
+          tiebreaker: {},
         };
         console.log("hereeeeeeeeeeeeeeeeeeeeee");
         const createdMatch = await matchModel.create(matchData);
@@ -83,6 +84,7 @@ export async function createMatches(allMatch, tournamentId, matchDate) {
         },
         matchDate: matchDate,
         type: "final",
+        tiebreaker: {},
       };
       const createdMatch = await matchModel.create(matchData);
       console.log("match created g1 t2");
@@ -110,6 +112,7 @@ export async function createMatches(allMatch, tournamentId, matchDate) {
           },
           matchDate: matchDate,
           type: "quarter",
+          tiebreaker: {},
         };
         quarterMatches.push(matchData);
       }
@@ -128,6 +131,7 @@ export async function createMatches(allMatch, tournamentId, matchDate) {
           },
           matchDate: matchDate,
           type: "semi",
+          tiebreaker: {},
         };
         quarterMatches.push(matchData);
       }
@@ -143,6 +147,7 @@ export async function createMatches(allMatch, tournamentId, matchDate) {
         },
         matchDate: matchDate,
         type: "final",
+        tiebreaker: {},
       };
       quarterMatches.push(matchData);
       if (isThirdPlace) {
@@ -156,6 +161,7 @@ export async function createMatches(allMatch, tournamentId, matchDate) {
           },
           matchDate: matchDate,
           type: "third",
+          tiebreaker: {},
         };
         quarterMatches.push(matchData);
       }
@@ -180,6 +186,7 @@ export async function createMatches(allMatch, tournamentId, matchDate) {
           },
           matchDate: matchDate,
           type: "semi",
+          tiebreaker: {},
         };
         semiMatches.push(matchData);
       }
@@ -195,6 +202,7 @@ export async function createMatches(allMatch, tournamentId, matchDate) {
         },
         matchDate: matchDate,
         type: "final",
+        tiebreaker: {},
       };
       semiMatches.push(matchData);
       if (isThirdPlace) {
@@ -208,6 +216,7 @@ export async function createMatches(allMatch, tournamentId, matchDate) {
           },
           matchDate: matchDate,
           type: "third",
+          tiebreaker: {},
         };
         semiMatches.push(matchData);
       }
@@ -663,4 +672,82 @@ export async function updateGroupEnd(tournament) {
     );
   }
   console.log("matches updated");
+}
+
+export async function addTiebreaker(matchDetails) {
+  try {
+    const matchId = matchDetails?.id;
+    const currentTime = new Date().toLocaleTimeString();
+    const currentDate = new Date().toLocaleDateString();
+
+    const tiebreaker = {
+      teamA: Array(10).fill("pending"),
+      teamB: Array(10).fill("pending"),
+    };
+    console.log(tiebreaker);
+
+    const matchEvent = {
+      type: "tiebreaker",
+      time: currentTime,
+      date: currentDate,
+      description: "Tiebreaker started",
+    };
+
+    const test = {
+      name: "asd",
+    };
+
+    const updatedMatchTie = await matchModel.findByIdAndUpdate(
+      matchId,
+      {
+        tiebreaker,
+      },
+      { new: true }
+    );
+
+    const updatedMatch = await matchModel
+      .findByIdAndUpdate(matchId, {
+        $push: { events: matchEvent },
+      })
+      .lean();
+
+    console.log("updated tiebreaker");
+    // console.log(updatedMatchTie);
+
+    return replaceMongoIdInObject(updatedMatch);
+  } catch (error) {
+    throw new Error(error);
+  }
+}
+
+export async function updateTiebreaker(matchDetails, teamId, index, result) {
+  // Determine the field to update based on teamId
+  const teamField = teamId === "A" ? "tiebreaker.teamA" : "tiebreaker.teamB";
+
+  try {
+    // Construct the update query
+    const updateQuery = {
+      $set: {
+        [`${teamField}.${index}`]: result,
+      },
+    };
+
+    // Execute the update query
+    const updatedMatch = await matchModel
+      .findByIdAndUpdate(matchDetails?.id, updateQuery, {
+        new: true,
+        useFindAndModify: false,
+      })
+      .lean();
+
+    if (!updatedMatch) {
+      throw new Error("Match not found or update failed");
+    }
+
+    console.log("Updated match with tiebreaker:", updatedMatch);
+    return updatedMatch;
+  } catch (error) {
+    console.error("Error updating tiebreaker:", error);
+    throw new Error(error);
+  }
 }

@@ -24,6 +24,13 @@ export default async function MatchPage({ params }) {
 
   const match = await getMatchById(params.matchId);
   console.log("match");
+
+  const sortedEvents = match.events?.slice().sort((a, b) => {
+    const dateTimeA = new Date(`${a.date} ${a.time}`);
+    const dateTimeB = new Date(`${b.date} ${b.time}`);
+    return dateTimeB - dateTimeA;
+  });
+
   // console.log(match);
 
   // console.log(tournamentId);
@@ -35,7 +42,10 @@ export default async function MatchPage({ params }) {
         groupsDetails={JSON.parse(JSON.stringify(groups))}
       /> */}
 
-      <MatchDetails matchDetails={JSON.parse(JSON.stringify(match))} />
+      <MatchDetails
+        matchDetails={JSON.parse(JSON.stringify(match))}
+        sortedEvents={sortedEvents}
+      />
     </>
   );
 }

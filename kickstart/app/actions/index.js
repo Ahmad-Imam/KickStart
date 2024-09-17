@@ -2,6 +2,7 @@
 
 import { createGroups, updateMatchPlayedGroups } from "@/queries/groups";
 import {
+  addTiebreaker,
   createMatches,
   getMatchesLeftGroup,
   getMatchesLeftQuarter,
@@ -10,6 +11,7 @@ import {
   updateMatchGoal,
   updateMatchPlayedQuarter,
   updateMatchStatus,
+  updateTiebreaker,
 } from "@/queries/matches";
 import {
   createPlayers,
@@ -277,4 +279,45 @@ export async function addGoalToMatch(gfTeam, gaTeam, player, matchDetails) {
   }
 }
 
-export async function handleResult(matchDetails) {}
+export async function startTiebreaker(matchDetails) {
+  try {
+    await dbConnect();
+    console.log(matchDetails);
+
+    const tiebreaker = await addTiebreaker(matchDetails);
+    console.log("tiebreaker");
+    // console.log(tiebreaker);
+
+    revalidatePath(`/tournament/${matchDetails.tournamentId}`);
+    revalidatePath(
+      `/tournament/${matchDetails.tournamentId}/match/${matchDetails.id}`
+    );
+  } catch (error) {
+    throw new Error(error);
+  }
+}
+
+export async function editTiebreaker(matchDetails, teamId, index, result) {
+  try {
+    await dbConnect();
+    console.log(matchDetails);
+    console.log(teamId);
+    console.log(index);
+    console.log(result);
+    const tiebreaker = await updateTiebreaker(
+      matchDetails,
+      teamId,
+      index,
+      result
+    );
+    console.log("tiebreaker");
+    console.log(tiebreaker);
+
+    revalidatePath(`/tournament/${matchDetails.tournamentId}`);
+    revalidatePath(
+      `/tournament/${matchDetails.tournamentId}/match/${matchDetails.id}`
+    );
+  } catch (error) {
+    throw new Error(error);
+  }
+}
