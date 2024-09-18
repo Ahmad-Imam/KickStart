@@ -6,6 +6,16 @@ import { getTournamentById } from "@/queries/tournaments";
 import { dbConnect } from "@/service/mongo";
 import React from "react";
 
+export async function generateMetadata({ params: { matchId } }) {
+  await dbConnect();
+  const match = await getMatchById(matchId);
+  const tournament = await getTournamentById(match?.tournamentId);
+  return {
+    title: `${tournament?.name} - ${match?.team1?.name} vs ${match?.team2?.name}`,
+    description: match?.status,
+  };
+}
+
 export default async function MatchPage({ params }) {
   // const { tournamentId } = params;
   // console.log(params);

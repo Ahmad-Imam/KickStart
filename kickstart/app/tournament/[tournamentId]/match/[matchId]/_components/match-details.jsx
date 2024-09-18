@@ -108,36 +108,38 @@ export default async function MatchDetails({ matchDetails, sortedEvents }) {
 
   return (
     <div className="container mx-auto px-4 py-8  h-full">
-      <Link href={`/tournament/${matchDetails?.tournamentId}`} passHref>
-        <Button variant="outline" className="mb-4">
-          Back to Tournament
-        </Button>
+      <Link
+        href={`/tournament/${matchDetails?.tournamentId}`}
+        className=""
+        passHref
+      >
+        <div className="customButton my-4">Back to Tournament</div>
       </Link>
-      <h1 className="text-4xl font-bold mb-6">
+      <h1 className="text-2xl lg:text-4xl font-bold my-6">
         {matchDetails?.team1?.name || matchDetails?.qName?.team1} vs{" "}
         {matchDetails?.team2?.name || matchDetails?.qName?.team2}
       </h1>
       <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
-        <Card>
+        <Card className="cardFull border-2 border-slate-200 dark:border-slate-800  hover:shadow-lg transition-shadow duration-300">
           <CardHeader>
-            <CardTitle>Match Type</CardTitle>
+            <CardTitle className="text-xl lg:text-2xl">Match Type</CardTitle>
           </CardHeader>
           <CardContent>
             <Badge>{matchDetails?.type}</Badge>
           </CardContent>
         </Card>
-        <Card>
+        <Card className="cardFull border-2 border-slate-200 dark:border-slate-800  hover:shadow-lg transition-shadow duration-300">
           <CardHeader>
-            <CardTitle>Date</CardTitle>
+            <CardTitle className="text-xl lg:text-2xl">Date</CardTitle>
           </CardHeader>
           <CardContent className="flex items-center">
             <CalendarIcon className="mr-2" />
             <span>{new Date(matchDetails?.matchDate).toLocaleString()}</span>
           </CardContent>
         </Card>
-        <Card className="drop-shadow-sm hover:shadow-lg transition-shadow duration-300">
+        <Card className="cardFull border-2 border-slate-200 dark:border-slate-800  hover:shadow-lg transition-shadow duration-300">
           <CardHeader>
-            <CardTitle>Status</CardTitle>
+            <CardTitle className="text-xl lg:text-2xl">Status</CardTitle>
           </CardHeader>
           <CardContent>
             <Badge
@@ -158,9 +160,11 @@ export default async function MatchDetails({ matchDetails, sortedEvents }) {
       {matchDetails?.team1?.name && matchDetails?.team2?.name && (
         <div>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
-            <Card className="hover:shadow-lg transition-shadow duration-300">
+            <Card className="cardFull border-2 border-slate-200 dark:border-slate-800  hover:shadow-lg transition-shadow duration-300">
               <CardHeader>
-                <CardTitle>{matchDetails?.team1.name}</CardTitle>
+                <CardTitle className="text-xl lg:text-2xl">
+                  {matchDetails?.team1.name}
+                </CardTitle>
                 <CardDescription>
                   {matchDetails?.team1.location}
                 </CardDescription>
@@ -173,9 +177,11 @@ export default async function MatchDetails({ matchDetails, sortedEvents }) {
                 </div>
               </CardContent>
             </Card>
-            <Card className="hover:shadow-lg transition-shadow duration-300">
+            <Card className="cardFull border-2 border-slate-200 dark:border-slate-800  hover:shadow-lg transition-shadow duration-300">
               <CardHeader>
-                <CardTitle>{matchDetails?.team2.name}</CardTitle>
+                <CardTitle className="text-xl lg:text-2xl">
+                  {matchDetails?.team2.name}
+                </CardTitle>
                 <CardDescription>
                   {matchDetails?.team2.location}
                 </CardDescription>
@@ -191,9 +197,9 @@ export default async function MatchDetails({ matchDetails, sortedEvents }) {
           </div>
 
           <h2 className="text-2xl font-bold mt-8 mb-4">Score</h2>
-          <Card>
+          <Card className="cardFull border-2 border-slate-200 dark:border-slate-800  hover:shadow-lg transition-shadow duration-300">
             <CardContent className="text-center py-6">
-              <p className="text-3xl font-bold">
+              <p className="text-xl lg:text-2xl font-bold">
                 {matchDetails?.team1?.name} {matchDetails?.result?.team1} -{" "}
                 {matchDetails?.result?.team2} {matchDetails?.team2?.name}
               </p>
@@ -231,10 +237,16 @@ export default async function MatchDetails({ matchDetails, sortedEvents }) {
             matchDetails={matchDetails}
           />
 
-          <h2 className="text-2xl font-bold mt-8 mb-4">Match Events</h2>
+          {/* <h2 className="text-2xl font-bold mt-8 mb-4">Match Events</h2> */}
           {sortedEvents?.length > 0 && (
             <div className="pb-6">
-              <Card>
+              <Card className="cardFull border-2 border-slate-200 dark:border-slate-800  hover:shadow-lg transition-shadow duration-300">
+                <CardHeader>
+                  <CardTitle className="text-xl lg:text-2xl">
+                    Match Events
+                  </CardTitle>
+                </CardHeader>
+
                 <CardContent className="p-0 m-0">
                   <ul className="p-0 m-0">
                     {sortedEvents?.map((event, index) => (

@@ -57,7 +57,7 @@ export default async function TeamDetails({ teamsTournament, topScorers }) {
       </Link>
       <h1 className="text-4xl font-bold mb-6">{teamsTournament?.name}</h1>
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
-        <Card className=" border-slate-200 border-2 rounded-xl hover:shadow-lg transition-shadow duration-300">
+        <Card className=" cardFull border-2 border-slate-200 dark:border-slate-800  hover:shadow-lg transition-shadow duration-300">
           <CardHeader>
             <CardTitle>Location</CardTitle>
           </CardHeader>
@@ -67,7 +67,7 @@ export default async function TeamDetails({ teamsTournament, topScorers }) {
           </CardContent>
         </Card>
 
-        <div className="flex flex-row justify-between items-center p-4 shadow-sm  border-slate-200 border-2 rounded-xl hover:shadow-lg transition-shadow duration-300 ">
+        <Card className="flex flex-row justify-between items-center p-4 shadow-sm  cardFull border-2 border-slate-200 dark:border-slate-800  hover:shadow-lg transition-shadow duration-300 ">
           <div className="flex flex-col justify-end items-center">
             <div className="font-semibold text-lg">Played</div>
             <div className="font-semibold">{teamsTournament?.matchPlayed}</div>
@@ -84,7 +84,7 @@ export default async function TeamDetails({ teamsTournament, topScorers }) {
             <div className="font-semibold text-lg">Lost</div>
             <div className="font-semibold">{teamsTournament?.matchPlayed}</div>
           </div>
-        </div>
+        </Card>
       </div>
 
       <TeamsTPlayers
@@ -92,7 +92,7 @@ export default async function TeamDetails({ teamsTournament, topScorers }) {
         teamsTournament={teamsTournament}
       />
 
-      <Card className="border-2 border-slate-200 hover:shadow-lg transition-shadow duration-300 my-8">
+      <Card className="my-8 cardFull border-2 border-slate-200 dark:border-slate-800  hover:shadow-lg transition-shadow duration-300">
         <CardHeader>
           <CardTitle>Team Top Scorers</CardTitle>
         </CardHeader>

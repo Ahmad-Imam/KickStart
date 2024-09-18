@@ -60,10 +60,9 @@ export default function MatchSettings({ team1, team2, matchDetails }) {
   return (
     <div>
       <div className="py-4 flex flex-row justify-around items-start w-full">
-        <Button
-          variant="outline"
+        <div
           // disabled={matchFinished}
-          className=" bg-slate-800 text-white"
+          className=" customButton"
           onClick={handleClick}
         >
           {loading
@@ -71,7 +70,7 @@ export default function MatchSettings({ team1, team2, matchDetails }) {
             : matchStarted
             ? "End Match"
             : "Start Match"}
-        </Button>
+        </div>
 
         {matchStarted && (
           <MatchSheet
@@ -81,10 +80,9 @@ export default function MatchSettings({ team1, team2, matchDetails }) {
           />
         )}
 
-        <Button
-          variant="outline"
+        <div
           // disabled={tiebreakerEnd}
-          className=" bg-slate-800 text-white"
+          className=" customButton"
           onClick={handleTiebreaker}
         >
           {loadingTie
@@ -92,7 +90,7 @@ export default function MatchSettings({ team1, team2, matchDetails }) {
             : tiebreaker
             ? "End Tiebreaker"
             : "Start Tiebreaker"}
-        </Button>
+        </div>
       </div>
       {tiebreaker && <Tiebreaker matchDetails={matchDetails} />}
     </div>

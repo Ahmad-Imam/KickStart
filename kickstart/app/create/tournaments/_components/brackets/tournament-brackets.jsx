@@ -111,6 +111,7 @@ const SingleElimination = ({ transformedRounds }) => {
   return (
     <Bracket
       //   mobileBreakpoint={767}
+
       rounds={transformedRounds}
       renderSeedComponent={RenderSeed}
       swipeableProps={{ enableMouseEvents: true, animateHeight: true }}

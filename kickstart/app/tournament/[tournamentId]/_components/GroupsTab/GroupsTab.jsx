@@ -57,7 +57,7 @@ export default function GroupsTab({ groupsDetails, tournamentDetails }) {
             .map((group) => (
               <Card
                 key={group?.id}
-                className="border-2 border-slate-200 hover:shadow-lg transition-shadow duration-300"
+                className="cardFull border-2 border-slate-200 dark:border-slate-800  hover:shadow-lg transition-shadow duration-300"
               >
                 <CardHeader>
                   <CardTitle>{group?.name}</CardTitle>
@@ -139,11 +139,11 @@ export default function GroupsTab({ groupsDetails, tournamentDetails }) {
             ))}
         </div>
       ) : (
-        <div className=" p-4 border-2 rounded-md shadow-sm border-slate-100 hover:shadow-lg transition-shadow duration-300">
-          <p className="text-gray-700 text-center font-semibold">
+        <Card className="p-4 my-3 cardFull border-2 border-slate-200 dark:border-slate-800  hover:shadow-lg transition-shadow duration-300">
+          <p className="text-center font-semibold">
             There are no groups available for this tournament.
           </p>
-        </div>
+        </Card>
       )}
     </>
   );

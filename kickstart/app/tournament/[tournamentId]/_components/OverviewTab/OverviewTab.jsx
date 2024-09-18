@@ -32,13 +32,13 @@ export default function OverViewTab({
 
   return (
     <>
-      <Card className="border-2 border-slate-200 hover:shadow-lg transition-shadow duration-300">
+      <Card className="my-8 cardFull border-2 border-slate-200 dark:border-slate-800  hover:shadow-lg transition-shadow duration-300">
         <CardHeader>
-          <CardTitle>Tournament Overview</CardTitle>
+          <CardTitle className="">Tournament Overview</CardTitle>
           <CardDescription>{tournamentDetails?.bio}</CardDescription>
         </CardHeader>
         <CardContent>
-          <div className="border-2 border-slate-200 bg-white p-6 rounded-lg shadow-sm hover:shadow-lg transition-shadow duration-300  ">
+          <div className=" cardFull border-2 border-slate-200 dark:border-slate-800  p-6 rounded-lg shadow-sm hover:shadow-lg transition-shadow duration-300  ">
             <p className="hover:bg-slate-800 rounded-sm cursor-pointer hover:text-white transition duration-300 ease-in-out p-2">
               <strong>Organizer:</strong> {tournamentDetails?.organizer}
             </p>
@@ -55,7 +55,7 @@ export default function OverViewTab({
             </p>
           </div>
 
-          <Card className="border-2 border-slate-200 hover:shadow-lg transition-shadow duration-300 my-8">
+          <Card className="my-8 cardFull border-2 border-slate-200 dark:border-slate-800  hover:shadow-lg transition-shadow duration-300">
             <CardHeader>
               <CardTitle>Tournament Top Scorers</CardTitle>
             </CardHeader>
@@ -86,9 +86,11 @@ export default function OverViewTab({
             </CardContent>
           </Card>
 
-          <h2 className="text-2xl font-bold mt-8 mb-4">Live Updates</h2>
           {sortedEvents?.length > 0 && (
-            <Card>
+            <Card className="my-8 cardFull border-2 border-slate-200 dark:border-slate-800  hover:shadow-lg transition-shadow duration-300">
+              <CardHeader>
+                <CardTitle>Live Updates</CardTitle>
+              </CardHeader>
               <CardContent className="p-0 m-0">
                 <ul className="p-0 m-0">
                   {sortedEvents?.map((event, index) => (

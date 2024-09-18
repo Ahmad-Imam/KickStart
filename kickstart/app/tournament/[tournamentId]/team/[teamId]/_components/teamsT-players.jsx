@@ -44,7 +44,7 @@ export default function TeamsTPlayers({ playersInfo, teamsTournament }) {
           teamsTournament={teamsTournament}
         />
       </div>
-      <Card className="border-slate-200 border-2 rounded-xl hover:shadow-lg transition-shadow duration-300">
+      <Card className="cardFull border-2 border-slate-200 dark:border-slate-800  hover:shadow-lg transition-shadow duration-300">
         <CardContent className="py-2 px-2">
           <ul className="">
             {playersInfo?.length === 0 ? (

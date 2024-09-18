@@ -9,6 +9,19 @@ import { dbConnect } from "@/service/mongo";
 import React from "react";
 import { getTopScorers } from "@/queries/players";
 
+export async function generateMetadata({ params }) {
+  await dbConnect();
+  const teamsTournament = await getTeamsTournamentById(
+    params.teamId,
+    params.tournamentId
+  );
+  const tournament = await getTournamentById(teamsTournament?.tournamentId);
+  return {
+    title: `${tournament?.name} - ${teamsTournament?.name}`,
+    description: teamsTournament?.bio,
+  };
+}
+
 export default async function TeamsTPage({ params }) {
   // const { tournamentId } = params;
   console.log(params);

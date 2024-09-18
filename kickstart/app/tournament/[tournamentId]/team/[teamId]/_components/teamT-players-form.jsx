@@ -160,7 +160,7 @@ export default function TeamsTPlayersForm({
                     <li
                       key={index}
                       type="button"
-                      className="py-2 border-b last:border-b-0 cursor-pointer hover:bg-gray-100 rounded-sm p-2"
+                      className="py-2 border-b last:border-b-0 cursor-pointer hover:bg-gray-100 dark:hover:bg-slate-800 rounded-sm p-2"
                       onClick={() => handleResultClick(item)}
                     >
                       <div className="flex flex-row justify-between items-center gap-2 text-sm">
@@ -194,7 +194,7 @@ export default function TeamsTPlayersForm({
             {playersInfo?.map((item, index) => (
               <li
                 key={index}
-                className="flex justify-between items-center bg-gray-100 p-2 rounded text-[13px] md:text-sm"
+                className="flex justify-between items-center bg-gray-100 dark:bg-slate-800 p-2 rounded text-[13px] md:text-sm"
               >
                 {`${item?.name} # ${item?.jersey}`}
               </li>
@@ -210,7 +210,7 @@ export default function TeamsTPlayersForm({
             {savedItems?.map((item, index) => (
               <li
                 key={index}
-                className="flex justify-between items-center bg-gray-100 p-2 rounded text-[13px] md:text-sm"
+                className="flex justify-between items-center bg-gray-100 p-2 dark:bg-slate-800 rounded text-[13px] md:text-sm"
               >
                 {`${item?.name} # ${item?.jersey}`}
                 <Button
@@ -235,7 +235,7 @@ export default function TeamsTPlayersForm({
       ) : (
         <Button
           variant="outline"
-          className="w-1/2 my-4 bg-slate-800 text-white"
+          className="w-1/2 my-4 bg-slate-800 dark:bg-slate-800 text-white"
           onClick={handleSubmit}
         >
           Save Squad

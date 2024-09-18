@@ -14,8 +14,8 @@ export default function TeamsTab({ tournamentDetails }) {
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
         {tournamentDetails?.teamsTournament.map((team) => (
           <Card
-            key={team.id}
-            className="border-2 border-slate-200 hover:shadow-lg transition-shadow duration-300"
+            key={team?.id}
+            className="my-8 cardFull border-2 border-slate-200 dark:border-slate-800  hover:shadow-lg transition-shadow duration-300"
           >
             <CardHeader>
               <CardTitle>{team.name}</CardTitle>
@@ -27,7 +27,7 @@ export default function TeamsTab({ tournamentDetails }) {
                 href={`/tournament/${tournamentDetails?.id}/team/${team.id}`}
                 passHref
               >
-                <div className="w-40 text-white p-2 rounded-md text-sm text-center bg-slate-800 hover:bg-black">
+                <div className="w-40 text-white p-2 rounded-md text-sm text-center bg-slate-800 hover:bg-black dark:hover:bg-slate-900">
                   View Team Details
                 </div>
               </Link>

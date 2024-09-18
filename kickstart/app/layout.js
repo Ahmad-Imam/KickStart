@@ -2,6 +2,8 @@ import { Inter } from "next/font/google";
 import "./globals.css";
 import { MainNav } from "@/components/main-nav";
 import { Toaster } from "@/components/ui/sonner";
+import { ThemeProvider } from "@/components/theme-provider";
+import { ModeToggle } from "@/components/ModeToggle";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -33,20 +35,28 @@ export default function RootLayout({ children }) {
   return (
     <html lang="en">
       <body className={inter.className}>
-        <Toaster position="top-center" duration="1500" richColors />
-        <div className="flex h-screen flex-col items-center justify-between px-2">
-          <header className="bg-background/60 border-b w-5/6 h-20">
-            <div className="container flex items-center justify-between py-4 ">
-              <MainNav items={navLinks} />
-            </div>
-          </header>
-          {children}
-          {/* <footer className="bg-background/80 text-foreground/60 py-4 text-center bg-red-500 w-full">
+        <ThemeProvider
+          attribute="class"
+          defaultTheme="dark"
+          enableSystem
+          disableTransitionOnChange
+        >
+          <Toaster position="top-center" duration="1500" richColors />
+          <div className="flex h-screen flex-col items-center justify-between px-2">
+            <header className="bg-background/60 border-b w-5/6 h-20">
+              <div className="container flex items-center justify-between py-4 ">
+                <MainNav items={navLinks} />
+              </div>
+              <ModeToggle />
+            </header>
+            {children}
+            {/* <footer className="bg-background/80 text-foreground/60 py-4 text-center bg-red-500 w-full">
             <div className="">
               <p>&copy; 2022</p>
             </div>
           </footer> */}
-        </div>
+          </div>
+        </ThemeProvider>
       </body>
     </html>
   );

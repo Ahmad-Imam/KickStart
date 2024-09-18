@@ -78,7 +78,7 @@ export async function updateMatchPlayedTeamsT(matchDetails, tournament) {
         let updateFields = { matchPlayed: 1 };
 
         if (matchDetails?.type === "group") {
-          if (team?.teamId.toString() === matchDetails?.team1.id.toString()) {
+          if (team?.teamId.toString() === matchDetails?.team1?.id.toString()) {
             console.log("team1");
             if (matchDetails.result.team1 > matchDetails.result.team2) {
               updateFields.matchWon = 1;
@@ -95,7 +95,7 @@ export async function updateMatchPlayedTeamsT(matchDetails, tournament) {
             };
           }
 
-          if (team.teamId.toString() === matchDetails.team2.id.toString()) {
+          if (team.teamId.toString() === matchDetails.team2?.id.toString()) {
             console.log("team2");
             if (matchDetails.result.team2 > matchDetails.result.team1) {
               updateFields.matchWon = 1;
@@ -113,9 +113,11 @@ export async function updateMatchPlayedTeamsT(matchDetails, tournament) {
           }
         } else {
           console.log("not group");
-
+          console.log(team);
+          console.log(matchDetails);
           if (
-            team?.teamId.toString() === matchDetails?.team1?.teamId.toString()
+            team?.teamId?.toString() === matchDetails.team1?.id?.toString() ||
+            matchDetails?.team1?.teamId?.toString()
           ) {
             console.log("team1");
             if (matchDetails?.result?.team1 > matchDetails?.result?.team2) {
@@ -133,10 +135,9 @@ export async function updateMatchPlayedTeamsT(matchDetails, tournament) {
                 update: { $inc: updateFields },
               },
             };
-          }
-
-          if (
-            team?.teamId.toString() === matchDetails?.team2?.teamId.toString()
+          } else if (
+            team?.teamId?.toString() === matchDetails.team2?.id?.toString() ||
+            matchDetails?.team2?.teamId?.toString()
           ) {
             console.log("team2");
             if (matchDetails.result.team2 > matchDetails.result.team1) {
