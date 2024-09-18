@@ -24,6 +24,12 @@ export default function OverViewTab({
   topScorers,
   sortedEvents,
 }) {
+  if (typeof window !== "undefined") {
+    console.log("Rendering OverViewTab on the client");
+  } else {
+    console.log("Rendering OverViewTab on the server");
+  }
+
   return (
     <>
       <Card className="border-2 border-slate-200 hover:shadow-lg transition-shadow duration-300">
@@ -55,18 +61,27 @@ export default function OverViewTab({
             </CardHeader>
             <CardContent>
               <ul className="space-y-2">
-                {topScorers.slice(0, 5)?.map((scorer, index) => (
-                  <div key={index}>
-                    <li className="flex items-center justify-between p-2 hover:bg-slate-800 hover:text-white rounded">
-                      <span>{scorer?.name}</span>
-                      <Badge variant="secondary" className="flex items-center">
-                        <TrophyIcon className="mr-1 h-4 w-4" />
-                        {scorer?.score}
-                      </Badge>
-                    </li>
-                    <Separator className="" />
-                  </div>
-                ))}
+                {topScorers?.length === 0 ? (
+                  <li className="flex items-center justify-between p-2 hover:bg-slate-800 hover:text-white rounded">
+                    No scorers yet
+                  </li>
+                ) : (
+                  topScorers.slice(0, 5)?.map((scorer, index) => (
+                    <div key={index}>
+                      <li className="flex items-center justify-between p-2 hover:bg-slate-800 hover:text-white rounded">
+                        <span>{scorer?.name}</span>
+                        <Badge
+                          variant="secondary"
+                          className="flex items-center"
+                        >
+                          <TrophyIcon className="mr-1 h-4 w-4" />
+                          {scorer?.score}
+                        </Badge>
+                      </li>
+                      <Separator className="" />
+                    </div>
+                  ))
+                )}
               </ul>
             </CardContent>
           </Card>

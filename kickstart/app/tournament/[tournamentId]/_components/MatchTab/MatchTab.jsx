@@ -17,9 +17,11 @@ export default function MatchTab({ matchesDetails, tournamentDetails }) {
   const [activeTab, setActiveTab] = useState("group");
   const order = ["live", "upcoming", "finished"];
 
-  const groupMatches = matchesDetails?.filter(
-    (match) => match?.type === "group"
-  );
+  const groupMatches = matchesDetails
+    ?.filter((match) => match?.type === "group")
+    .sort((a, b) => {
+      return order.indexOf(a.status) - order.indexOf(b.status);
+    });
   const knockoutMatches = matchesDetails
     ?.filter((match) => match?.type !== "group")
     .sort((a, b) => {
@@ -198,7 +200,7 @@ export default function MatchTab({ matchesDetails, tournamentDetails }) {
                   <Badge
                     className={
                       match?.type === "quarter"
-                        ? "bg-blue-900"
+                        ? "bg-cyan-900"
                         : match?.type === "semi"
                         ? "bg-amber-500"
                         : "bg-indigo-700"

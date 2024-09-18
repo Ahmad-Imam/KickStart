@@ -70,6 +70,139 @@ export async function createMatches(allMatch, tournamentId, matchDate) {
           // Batch insert all matches for the group
           const createdMatches = await matchModel.insertMany(groupMatches);
           matchesList.push(...createdMatches.map(replaceMongoIdInObject));
+
+          if (quarterMatch.length > 0) {
+            console.log("quarterMatch");
+            const quarterMatches = [];
+            for (const match of quarterMatch) {
+              const matchData = {
+                tournamentId: tournamentId,
+                qName: {
+                  team1: match?.team1?.qName,
+                  team2: match?.team2?.qName,
+                },
+                status: "upcoming",
+                result: {
+                  team1: 0,
+                  team2: 0,
+                },
+                matchDate: matchDate,
+                type: "quarter",
+                tiebreaker: {},
+              };
+              quarterMatches.push(matchData);
+            }
+            //   const semiMatches = [];
+            for (let i = 0; i < 4; i = i + 2) {
+              const matchData = {
+                tournamentId: tournamentId,
+                qName: {
+                  team1: `qf${i + 1}`,
+                  team2: `qf${i + 2}`,
+                },
+                status: "upcoming",
+                result: {
+                  team1: 0,
+                  team2: 0,
+                },
+                matchDate: matchDate,
+                type: "semi",
+                tiebreaker: {},
+              };
+              quarterMatches.push(matchData);
+            }
+
+            //create final match
+            const matchData = {
+              tournamentId: tournamentId,
+              qName: { team1: "sf1", team2: "sf2" },
+              status: "upcoming",
+              result: {
+                team1: 0,
+                team2: 0,
+              },
+              matchDate: matchDate,
+              type: "final",
+              tiebreaker: {},
+            };
+            quarterMatches.push(matchData);
+            if (isThirdPlace) {
+              const matchData = {
+                tournamentId: tournamentId,
+                qName: { team1: "sf1", team2: "sf2" },
+                status: "upcoming",
+                result: {
+                  team1: 0,
+                  team2: 0,
+                },
+                matchDate: matchDate,
+                type: "third",
+                tiebreaker: {},
+              };
+              quarterMatches.push(matchData);
+            }
+
+            const createdMatchesQ = await matchModel.insertMany(quarterMatches);
+            //   const createdMatchesS = await matchModel.insertMany(semiMatches);
+            matchesList.push(...createdMatchesQ.map(replaceMongoIdInObject));
+            //   matchesList.push(...createdMatchesS.map(replaceMongoIdInObject));
+          }
+
+          if (semiMatch.length > 0) {
+            console.log("semiMatch");
+            const semiMatches = [];
+            for (const match of semiMatch) {
+              const matchData = {
+                tournamentId: tournamentId,
+                qName: {
+                  team1: match?.team1?.qName,
+                  team2: match?.team2?.qName,
+                },
+                status: "upcoming",
+                result: {
+                  team1: 0,
+                  team2: 0,
+                },
+                matchDate: matchDate,
+                type: "semi",
+                tiebreaker: {},
+              };
+              semiMatches.push(matchData);
+            }
+
+            //create final match
+            const matchData = {
+              tournamentId: tournamentId,
+              qName: { team1: "sf1", team2: "sf2" },
+              status: "upcoming",
+              result: {
+                team1: 0,
+                team2: 0,
+              },
+              matchDate: matchDate,
+              type: "final",
+              tiebreaker: {},
+            };
+            semiMatches.push(matchData);
+            if (isThirdPlace) {
+              const matchData = {
+                tournamentId: tournamentId,
+                qName: { team1: "sf1", team2: "sf2" },
+                status: "upcoming",
+                result: {
+                  team1: 0,
+                  team2: 0,
+                },
+                matchDate: matchDate,
+                type: "third",
+                tiebreaker: {},
+              };
+              semiMatches.push(matchData);
+            }
+
+            const createdMatches = await matchModel.insertMany(semiMatches);
+            matchesList.push(...createdMatches.map(replaceMongoIdInObject));
+          }
         }
       }
     } else if (teamsPerGroup === 1 && groupsNum === 2) {
@@ -93,17 +226,103 @@ export async function createMatches(allMatch, tournamentId, matchDate) {
     } else if (teamsPerGroup == 1 && groupsNum === 1) {
     } else if (teamsPerGroup == 1 && groupsNum === 4) {
       //semi. but no group matches
-    } else if (teamsPerGroup == 1 && groupsNum === 8) {
-      //quarter. but no group matches
-      //quarter. but no group matches
-    }
+      const semiTeamList = [];
+      const semiMatches = [];
 
-    if (quarterMatch.length > 0) {
-      console.log("quarterMatch");
-      const quarterMatches = [];
-      for (const match of quarterMatch) {
+      const qNameMap = {
+        A1: 0,
+        B1: 1,
+        C1: 2,
+        D1: 3,
+      };
+
+      for (let i = 0; i < 4; i++) {
+        semiTeamList.push(groupMatch[i].teams[0]);
+      }
+
+      for (const match of semiMatch) {
+        const team1Index = qNameMap[match?.team1?.qName] ?? 3;
+        const team2Index = qNameMap[match?.team2?.qName] ?? 3;
+
         const matchData = {
           tournamentId: tournamentId,
+          team1: semiTeamList[team1Index],
+          team2: semiTeamList[team2Index],
+          qName: { team1: match?.team1?.qName, team2: match?.team2?.qName },
+          status: "upcoming",
+          result: {
+            team1: 0,
+            team2: 0,
+          },
+          matchDate: matchDate,
+          type: "semi",
+          tiebreaker: {},
+        };
+        semiMatches.push(matchData);
+      }
+
+      //create final match
+      const matchData = {
+        tournamentId: tournamentId,
+        qName: { team1: "sf1", team2: "sf2" },
+        status: "upcoming",
+        result: {
+          team1: 0,
+          team2: 0,
+        },
+        matchDate: matchDate,
+        type: "final",
+        tiebreaker: {},
+      };
+      semiMatches.push(matchData);
+      if (isThirdPlace) {
+        const matchData = {
+          tournamentId: tournamentId,
+          qName: { team1: "sf1", team2: "sf2" },
+          status: "upcoming",
+          result: {
+            team1: 0,
+            team2: 0,
+          },
+          matchDate: matchDate,
+          type: "third",
+          tiebreaker: {},
+        };
+        semiMatches.push(matchData);
+      }
+
+      const createdMatches = await matchModel.insertMany(semiMatches);
+      matchesList.push(...createdMatches.map(replaceMongoIdInObject));
+    } else if (teamsPerGroup == 1 && groupsNum === 8) {
+      //quarter. but no group matches
+      console.log("quarterMatch");
+
+      const quarterTeamList = [];
+      const quarterMatches = [];
+
+      const qNameMap = {
+        A1: 0,
+        B1: 1,
+        C1: 2,
+        D1: 3,
+        E1: 4,
+        F1: 5,
+        G1: 6,
+        H1: 7,
+      };
+
+      for (let i = 0; i < 8; i++) {
+        quarterTeamList.push(groupMatch[i].teams[0]);
+      }
+
+      for (const match of quarterMatch) {
+        const team1Index = qNameMap[match?.team1?.qName] ?? 7;
+        const team2Index = qNameMap[match?.team2?.qName] ?? 7;
+
+        const matchData = {
+          tournamentId: tournamentId,
+          team1: quarterTeamList[team1Index],
+          team2: quarterTeamList[team2Index],
           qName: { team1: match?.team1?.qName, team2: match?.team2?.qName },
           status: "upcoming",
           result: {
@@ -116,6 +335,7 @@ export async function createMatches(allMatch, tournamentId, matchDate) {
         };
         quarterMatches.push(matchData);
       }
+
       //   const semiMatches = [];
       for (let i = 0; i < 4; i = i + 2) {
         const matchData = {
@@ -168,62 +388,140 @@ export async function createMatches(allMatch, tournamentId, matchDate) {
 
       const createdMatchesQ = await matchModel.insertMany(quarterMatches);
       //   const createdMatchesS = await matchModel.insertMany(semiMatches);
-      matchesList.push(...createdMatchesQ.map(replaceMongoIdInObject));
+      // matchesList.push(...createdMatchesQ.map(replaceMongoIdInObject));
       //   matchesList.push(...createdMatchesS.map(replaceMongoIdInObject));
+
+      //quarter. but no group matches
+    } else {
+      console.log("nothing");
     }
 
-    if (semiMatch.length > 0) {
-      console.log("semiMatch");
-      const semiMatches = [];
-      for (const match of semiMatch) {
-        const matchData = {
-          tournamentId: tournamentId,
-          qName: { team1: match?.team1?.qName, team2: match?.team2?.qName },
-          status: "upcoming",
-          result: {
-            team1: 0,
-            team2: 0,
-          },
-          matchDate: matchDate,
-          type: "semi",
-          tiebreaker: {},
-        };
-        semiMatches.push(matchData);
-      }
+    // if (quarterMatch.length > 0) {
+    //   console.log("quarterMatch");
+    //   const quarterMatches = [];
+    //   for (const match of quarterMatch) {
+    //     const matchData = {
+    //       tournamentId: tournamentId,
+    //       qName: { team1: match?.team1?.qName, team2: match?.team2?.qName },
+    //       status: "upcoming",
+    //       result: {
+    //         team1: 0,
+    //         team2: 0,
+    //       },
+    //       matchDate: matchDate,
+    //       type: "quarter",
+    //       tiebreaker: {},
+    //     };
+    //     quarterMatches.push(matchData);
+    //   }
+    //   //   const semiMatches = [];
+    //   for (let i = 0; i < 4; i = i + 2) {
+    //     const matchData = {
+    //       tournamentId: tournamentId,
+    //       qName: {
+    //         team1: `qf${i + 1}`,
+    //         team2: `qf${i + 2}`,
+    //       },
+    //       status: "upcoming",
+    //       result: {
+    //         team1: 0,
+    //         team2: 0,
+    //       },
+    //       matchDate: matchDate,
+    //       type: "semi",
+    //       tiebreaker: {},
+    //     };
+    //     quarterMatches.push(matchData);
+    //   }
 
-      //create final match
-      const matchData = {
-        tournamentId: tournamentId,
-        qName: { team1: "sf1", team2: "sf2" },
-        status: "upcoming",
-        result: {
-          team1: 0,
-          team2: 0,
-        },
-        matchDate: matchDate,
-        type: "final",
-        tiebreaker: {},
-      };
-      semiMatches.push(matchData);
-      if (isThirdPlace) {
-        const matchData = {
-          tournamentId: tournamentId,
-          qName: { team1: "sf1", team2: "sf2" },
-          status: "upcoming",
-          result: {
-            team1: 0,
-            team2: 0,
-          },
-          matchDate: matchDate,
-          type: "third",
-          tiebreaker: {},
-        };
-        semiMatches.push(matchData);
-      }
+    //   //create final match
+    //   const matchData = {
+    //     tournamentId: tournamentId,
+    //     qName: { team1: "sf1", team2: "sf2" },
+    //     status: "upcoming",
+    //     result: {
+    //       team1: 0,
+    //       team2: 0,
+    //     },
+    //     matchDate: matchDate,
+    //     type: "final",
+    //     tiebreaker: {},
+    //   };
+    //   quarterMatches.push(matchData);
+    //   if (isThirdPlace) {
+    //     const matchData = {
+    //       tournamentId: tournamentId,
+    //       qName: { team1: "sf1", team2: "sf2" },
+    //       status: "upcoming",
+    //       result: {
+    //         team1: 0,
+    //         team2: 0,
+    //       },
+    //       matchDate: matchDate,
+    //       type: "third",
+    //       tiebreaker: {},
+    //     };
+    //     quarterMatches.push(matchData);
+    //   }
 
-      const createdMatches = await matchModel.insertMany(semiMatches);
-      matchesList.push(...createdMatches.map(replaceMongoIdInObject));
-    }
+    //   const createdMatchesQ = await matchModel.insertMany(quarterMatches);
+    //   //   const createdMatchesS = await matchModel.insertMany(semiMatches);
+    //   matchesList.push(...createdMatchesQ.map(replaceMongoIdInObject));
+    //   //   matchesList.push(...createdMatchesS.map(replaceMongoIdInObject));
+    // }
+
+    // if (semiMatch.length > 0) {
+    //   console.log("semiMatch");
+    //   const semiMatches = [];
+    //   for (const match of semiMatch) {
+    //     const matchData = {
+    //       tournamentId: tournamentId,
+    //       qName: { team1: match?.team1?.qName, team2: match?.team2?.qName },
+    //       status: "upcoming",
+    //       result: {
+    //         team1: 0,
+    //         team2: 0,
+    //       },
+    //       matchDate: matchDate,
+    //       type: "semi",
+    //       tiebreaker: {},
+    //     };
+    //     semiMatches.push(matchData);
+    //   }
+
+    //   //create final match
+    //   const matchData = {
+    //     tournamentId: tournamentId,
+    //     qName: { team1: "sf1", team2: "sf2" },
+    //     status: "upcoming",
+    //     result: {
+    //       team1: 0,
+    //       team2: 0,
+    //     },
+    //     matchDate: matchDate,
+    //     type: "final",
+    //     tiebreaker: {},
+    //   };
+    //   semiMatches.push(matchData);
+    //   if (isThirdPlace) {
+    //     const matchData = {
+    //       tournamentId: tournamentId,
+    //       qName: { team1: "sf1", team2: "sf2" },
+    //       status: "upcoming",
+    //       result: {
+    //         team1: 0,
+    //         team2: 0,
+    //       },
+    //       matchDate: matchDate,
+    //       type: "third",
+    //       tiebreaker: {},
+    //     };
+    //     semiMatches.push(matchData);
+    //   }
+
+    //   const createdMatches = await matchModel.insertMany(semiMatches);
+    //   matchesList.push(...createdMatches.map(replaceMongoIdInObject));
+    // }
 
     console.log("matchesList");
     // console.log(matchesList);

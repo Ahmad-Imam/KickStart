@@ -1,6 +1,6 @@
 import React from "react";
 
-import Link from "next/link";
+// import Link from "next/link";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import {
   Card,
@@ -99,12 +99,12 @@ export default function GroupsTab({ groupsDetails, tournamentDetails }) {
                             {index + 1}
                           </TableCell>
                           <TableCell className="w-auto p-0">
-                            <Link
-                              href={`/tournament/${tournamentDetails?.id}/team/${team?.teamId}`}
+                            <div
+                              // href={`/tournament/${tournamentDetails?.id}/team/${team?.teamId}`}
                               className="hover:underline text-xs "
                             >
                               {team?.name}
-                            </Link>
+                            </div>
                           </TableCell>
                           <TableCell className="text-right">
                             {team?.matchPlayed}

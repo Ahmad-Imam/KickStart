@@ -103,7 +103,8 @@ export default async function MatchDetails({ matchDetails, sortedEvents }) {
   console.log("team2");
   // console.log(matchDetails?.team2);
   // console.log(matchDetails?.team1);
-  console.log(team1);
+  // console.log(team1);
+  // console.log(match?.status);
 
   return (
     <div className="container mx-auto px-4 py-8  h-full">
@@ -140,11 +141,15 @@ export default async function MatchDetails({ matchDetails, sortedEvents }) {
           </CardHeader>
           <CardContent>
             <Badge
-            // variant={
-            //   tournament.status === "upcoming" ? "secondary" : "default"
-            // }
+              // variant={
+              //   tournament.status === "upcoming" ? "secondary" : "default"
+              // }
+
+              className={
+                matchDetails?.status === "live" ? "bg-red-600" : "bg-slate-800"
+              }
             >
-              {matchDetails?.status}
+              {matchDetails?.status.toUpperCase()}
             </Badge>
           </CardContent>
         </Card>

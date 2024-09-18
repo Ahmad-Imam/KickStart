@@ -1,10 +1,19 @@
-import TournamentDetails from "@/components/Tournament/tournament-details";
+import TournamentDetails from "@/app/tournament/[tournamentId]/_components/tournament-details";
 import { getGroupsByTournamentId } from "@/queries/groups";
 import { getMatchesByTournamentId } from "@/queries/matches";
 import { getAllPlayersByIds, getTopScorers } from "@/queries/players";
 import { getTournamentById } from "@/queries/tournaments";
 import { dbConnect } from "@/service/mongo";
 import React from "react";
+
+export async function generateMetadata({ params: { tournamentId } }) {
+  await dbConnect();
+  const tournament = await getTournamentById(tournamentId);
+  return {
+    title: `KickStart - ${tournament?.name}`,
+    description: tournament?.status,
+  };
+}
 
 export default async function TournamentPage({ params }) {
   const { tournamentId } = params;
@@ -31,7 +40,7 @@ export default async function TournamentPage({ params }) {
   const currentTime = new Date().toLocaleTimeString();
   const currentDate = new Date().toLocaleDateString();
 
-  console.log("Current Time:", new Date(`${currentDate} ${currentTime}`));
+  // console.log("Current Time:", new Date(`${currentDate} ${currentTime}`));
   // console.log(sortedEvents[0]);
 
   // Use sortedEvents in your component

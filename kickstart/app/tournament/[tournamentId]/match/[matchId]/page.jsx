@@ -1,5 +1,5 @@
-import MatchDetails from "@/components/Tournament/match-details";
-import TournamentDetails from "@/components/Tournament/tournament-details";
+import MatchDetails from "@/app/tournament/[tournamentId]/match/[matchId]/_components/match-details";
+import TournamentDetails from "@/app/tournament/[tournamentId]/_components/tournament-details";
 import { getGroupsByTournamentId } from "@/queries/groups";
 import { getMatchById, getMatchesByTournamentId } from "@/queries/matches";
 import { getTournamentById } from "@/queries/tournaments";

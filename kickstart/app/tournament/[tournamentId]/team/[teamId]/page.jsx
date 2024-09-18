@@ -1,12 +1,13 @@
-import MatchDetails from "@/components/Tournament/match-details";
+import MatchDetails from "@/app/tournament/[tournamentId]/match/[matchId]/_components/match-details";
 import TeamDetails from "@/app/tournament/[tournamentId]/team/[teamId]/_components/teamsT-details";
-import TournamentDetails from "@/components/Tournament/tournament-details";
+import TournamentDetails from "@/app/tournament/[tournamentId]/_components/tournament-details";
 import { getGroupsByTournamentId } from "@/queries/groups";
 import { getMatchById, getMatchesByTournamentId } from "@/queries/matches";
 import { getTeamsTournamentById } from "@/queries/teamsTournament";
 import { getTournamentById } from "@/queries/tournaments";
 import { dbConnect } from "@/service/mongo";
 import React from "react";
+import { getTopScorers } from "@/queries/players";
 
 export default async function TeamsTPage({ params }) {
   // const { tournamentId } = params;
@@ -29,7 +30,16 @@ export default async function TeamsTPage({ params }) {
 
   // console.log(tournamentId);
 
-  const teamsTournament = await getTeamsTournamentById(params.teamId);
+  const teamsTournament = await getTeamsTournamentById(
+    params.teamId,
+    params.tournamentId
+  );
+
+  console.log(params.teamId);
+  console.log(params.tournamentId);
+
+  const topScorers = await getTopScorers(teamsTournament.scorers);
+  console.log(topScorers);
   // console.log(teamsTournament);
 
   return (
@@ -42,6 +52,7 @@ export default async function TeamsTPage({ params }) {
 
       <TeamDetails
         teamsTournament={JSON.parse(JSON.stringify(teamsTournament))}
+        topScorers={JSON.parse(JSON.stringify(topScorers))}
       />
     </>
   );

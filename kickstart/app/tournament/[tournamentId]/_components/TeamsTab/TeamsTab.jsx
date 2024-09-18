@@ -27,9 +27,9 @@ export default function TeamsTab({ tournamentDetails }) {
                 href={`/tournament/${tournamentDetails?.id}/team/${team.id}`}
                 passHref
               >
-                <Button className="bg-slate-800 hover:bg-black">
+                <div className="w-40 text-white p-2 rounded-md text-sm text-center bg-slate-800 hover:bg-black">
                   View Team Details
-                </Button>
+                </div>
               </Link>
             </CardContent>
           </Card>

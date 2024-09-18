@@ -22,10 +22,11 @@ import {
 } from "@/components/ui/table";
 import { CalendarIcon, MapPinIcon } from "lucide-react";
 
-import MatchTab from "@/app/tournament/[tournamentId]/_components/MatchTab";
-import OverViewTab from "@/app/tournament/[tournamentId]/_components/OverViewTab";
-import TeamsTab from "@/app/tournament/[tournamentId]/_components/TeamsTab";
-import GroupsTab from "@/app/tournament/[tournamentId]/_components/GroupsTab";
+import MatchTab from "@/app/tournament/[tournamentId]/_components/MatchTab/MatchTab";
+import OverViewTab from "@/app/tournament/[tournamentId]/_components/OverviewTab/OverviewTab";
+import TeamsTab from "@/app/tournament/[tournamentId]/_components/TeamsTab/TeamsTab";
+import GroupsTab from "@/app/tournament/[tournamentId]/_components/GroupsTab/GroupsTab";
+import TournamentTabs from "./TournamentTabs";
 
 const sampleTournament = {
   id: "t1",
@@ -261,73 +262,7 @@ export default function TournamentDetails({
         </Card>
       </div>
 
-      <Tabs value={activeTab} onValueChange={setActiveTab}>
-        <TabsList className="grid w-full grid-cols-4 gap-2 px-2 h-auto py-2 ">
-          <TabsTrigger
-            value="overview"
-            style={{
-              "--tw-bg-opacity": 1,
-              backgroundColor:
-                activeTab === "overview"
-                  ? "rgb(30 41 59 / var(--tw-bg-opacity))"
-                  : "white",
-              color: activeTab === "overview" ? "white" : "black",
-              cursor: "pointer",
-              borderRadius: "5px",
-              transition: "background-color 0.3s",
-            }}
-          >
-            Overview
-          </TabsTrigger>
-          <TabsTrigger
-            style={{
-              "--tw-bg-opacity": 1,
-              backgroundColor:
-                activeTab === "teams"
-                  ? "rgb(30 41 59 / var(--tw-bg-opacity))"
-                  : "white",
-              color: activeTab === "teams" ? "white" : "black",
-              cursor: "pointer",
-              borderRadius: "5px",
-              transition: "background-color 0.3s",
-            }}
-            value="teams"
-          >
-            Teams
-          </TabsTrigger>
-          <TabsTrigger
-            style={{
-              "--tw-bg-opacity": 1,
-              backgroundColor:
-                activeTab === "matches"
-                  ? "rgb(30 41 59 / var(--tw-bg-opacity))"
-                  : "white",
-              color: activeTab === "matches" ? "white" : "black",
-              cursor: "pointer",
-              borderRadius: "5px",
-              transition: "background-color 0.3s",
-            }}
-            value="matches"
-          >
-            Matches
-          </TabsTrigger>
-          <TabsTrigger
-            style={{
-              "--tw-bg-opacity": 1,
-              backgroundColor:
-                activeTab === "groups"
-                  ? "rgb(30 41 59 / var(--tw-bg-opacity))"
-                  : "white",
-              color: activeTab === "groups" ? "white" : "black",
-              cursor: "pointer",
-              borderRadius: "5px",
-              transition: "background-color 0.3s",
-            }}
-            value="groups"
-          >
-            Groups
-          </TabsTrigger>
-        </TabsList>
+      <TournamentTabs>
         <TabsContent value="overview" className="py-4">
           <OverViewTab
             tournamentDetails={tournamentDetails}
@@ -335,22 +270,25 @@ export default function TournamentDetails({
             sortedEvents={sortedEvents}
           />
         </TabsContent>
+
         <TabsContent value="teams" className="py-4">
           <TeamsTab tournamentDetails={tournamentDetails} />
         </TabsContent>
+
         <TabsContent value="matches" className="py-4">
           <MatchTab
             matchesDetails={matchesDetails}
             tournamentDetails={tournamentDetails}
           />
         </TabsContent>
+
         <TabsContent value="groups" className="py-4">
           <GroupsTab
             groupsDetails={groupsDetails}
             tournamentDetails={tournamentDetails}
           />
         </TabsContent>
-      </Tabs>
+      </TournamentTabs>
     </div>
   );
 }

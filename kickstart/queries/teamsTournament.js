@@ -52,10 +52,10 @@ export async function getTeamsTournamentByTournamentId(tournamentId) {
   }
 }
 
-export async function getTeamsTournamentById(teamId) {
+export async function getTeamsTournamentById(teamId, tournamentId) {
   try {
     const teamTournament = await teamsTournamentModel
-      .findOne({ teamId })
+      .findOne({ teamId, tournamentId })
       .lean();
     return replaceMongoIdInObject(teamTournament);
   } catch (error) {

@@ -13,6 +13,7 @@ import { MapPinIcon, TrophyIcon, AlertTriangleIcon } from "lucide-react";
 import TeamsTPlayers from "./teamsT-players";
 import { getAllPlayersByIds } from "@/queries/players";
 import { dbConnect } from "@/service/mongo";
+import { Separator } from "@/components/ui/separator";
 
 const sampleTeam = {
   _id: { $oid: "66df7347926d7338e1d73065" },
@@ -39,7 +40,7 @@ const sampleTeam = {
   __v: 0,
 };
 
-export default async function TeamDetails({ teamsTournament }) {
+export default async function TeamDetails({ teamsTournament, topScorers }) {
   const team = sampleTeam; // In a real app, you'd fetch this based on params.id
 
   await dbConnect();
@@ -91,22 +92,30 @@ export default async function TeamDetails({ teamsTournament }) {
         teamsTournament={teamsTournament}
       />
 
-      <h2 className="text-2xl font-bold mt-8 mb-4">Top Scorers</h2>
-      <Card>
+      <Card className="border-2 border-slate-200 hover:shadow-lg transition-shadow duration-300 my-8">
+        <CardHeader>
+          <CardTitle>Team Top Scorers</CardTitle>
+        </CardHeader>
         <CardContent>
           <ul className="space-y-2">
-            {team.scorer.players.map((player) => (
-              <li
-                key={player.id}
-                className="flex items-center justify-between p-2 hover:bg-gray-100 rounded"
-              >
-                <span>{player.name}</span>
-                <Badge variant="secondary" className="flex items-center">
-                  <TrophyIcon className="mr-1 h-4 w-4" />
-                  {player.goals}
-                </Badge>
+            {topScorers?.length === 0 ? (
+              <li className="flex items-center justify-between p-2 hover:bg-slate-800 hover:text-white rounded">
+                No scorers yet
               </li>
-            ))}
+            ) : (
+              topScorers.slice(0, 5)?.map((scorer, index) => (
+                <div key={index}>
+                  <li className="flex items-center justify-between p-2 hover:bg-slate-800 hover:text-white rounded">
+                    <span>{scorer?.name}</span>
+                    <Badge variant="secondary" className="flex items-center">
+                      <TrophyIcon className="mr-1 h-4 w-4" />
+                      {scorer?.score}
+                    </Badge>
+                  </li>
+                  <Separator className="" />
+                </div>
+              ))
+            )}
           </ul>
         </CardContent>
       </Card>
