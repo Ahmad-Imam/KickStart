@@ -32,3 +32,12 @@ export async function getTournamentById(tournamentId) {
     throw new Error(error);
   }
 }
+
+export async function getAllTournaments() {
+  try {
+    const tournaments = await tournamentsModel.find().lean();
+    return replaceMongoIdInArray(tournaments);
+  } catch (error) {
+    throw new Error(error);
+  }
+}
