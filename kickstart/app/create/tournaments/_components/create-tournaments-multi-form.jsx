@@ -563,7 +563,10 @@ export function TournamentMultiForm() {
                   formData.organizer === "" ||
                   formData.bio === "" ||
                   formData.location === "") && (
-                  <Alert variant="destructive" className="my-4">
+                  <Alert
+                    variant="destructive"
+                    className="my-4 dark:bg-slate-800 font-semibold dark:text-red-500"
+                  >
                     <AlertDescription>
                       Remember to fill all information before proceeding
                     </AlertDescription>
@@ -770,7 +773,7 @@ export function TournamentMultiForm() {
                 <div className="flex flex-row flex-wrap gap-2 py-2">
                   {generateGroupLabels(formData.groupsNum).map((label) => (
                     <Badge
-                      className="bg-black text-white text-base"
+                      className="bg-black dark:bg-slate-800 text-white text-base"
                       variant={"outline"}
                       key={label}
                     >
@@ -788,7 +791,7 @@ export function TournamentMultiForm() {
                     formData.teamsQPerGroup
                   ).map((label) => (
                     <Badge
-                      className="bg-black text-white text-sm"
+                      className="bg-black text-white text-sm dark:bg-slate-800"
                       variant={"outline"}
                       key={label}
                     >
@@ -830,12 +833,16 @@ export function TournamentMultiForm() {
 
         <CardFooter className="flex justify-between py-4 ">
           {page > 1 && (
-            <Button variant="outline" onClick={handlePrevious} type="button">
+            <div
+              className="customButton w-28"
+              onClick={handlePrevious}
+              type="button"
+            >
               Previous
-            </Button>
+            </div>
           )}
           {page < totalPages ? (
-            <Button
+            <div
               type="button"
               disabled={
                 (page === 1 &&
@@ -849,13 +856,18 @@ export function TournamentMultiForm() {
                     formData.groupsNum * formData.teamsPerGroup)
               }
               onClick={handleNext}
+              className="customButton w-28"
             >
               Next
-            </Button>
+            </div>
           ) : (
-            <Button type="button" onClick={(e) => handleSubmit(e)}>
+            <button
+              className="customButton w-28"
+              type="button"
+              onClick={(e) => handleSubmit(e)}
+            >
               Submit
-            </Button>
+            </button>
           )}
         </CardFooter>
       </form>

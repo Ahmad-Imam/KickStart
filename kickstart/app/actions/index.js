@@ -12,6 +12,7 @@ import {
   updateMatchGoal,
   updateMatchPlayedQuarter,
   updateMatchStatus,
+  updateMatchCard,
   updateTiebreaker,
 } from "@/queries/matches";
 import {
@@ -271,6 +272,30 @@ export async function addGoalToMatch(gfTeam, gaTeam, player, matchDetails) {
       replaceMongoIdInObject(gaTeam),
       player,
       matchDetails
+    );
+    console.log("match");
+    console.log(match);
+
+    revalidatePath(`/tournament/${matchDetails.tournamentId}`);
+    revalidatePath(
+      `/tournament/${matchDetails.tournamentId}/match/${matchDetails.id}`
+    );
+  } catch (error) {
+    throw new Error(error);
+  }
+}
+
+export async function addCardToMatch(team, player, matchDetails, type) {
+  try {
+    await dbConnect();
+    console.log(team);
+    console.log(player);
+    console.log(matchDetails);
+    const match = await updateMatchCard(
+      replaceMongoIdInObject(team),
+      player,
+      matchDetails,
+      type
     );
     console.log("match");
     console.log(match);

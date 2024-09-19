@@ -57,12 +57,14 @@ export default function MatchSettings({ team1, team2, matchDetails }) {
     }
   }
 
+  console.log(matchDetails?.result?.team1 !== matchDetails?.result?.team2);
+
   return (
     <div>
-      <div className="py-4 flex flex-row justify-around items-start w-full">
-        <div
+      <div className="py-4 grid grid-cols-1 md:grid-cols-3 lg:grid-cols-5 gap-4 justify-items-center items-center w-full">
+        <button
           // disabled={matchFinished}
-          className=" customButton"
+          className=" customButton m-2"
           onClick={handleClick}
         >
           {loading
@@ -70,19 +72,42 @@ export default function MatchSettings({ team1, team2, matchDetails }) {
             : matchStarted
             ? "End Match"
             : "Start Match"}
-        </div>
+        </button>
 
         {matchStarted && (
           <MatchSheet
             team1={JSON.parse(JSON.stringify(team1))}
             team2={JSON.parse(JSON.stringify(team2))}
             matchDetails={matchDetails}
+            type="score"
           />
         )}
 
-        <div
-          // disabled={tiebreakerEnd}
-          className=" customButton"
+        {matchStarted && (
+          <MatchSheet
+            team1={JSON.parse(JSON.stringify(team1))}
+            team2={JSON.parse(JSON.stringify(team2))}
+            matchDetails={matchDetails}
+            type="yellow"
+          />
+        )}
+
+        {matchStarted && (
+          <MatchSheet
+            team1={JSON.parse(JSON.stringify(team1))}
+            team2={JSON.parse(JSON.stringify(team2))}
+            matchDetails={matchDetails}
+            type="red"
+          />
+        )}
+
+        <button
+          disabled={
+            !matchStarted ||
+            tiebreakerEnd ||
+            matchDetails?.result?.team1 !== matchDetails?.result?.team2
+          }
+          className=" customButton disabled:opacity-50 m-2"
           onClick={handleTiebreaker}
         >
           {loadingTie
@@ -90,7 +115,7 @@ export default function MatchSettings({ team1, team2, matchDetails }) {
             : tiebreaker
             ? "End Tiebreaker"
             : "Start Tiebreaker"}
-        </div>
+        </button>
       </div>
       {tiebreaker && <Tiebreaker matchDetails={matchDetails} />}
     </div>

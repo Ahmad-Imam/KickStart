@@ -104,7 +104,7 @@ export default function OverViewTab({
                         <li className="flex items-center">
                           <Badge
                             variant="outline"
-                            className="mx-2 group-hover:bg-slate-800 group-hover:text-white text-nowrap "
+                            className="mr-2 group-hover:bg-slate-800 group-hover:text-white text-nowrap text-xs md:text-md"
                           >
                             {event.time}
                           </Badge>
@@ -112,22 +112,22 @@ export default function OverViewTab({
                           {event.type === "kickoff" ? (
                             <BadgeCheckIcon
                               size={20}
-                              className="mr-2 text-blue-600 group-hover:text-blue-400"
+                              className="mr-2 dark:text-blue-400 text-blue-600 group-hover:text-blue-400"
                             />
                           ) : event.type === "goal" ? (
                             <PartyPopperIcon
                               size={20}
-                              className="mr-2 text-green-600 group-hover:text-green-400"
+                              className="mr-2 dark:text-green-400 text-green-600 group-hover:text-green-400"
                             />
                           ) : event.type === "yellow" ? (
                             <TriangleAlertIcon
                               size={20}
-                              className="mr-2 text-yellow-600 group-hover:text-yellow-400"
+                              className="mr-2 dark:text-yellow-400 text-yellow-600 group-hover:text-yellow-400"
                             />
                           ) : event.type === "red" ? (
                             <TriangleAlertIcon
                               size={20}
-                              className="mr-2 text-red-600 group-hover:text-red-400"
+                              className="mr-2 dark:text-red-400 text-red-600 group-hover:text-red-400"
                             />
                           ) : event.type === "fulltime" ? (
                             <BadgeXIcon
@@ -137,16 +137,16 @@ export default function OverViewTab({
                           ) : (
                             <div></div>
                           )}
-
-                          <span className="font-semibold mr-2 px-1">
+                          <span className="font-semibold mr-2 text-xs md:text-sm lg:text-md">
                             {event.type.toUpperCase()}:
                           </span>
-                          <span>
+                          <span className="mx-2 text-xs md:text-sm lg:text-md">
                             {/* {event.description || `${event.player} (${event.team})`} */}
                             {event.description}
                           </span>
                         </li>
                       </Link>
+                      <Separator className="my-2" />
                     </div>
                   ))}
                 </ul>

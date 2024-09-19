@@ -92,12 +92,24 @@ export default async function MatchDetails({ matchDetails, sortedEvents }) {
 
   if (matchDetails?.team1?.id) {
     console.log("in id");
-    team1 = await getTeamsTByTeamId(matchDetails?.team1?.id);
-    team2 = await getTeamsTByTeamId(matchDetails?.team2?.id);
+    team1 = await getTeamsTByTeamId(
+      matchDetails?.team1?.id,
+      matchDetails?.tournamentId
+    );
+    team2 = await getTeamsTByTeamId(
+      matchDetails?.team2?.id,
+      matchDetails?.tournamentId
+    );
   } else if (matchDetails?.team1?.teamId) {
     console.log("in teamid");
-    team1 = await getTeamsTByTeamId(matchDetails?.team1?.teamId);
-    team2 = await getTeamsTByTeamId(matchDetails?.team2?.teamId);
+    team1 = await getTeamsTByTeamId(
+      matchDetails?.team1?.teamId,
+      matchDetails?.tournamentId
+    );
+    team2 = await getTeamsTByTeamId(
+      matchDetails?.team2?.teamId,
+      matchDetails?.tournamentId
+    );
   }
 
   console.log("team2");
@@ -125,7 +137,17 @@ export default async function MatchDetails({ matchDetails, sortedEvents }) {
             <CardTitle className="text-xl lg:text-2xl">Match Type</CardTitle>
           </CardHeader>
           <CardContent>
-            <Badge>{matchDetails?.type}</Badge>
+            <Badge
+              className={
+                match?.type === "quarter"
+                  ? "bg-cyan-900 dark:bg-cyan-400"
+                  : match?.type === "semi"
+                  ? "bg-amber-500 dark:bg-amber-400"
+                  : "bg-indigo-700 dark:bg-indigo-400"
+              }
+            >
+              {matchDetails?.type}
+            </Badge>
           </CardContent>
         </Card>
         <Card className="cardFull border-2 border-slate-200 dark:border-slate-800  hover:shadow-lg transition-shadow duration-300">
@@ -148,7 +170,9 @@ export default async function MatchDetails({ matchDetails, sortedEvents }) {
               // }
 
               className={
-                matchDetails?.status === "live" ? "bg-red-600" : "bg-slate-800"
+                matchDetails?.status === "live"
+                  ? "bg-red-800 dark:bg-red-600 hover:bg-black hover:text-white"
+                  : "bg-slate-800 dark:bg-blue-400 text-white hover:bg-black hover:text-white"
               }
             >
               {matchDetails?.status.toUpperCase()}
@@ -265,22 +289,22 @@ export default async function MatchDetails({ matchDetails, sortedEvents }) {
                           {event.type === "kickoff" ? (
                             <BadgeCheckIcon
                               size={20}
-                              className="mr-2 text-blue-600 group-hover:text-blue-400"
+                              className="mr-2 dark:text-blue-400 text-blue-600 group-hover:text-blue-400"
                             />
                           ) : event.type === "goal" ? (
                             <PartyPopperIcon
                               size={20}
-                              className="mr-2 text-green-600 group-hover:text-green-400"
+                              className="mr-2 dark:text-green-400 text-green-600 group-hover:text-green-400"
                             />
                           ) : event.type === "yellow" ? (
                             <TriangleAlertIcon
                               size={20}
-                              className="mr-2 text-yellow-600 group-hover:text-yellow-400"
+                              className="mr-2 dark:text-yellow-400 text-yellow-600 group-hover:text-yellow-400"
                             />
                           ) : event.type === "red" ? (
                             <TriangleAlertIcon
                               size={20}
-                              className="mr-2 text-red-600 group-hover:text-red-400"
+                              className="mr-2 dark:text-red-400 text-red-600 group-hover:text-red-400"
                             />
                           ) : event.type === "fulltime" ? (
                             <BadgeXIcon
@@ -293,7 +317,7 @@ export default async function MatchDetails({ matchDetails, sortedEvents }) {
                           <span className="font-semibold mr-2">
                             {event.type.toUpperCase()}:
                           </span>
-                          <span>
+                          <span className="mx-2 ">
                             {/* {event.description || `${event.player} (${event.team})`} */}
                             {event.description}
                           </span>

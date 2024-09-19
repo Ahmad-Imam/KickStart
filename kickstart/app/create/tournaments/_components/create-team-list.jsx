@@ -104,7 +104,7 @@ export default function CreateTeamsTournament({
                       <li
                         key={index}
                         type="button"
-                        className="py-2 border-b last:border-b-0 cursor-pointer hover:bg-gray-100 rounded-sm p-2"
+                        className="my-1 py-2 border-b last:border-b-0 cursor-pointer hover:bg-gray-100 dark:hover:bg-slate-800 rounded-sm p-2"
                         onClick={() => handleResultClick(item)}
                       >
                         <div className="flex flex-row justify-start items-center gap-2">
@@ -135,7 +135,7 @@ export default function CreateTeamsTournament({
             {savedItems?.map((item, index) => (
               <li
                 key={index}
-                className="flex justify-between items-center bg-gray-100 p-2 rounded text-[13px] md:text-sm"
+                className="flex justify-between items-center bg-gray-100 dark:bg-slate-800 p-2 rounded text-[13px] md:text-sm"
               >
                 {item?.name}
                 <Button

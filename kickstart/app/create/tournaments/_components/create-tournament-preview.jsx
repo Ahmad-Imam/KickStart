@@ -118,7 +118,7 @@ export default function TournamentPreview({
       <h1 className="text-2xl font-bold mb-4">Tournament Preview</h1>
 
       <section
-        className="mb-8 mt-10 p-6 bg-white rounded-lg transition duration-300 ease-in-out transform hover:-translate-y-1 hover:scale-105"
+        className="mb-8 mt-10 p-6 bg-white rounded-lg transition duration-300 ease-in-out transform hover:-translate-y-1 hover:scale-105 dark:bg-slate-900"
         style={{
           boxShadow:
             "0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 -4px 6px -1px rgba(0, 0, 0, 0.1), 4px 0 6px -1px rgba(0, 0, 0, 0.1), -4px 0 6px -1px rgba(0, 0, 0, 0.1)",
@@ -127,29 +127,29 @@ export default function TournamentPreview({
         <h2 className="text-xl font-semibold py-2 mb-4 ">
           Tournament Settings
         </h2>
-        <div className="bg-gray-100 p-6 rounded-lg shadow-md ">
-          <p className="mb-2  hover:bg-slate-800 rounded-sm cursor-pointer hover:text-white transition duration-300 ease-in-out p-2">
+        <div className="bg-gray-100 p-6 rounded-lg shadow-md dark:bg-slate-800">
+          <p className="mb-2 dark:hover:bg-slate-500 hover:bg-slate-800 rounded-sm cursor-pointer hover:text-white transition duration-300 ease-in-out p-2">
             <strong className="">Name:</strong>{" "}
             <span className="">{formData.name}</span>
           </p>
 
-          <p className="mb-2  hover:bg-slate-800 rounded-sm cursor-pointer hover:text-white transition duration-300 ease-in-out p-2">
+          <p className="mb-2 dark:hover:bg-slate-500 hover:bg-slate-800 rounded-sm cursor-pointer hover:text-white transition duration-300 ease-in-out p-2">
             <strong className="">Description:</strong>{" "}
             <span className="">{formData.bio}</span>
           </p>
-          <p className="mb-2 hover:bg-slate-800 rounded-sm cursor-pointer hover:text-white transition duration-300 ease-in-out p-2">
+          <p className="mb-2 dark:hover:bg-slate-500 hover:bg-slate-800 rounded-sm cursor-pointer hover:text-white transition duration-300 ease-in-out p-2">
             <strong className="">Location:</strong>{" "}
             <span className="">{formData.location}</span>
           </p>
-          <p className="mb-2 hover:bg-slate-800 rounded-sm cursor-pointer hover:text-white transition duration-300 ease-in-out p-2">
+          <p className="mb-2 dark:hover:bg-slate-500 hover:bg-slate-800 rounded-sm cursor-pointer hover:text-white transition duration-300 ease-in-out p-2">
             <strong className="">Organized By:</strong>{" "}
             <span className="">{formData.organizer}</span>
           </p>
-          <p className="mb-2 hover:bg-slate-800 rounded-sm cursor-pointer hover:text-white transition duration-300 ease-in-out p-2">
+          <p className="mb-2 dark:hover:bg-slate-500 hover:bg-slate-800 rounded-sm cursor-pointer hover:text-white transition duration-300 ease-in-out p-2">
             <strong className="">Start Date:</strong>{" "}
             <span className="">{formatDate(startDate)}</span>
           </p>
-          <p className="mb-2 hover:bg-slate-800 rounded-sm cursor-pointer hover:text-white transition duration-300 ease-in-out p-2">
+          <p className="mb-2 dark:hover:bg-slate-500 hover:bg-slate-800 rounded-sm cursor-pointer hover:text-white transition duration-300 ease-in-out p-2">
             <strong className="">End Date:</strong>{" "}
             <span className="">{formatDate(endDate)}</span>
           </p>
@@ -159,11 +159,11 @@ export default function TournamentPreview({
       </section>
       <section className="mb-8">
         <h2 className="text-xl font-semibold mb-2">Teams</h2>
-        <ul className="bg-gray-100 p-4 rounded flex flex-row flex-wrap gap-2 justify-around ">
+        <ul className="bg-gray-100 p-4 rounded flex flex-row flex-wrap gap-2 justify-around dark:bg-slate-900 ">
           {teamsTournament.map((team, index) => (
             <li
               key={index}
-              className="bg-white p-2 mb-2 rounded shadow hover:bg-slate-800 hover:text-white  transition duration-300 ease-in-out"
+              className="bg-white dark:bg-slate-800 dark:hover:bg-slate-600 p-2 mb-2 rounded shadow hover:bg-slate-800 hover:text-white  transition duration-300 ease-in-out"
             >
               {team.name}
             </li>
@@ -176,7 +176,7 @@ export default function TournamentPreview({
           {groupMatch.map((group, index) => (
             <div
               key={index}
-              className=" bg-gray-100 p-4 rounded mb-4 w-1/3 hover:shadow-lg transition duration-300 ease-in-out transform hover:-translate-y-1 hover:scale-105"
+              className=" bg-gray-100 dark:bg-slate-900 p-4 rounded mb-4 w-1/3 hover:shadow-lg transition duration-300 ease-in-out transform hover:-translate-y-1 hover:scale-105"
             >
               <h3 className=" pl-2 text-lg font-semibold pb-2">{group.name}</h3>
               <ul>
@@ -228,7 +228,7 @@ export default function TournamentPreview({
       <section className="mb-8 w-20 flex flex-row gap-10 items-center">
         <h2 className="text-xl font-semibold mb-2">Third Place</h2>
         <Badge
-          className="px-6 py-1 text-base border-2 border-black  hover:bg-slate-800 hover:text-white"
+          className="px-6 py-1 text-base border-2 border-black dark:hover:bg-slate-500 dark:bg-slate-800  hover:bg-slate-800 hover:text-white"
           variant="outline"
         >
           {thirdSwitch ? "YES" : "NO"}

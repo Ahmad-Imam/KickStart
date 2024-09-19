@@ -110,8 +110,7 @@ const RenderSeed = ({ breakpoint, seed }) => {
 const SingleElimination = ({ transformedRounds }) => {
   return (
     <Bracket
-      //   mobileBreakpoint={767}
-
+      mobileBreakpoint={650}
       rounds={transformedRounds}
       renderSeedComponent={RenderSeed}
       swipeableProps={{ enableMouseEvents: true, animateHeight: true }}

@@ -19,9 +19,9 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { addGoalToMatch } from "@/app/actions";
+import { addGoalToMatch, addCardToMatch } from "@/app/actions";
 
-export default function MatchSheet({ team1, team2, matchDetails }) {
+export default function MatchSheet({ team1, team2, matchDetails, type }) {
   const [isOpen, setIsOpen] = useState(false);
   const [selectedTeam, setSelectedTeam] = useState(null);
   const [selectedPlayer, setSelectedPlayer] = useState(null);
@@ -45,12 +45,29 @@ export default function MatchSheet({ team1, team2, matchDetails }) {
 
       setIsLoading(true);
 
-      await addGoalToMatch(
-        selectedTeam,
-        notSelectedTeam,
-        selectedPlayerObject,
-        matchDetails
-      );
+      if (type === "score") {
+        await addGoalToMatch(
+          selectedTeam,
+          notSelectedTeam,
+          selectedPlayerObject,
+          matchDetails
+        );
+      } else if (type === "yellow") {
+        console.log("inside yellow card");
+        await addCardToMatch(
+          selectedTeam,
+          selectedPlayerObject,
+          matchDetails,
+          type
+        );
+      } else if (type === "red") {
+        await addCardToMatch(
+          selectedTeam,
+          selectedPlayerObject,
+          matchDetails,
+          type
+        );
+      }
 
       console.log("Goal added successfully");
 
@@ -79,106 +96,125 @@ export default function MatchSheet({ team1, team2, matchDetails }) {
   // Combining the two teams into an array for easier mapping
 
   return (
-    <Sheet open={isOpen} onOpenChange={setIsOpen}>
-      <SheetTrigger asChild>
-        <Button variant="outline" className=" bg-slate-800 text-white">
-          Select Team & Player
-        </Button>
-      </SheetTrigger>
-      <SheetContent
-        side="bottom"
-        className="sm:max-w-[425px] mx-auto bg-gradient-to-b from-gray-50 to-white"
+    <div>
+      <Sheet
+        open={isOpen}
+        onOpenChange={setIsOpen}
+        className="dark:bg-slate-900"
       >
-        <SheetHeader className="mb-6">
-          <SheetTitle className="text-3xl font-bold">Add Score</SheetTitle>
-          <SheetDescription className="text-lg text-gray-600">
-            Choose the team and player.
-          </SheetDescription>
-        </SheetHeader>
-        <div className="space-y-8">
-          <div className="space-y-4">
-            <Label className="text-xl font-semibold text-gray-800">
-              Select a Team
-            </Label>
-            <RadioGroup
-              onValueChange={(value) => {
-                const team = teams.find((team) => team.name === value);
-                setSelectedTeam(team);
-                setSelectedPlayer(null);
-              }}
-              value={selectedTeam?.name || undefined}
-              className="grid grid-cols-2 gap-4"
-            >
-              {teams.map((team) => (
-                <Label
-                  key={team?.name}
-                  className={`flex items-center justify-center p-4 rounded-lg transition-all ${
-                    selectedTeam?.name === team.name
-                      ? "bg-slate-800 text-white shadow-lg"
-                      : "bg-white border-2 border-gray-200 hover:border-slate-800"
-                  }`}
-                >
-                  <RadioGroupItem
-                    value={team.name}
-                    id={team.name}
-                    className="sr-only"
-                  />
-                  <span className="text-lg font-medium text-center">
-                    {team.name}
-                  </span>
-                </Label>
-              ))}
-            </RadioGroup>
-          </div>
-
-          {selectedTeam && (
+        <SheetTrigger asChild>
+          <Button
+            variant="outline"
+            className=" bg-slate-800 text-white dark:bg-slate-800 dark:hover:bg-slate-900"
+          >
+            {type === "score"
+              ? "Add Goal"
+              : type === "yellow"
+              ? "Add Yellow"
+              : "Add Red"}
+          </Button>
+        </SheetTrigger>
+        <SheetContent
+          side="bottom"
+          className="sm:max-w-[425px] mx-auto bg-white dark:bg-slate-900"
+        >
+          <SheetHeader className="mb-6 dark:bg-slate-900">
+            <SheetTitle className="text-3xl font-bold">
+              {type === "score"
+                ? "Add Score"
+                : type === "yellow"
+                ? "Add Yellow Card"
+                : "Add Red Card"}
+            </SheetTitle>
+            <SheetDescription className="text-lg text-gray-600 dark:text-slate-400">
+              Choose the team and player.
+            </SheetDescription>
+          </SheetHeader>
+          <div className="space-y-8">
             <div className="space-y-4">
-              <Label
-                htmlFor="player-select"
-                className="text-xl font-semibold text-gray-800"
-              >
-                Select a Player
+              <Label className="text-xl font-semibold text-gray-800 dark:text-slate-200">
+                Select a Team
               </Label>
-              <Select
-                value={selectedPlayer || undefined}
-                onValueChange={setSelectedPlayer}
+              <RadioGroup
+                onValueChange={(value) => {
+                  const team = teams.find((team) => team.name === value);
+                  setSelectedTeam(team);
+                  setSelectedPlayer(null);
+                }}
+                value={selectedTeam?.name || undefined}
+                className="grid grid-cols-2 gap-4 "
               >
-                <SelectTrigger
-                  id="player-select"
-                  className="w-full bg-white border-2 border-gray-200 "
-                >
-                  <SelectValue placeholder="Choose a player" />
-                </SelectTrigger>
-                <SelectContent>
-                  {selectedTeam.players.map((player) => (
-                    <SelectItem
-                      key={player?.name}
-                      value={player.name}
-                      className="text-lg  "
-                    >
-                      {player.name}
-                    </SelectItem>
-                  ))}
-                </SelectContent>
-              </Select>
+                {teams.map((team) => (
+                  <Label
+                    key={team?.name}
+                    className={`flex items-center justify-center p-4 rounded-lg transition-all dark:bg-slate-800 ${
+                      selectedTeam?.name === team.name
+                        ? "bg-slate-800 text-white shadow-lg dark:bg-slate-600 dark:border-slate-200 border-2"
+                        : "bg-white border-2 border-gray-200 hover:border-slate-800 dark:hover:border-slate-600"
+                    }`}
+                  >
+                    <RadioGroupItem
+                      value={team.name}
+                      id={team.name}
+                      className="sr-only"
+                    />
+                    <span className="text-lg font-medium text-center">
+                      {team.name}
+                    </span>
+                  </Label>
+                ))}
+              </RadioGroup>
             </div>
-          )}
-          {/* <Button
+
+            {selectedTeam && (
+              <div className="space-y-4">
+                <Label
+                  htmlFor="player-select"
+                  className="text-xl font-semibold text-gray-800 dark:text-slate-400"
+                >
+                  Select a Player
+                </Label>
+                <Select
+                  value={selectedPlayer || undefined}
+                  onValueChange={setSelectedPlayer}
+                >
+                  <SelectTrigger
+                    id="player-select"
+                    className="w-full bg-white border-2 border-gray-200 dark:bg-slate-800"
+                  >
+                    <SelectValue placeholder="Choose a player" className="" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    {selectedTeam.players.map((player) => (
+                      <SelectItem
+                        key={player?.name}
+                        value={player.name}
+                        className="text-lg  dark:bg-slate-900"
+                      >
+                        {player.name}
+                      </SelectItem>
+                    ))}
+                  </SelectContent>
+                </Select>
+              </div>
+            )}
+            {/* <Button
             onClick={handleButtonClick}
             disabled={isLoading}
             className="w-full"
           >
             {isLoading ? "Closing..." : "Close After Delay"}
           </Button> */}
-          <Button
-            onClick={handleSubmit}
-            disabled={!selectedTeam || !selectedPlayer || isLoading}
-            className="w-full bg-slate-800 text-white text-lg py-6 rounded-lg transition-all disabled:opacity-50 disabled:cursor-not-allowed"
-          >
-            {isLoading ? "Updating match ..." : "Confirm changes"}
-          </Button>
-        </div>
-      </SheetContent>
-    </Sheet>
+            <button
+              onClick={handleSubmit}
+              disabled={!selectedTeam || !selectedPlayer || isLoading}
+              className="customButton w-full text-lg dark:hover:bg-slate-950 disabled:opacity-50 disabled:cursor-not-allowed"
+            >
+              {isLoading ? "Updating match ..." : "Confirm changes"}
+            </button>
+          </div>
+        </SheetContent>
+      </Sheet>
+    </div>
   );
 }

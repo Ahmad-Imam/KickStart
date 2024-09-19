@@ -57,10 +57,15 @@ export async function getTeamById(id) {
   }
 }
 
-export async function getTeamsTByTeamId(id) {
+export async function getTeamsTByTeamId(id, tournamentId) {
   try {
     //find from teamsT table where teamId = id
-    const teamsT = await teamsTournamentModel.findOne({ teamId: id }).lean();
+    const teamsT = await teamsTournamentModel
+      .findOne({
+        teamId: id,
+        tournamentId: tournamentId,
+      })
+      .lean();
     // console.log("teamsT");
     // console.log(teamsT);
 

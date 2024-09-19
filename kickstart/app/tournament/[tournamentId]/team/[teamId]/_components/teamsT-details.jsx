@@ -47,6 +47,10 @@ export default async function TeamDetails({ teamsTournament, topScorers }) {
   const playersInfo = await getAllPlayersByIds(teamsTournament.players);
   // console.log("playersInfo query");
   // console.log(playersInfo);
+  console.log("yeloooooooooooooooooooooooo");
+  console.log(teamsTournament?.id);
+  console.log(teamsTournament?.yellow);
+  console.log(teamsTournament?.red);
 
   return (
     <div className="container mx-auto px-4 py-8">
@@ -86,7 +90,6 @@ export default async function TeamDetails({ teamsTournament, topScorers }) {
           </div>
         </Card>
       </div>
-
       <TeamsTPlayers
         playersInfo={JSON.parse(JSON.stringify(playersInfo))}
         teamsTournament={teamsTournament}
@@ -94,7 +97,7 @@ export default async function TeamDetails({ teamsTournament, topScorers }) {
 
       <Card className="my-8 cardFull border-2 border-slate-200 dark:border-slate-800  hover:shadow-lg transition-shadow duration-300">
         <CardHeader>
-          <CardTitle>Team Top Scorers</CardTitle>
+          <CardTitle>Team Top Scorers: </CardTitle>
         </CardHeader>
         <CardContent>
           <ul className="space-y-2">
@@ -119,7 +122,6 @@ export default async function TeamDetails({ teamsTournament, topScorers }) {
           </ul>
         </CardContent>
       </Card>
-
       <h2 className="text-2xl font-bold mt-8 mb-4">Cards</h2>
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
         <Card>

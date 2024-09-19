@@ -316,9 +316,7 @@ export default function MatchTab({ matchesDetails, tournamentDetails }) {
                   </CardHeader>
                   <CardContent>
                     <Badge
-                      className={
-                        match?.type === "group" ? "bg-blue-900" : "bg-amber-500"
-                      }
+                      className={"bg-cyan-600 dark:bg-cyan-400 "}
                       style={{
                         paddingLeft: 10,
                         paddingRight: 10,
@@ -330,10 +328,15 @@ export default function MatchTab({ matchesDetails, tournamentDetails }) {
                       variant={
                         match?.type === "group" ? "outline" : "destructive"
                       }
-                      className="mx-6 hover:bg-black hover:text-white"
+                      className={
+                        match?.status === "live"
+                          ? "bg-red-800 dark:bg-red-600"
+                          : "bg-slate-800 dark:bg-blue-400 text-white dark:text-black "
+                      }
                       style={{
                         paddingLeft: 10,
                         paddingRight: 10,
+                        marginLeft: 10,
                       }}
                     >
                       {match?.status}
@@ -341,9 +344,9 @@ export default function MatchTab({ matchesDetails, tournamentDetails }) {
                     <Link
                       href={`/tournament/${tournamentDetails?.id}/match/${match?.id}`}
                     >
-                      <Button className="mt-4 bg-slate-800 hover:bg-black">
+                      <div className="mt-4 w-40 text-white p-2 rounded-md text-sm text-center bg-slate-800 hover:bg-black dark:hover:bg-slate-900">
                         View Match Details
-                      </Button>
+                      </div>
                     </Link>
                   </CardContent>
                 </Card>

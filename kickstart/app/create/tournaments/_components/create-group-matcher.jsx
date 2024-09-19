@@ -147,11 +147,7 @@ export default function GroupMatcher({
                 {group.teams.map((team, teamIndex) => (
                   <li
                     key={team?.id}
-                    className={`flex justify-between items-center p-2 text-sm rounded ${
-                      teamIndex < config.teamsQualified
-                        ? "bg-green-100"
-                        : "bg-gray-100"
-                    }`}
+                    className={`flex justify-between items-center p-2 text-sm rounded bg-gray-100 dark:bg-slate-800`}
                   >
                     {team?.name}
                     <Button
@@ -173,7 +169,10 @@ export default function GroupMatcher({
         ))}
       </div>
       {!isAllGroupsFilled && (
-        <Alert variant="destructive" className="my-4">
+        <Alert
+          variant="destructive"
+          className="my-4 dark:bg-slate-800 font-semibold dark:text-red-500"
+        >
           <AlertDescription>
             Please fill all groups before proceeding. Incomplete groups:{" "}
             {getIncompleteGroups()}

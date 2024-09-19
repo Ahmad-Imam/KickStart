@@ -104,9 +104,9 @@ export default function SFMatcher({ teamsQ, setSemiMatch }) {
         {matches.map((match, index) => (
           <Card
             key={index}
-            className="h-auto max-w-md m-0 p-0 mb-4 hover:shadow-lg hover:scale-105 transition-transform duration-200"
+            className="h-auto max-w-md m-0 p-0 mb-4 hover:shadow-lg hover:scale-105 transition-transform duration-200 dark:bg-slate-800"
           >
-            <CardHeader className="h-auto m-0 p-0 shadow-md bg-slate-50">
+            <CardHeader className="h-auto m-0 p-0 shadow-md bg-slate-50 dark:bg-slate-900">
               <CardTitle className="text-sm text-center py-1 font-bold">
                 SF{index + 1}
               </CardTitle>

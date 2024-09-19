@@ -46,6 +46,7 @@ export async function createMatches(allMatch, tournamentId, matchDate) {
         const createdMatch = await matchModel.create(matchData);
         // matchesList.push(replaceMongoIdInObject(createdMatch));
       } else {
+        console.log("should be here");
         for (const group of groupMatch) {
           const groupMatches = [];
           const teams = group.teams;
@@ -737,7 +738,6 @@ export async function updateMatchGoal(gfTeam, gaTeam, player, matchDetails) {
 
     console.log("tournaments updated complete");
 
-    const test = await teamsTournamentModel.findById(gfTeam.id).lean();
     console.log("gfTeam");
     console.log(gfTeam);
 
@@ -791,6 +791,155 @@ export async function updateMatchGoal(gfTeam, gaTeam, player, matchDetails) {
       time: currentTime,
       date: currentDate,
       description: `${gfTeam.name} Scored! Goal by ${player.name}. Current score: ${updatedMatch.team1.name} ${updatedMatch.result.team1} - ${updatedMatch.result.team2} ${updatedMatch.team2.name}`,
+      matchId,
+    };
+
+    // Update the tournament document in the database
+    const updatedTournamentEvent = await updateTournamentEvent(
+      tournamentEvent,
+      matchDetails.tournamentId
+    );
+    console.log("tournEvent updated");
+
+    return replaceMongoIdInObject(updatedMatch);
+  } catch (error) {
+    throw new Error(error);
+  }
+}
+
+export async function updateMatchCard(team, player, matchDetails, type) {
+  try {
+    const matchId = matchDetails?.id;
+    const currentTime = new Date().toLocaleTimeString();
+    const currentDate = new Date().toLocaleDateString();
+    const matchEvent = {
+      type: type,
+      time: currentTime,
+      date: currentDate,
+      description:
+        type === "yellow"
+          ? `Yellow Card for ${team.name}! ${player.name} just booked a yellow card`
+          : `Red Card for ${team.name}! ${player.name} has been sent off`,
+    };
+
+    //update result of the match. If the goal is scored by team1, increment team1 score by 1
+
+    // Update the match document in the database
+    const updatedMatch = await matchModel
+      .findByIdAndUpdate(
+        matchId,
+        {
+          $push: { events: matchEvent },
+        },
+        {
+          new: true,
+          upsert: true,
+        }
+      )
+      .lean();
+
+    console.log("matchResult updated");
+
+    console.log("gfTeam");
+    console.log(team);
+
+    if (type === "yellow") {
+      const updateResult = await teamsTournamentModel.findByIdAndUpdate(
+        { _id: team.id, tournamentId: matchDetails.tournamentId },
+        {
+          $inc: { "yellow.$[elem].score": 1 },
+        },
+        {
+          arrayFilters: [{ "elem.playerId": player.id }],
+          new: true,
+          upsert: true,
+        }
+      );
+    } else {
+      const updateResult = await teamsTournamentModel.findByIdAndUpdate(
+        { _id: team.id, tournamentId: matchDetails.tournamentId },
+        {
+          $inc: { "red.$[elem].score": 1 },
+        },
+        {
+          arrayFilters: [{ "elem.playerId": player.id }],
+          new: true,
+          upsert: true,
+        }
+      );
+    }
+
+    const updateResult = await teamsTournamentModel.findByIdAndUpdate(
+      { _id: team.id, tournamentId: matchDetails.tournamentId },
+      {
+        $inc: { "yellow.$[elem].score": 1 },
+      },
+      {
+        arrayFilters: [{ "elem.playerId": player.id }],
+        new: true,
+        upsert: true,
+      }
+    );
+
+    // console.log("Update result:", updateResult);
+    console.log("teamsT scorers for updated");
+
+    // Fetch the updated team tournament document
+    const updatedTeamTournament = await teamsTournamentModel
+      .findById(team.id)
+      .lean();
+
+    // console.log("Updated team tournament:", updatedTeamTournament);
+
+    // Check if the player is not already in the scorers array
+
+    if (type === "yellow") {
+      if (
+        !updatedTeamTournament.yellow.some(
+          (scorer) => scorer.playerId === player.id
+        )
+      ) {
+        console.log("if no prev teamsT scorers, goals for updated");
+        // Add the player to the yellow array with an initial score of 1
+        const addToSetResult = await teamsTournamentModel.findByIdAndUpdate(
+          { _id: team.id, tournamentId: matchDetails.tournamentId },
+          {
+            $addToSet: { yellow: { playerId: player.id, score: 1 } },
+          },
+          { new: true }
+        );
+        // console.log("Add to set result:", addToSetResult);
+      }
+    } else {
+      if (
+        !updatedTeamTournament.red.some(
+          (scorer) => scorer.playerId === player.id
+        )
+      ) {
+        console.log("if no prev teamsT scorers, goals for updated");
+        // Add the player to the yellow array with an initial score of 1
+        const addToSetResult = await teamsTournamentModel.findByIdAndUpdate(
+          { _id: team.id, tournamentId: matchDetails.tournamentId },
+          {
+            $addToSet: { red: { playerId: player.id, score: 1 } },
+          },
+          { new: true }
+        );
+        // console.log("Add to set result:", addToSetResult);
+      }
+    }
+
+    console.log("teamsT scorers for updated");
+
+    const tournamentEvent = {
+      type: type,
+      time: currentTime,
+      date: currentDate,
+      description:
+        type === "yellow"
+          ? `Yellow Card for ${team.name}! ${player.name} just booked a yellow card. Current score: ${updatedMatch.team1.name} ${updatedMatch.result.team1} - ${updatedMatch.result.team2} ${updatedMatch.team2.name}`
+          : `Red Card for ${team.name}! ${player.name} has been sent off. Current score: ${updatedMatch.team1.name} ${updatedMatch.result.team1} - ${updatedMatch.result.team2} ${updatedMatch.team2.name}`,
+
       matchId,
     };
 
