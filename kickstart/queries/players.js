@@ -128,6 +128,82 @@ export async function getTopScorers(playerScores) {
   }
 }
 
+export async function getYellowScorers(playerScores) {
+  console.log(playerScores.length);
+  try {
+    if (playerScores?.length === 0) {
+      return [];
+    }
+
+    // Extract player IDs from the input array
+    const playerIds = playerScores?.map((player) => player.playerId);
+
+    // Fetch player information from the playersModel
+    const players = await playersModel
+      .find({ _id: { $in: playerIds } })
+      .populate({
+        path: "team",
+        model: teamsModel,
+      })
+      .lean();
+
+    // Create a map of playerId to score for quick lookup
+    const scoreMap = playerScores?.reduce((map, player) => {
+      map[player.playerId] = player.score;
+      return map;
+    }, {});
+
+    // Merge player information with the corresponding score
+    const playersWithScores = players.map((player) => ({
+      ...player,
+      yellow: scoreMap[player._id],
+    }));
+    playersWithScores.sort((a, b) => b.score - a.score);
+
+    return replaceMongoIdInArray(playersWithScores);
+  } catch (error) {
+    throw new Error(error);
+  }
+}
+
+export async function getRedScorers(playerScores) {
+  console.log(playerScores.length);
+  try {
+    if (playerScores?.length === 0) {
+      return [];
+    }
+
+    // Extract player IDs from the input array
+    const playerIds = playerScores?.map((player) => player.playerId);
+
+    // Fetch player information from the playersModel
+    const players = await playersModel
+      .find({ _id: { $in: playerIds } })
+      .populate({
+        path: "team",
+        model: teamsModel,
+      })
+      .lean();
+
+    // Create a map of playerId to score for quick lookup
+    const scoreMap = playerScores?.reduce((map, player) => {
+      map[player.playerId] = player.score;
+      return map;
+    }, {});
+
+    // Merge player information with the corresponding score
+    const playersWithScores = players.map((player) => ({
+      ...player,
+      red: scoreMap[player._id],
+    }));
+    playersWithScores.sort((a, b) => b.score - a.score);
+
+    return replaceMongoIdInArray(playersWithScores);
+  } catch (error) {
+    throw new Error(error);
+  }
+}
+
 export async function updatePlayerTeam(playersInTeam, teamsId) {
   try {
     // const newPlayers = await playersModel.updateMany(

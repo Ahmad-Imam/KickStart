@@ -104,8 +104,9 @@ export default function MatchSettings({ team1, team2, matchDetails }) {
         <button
           disabled={
             !matchStarted ||
-            tiebreakerEnd ||
-            matchDetails?.result?.team1 !== matchDetails?.result?.team2
+            matchDetails?.type === "group" ||
+            matchDetails?.result?.team1 !== matchDetails?.result?.team2 ||
+            tiebreakerEnd
           }
           className=" customButton disabled:opacity-50 m-2"
           onClick={handleTiebreaker}

@@ -140,10 +140,10 @@ export default async function MatchDetails({ matchDetails, sortedEvents }) {
             <Badge
               className={
                 match?.type === "quarter"
-                  ? "bg-cyan-900 dark:bg-cyan-400"
+                  ? "bg-cyan-900 dark:bg-cyan-400 dark:text-gray-50"
                   : match?.type === "semi"
-                  ? "bg-amber-500 dark:bg-amber-400"
-                  : "bg-indigo-700 dark:bg-indigo-400"
+                  ? "bg-amber-500 dark:bg-amber-400 dark:text-gray-50"
+                  : "bg-indigo-700 dark:bg-indigo-400 dark:text-gray-50"
               }
             >
               {matchDetails?.type}
@@ -171,8 +171,8 @@ export default async function MatchDetails({ matchDetails, sortedEvents }) {
 
               className={
                 matchDetails?.status === "live"
-                  ? "bg-red-800 dark:bg-red-600 hover:bg-black hover:text-white"
-                  : "bg-slate-800 dark:bg-blue-400 text-white hover:bg-black hover:text-white"
+                  ? "bg-red-800 dark:bg-red-600 hover:bg-black hover:text-white dark:text-gray-50"
+                  : "bg-slate-800 dark:bg-blue-400 text-white hover:bg-black hover:text-white dark:text-gray-50"
               }
             >
               {matchDetails?.status.toUpperCase()}

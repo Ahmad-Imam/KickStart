@@ -204,11 +204,11 @@ export default function MatchTab({ matchesDetails, tournamentDetails }) {
   };
 
   return (
-    <div className="space-y-4 flex flex-row justify-center w-full">
+    <div className="space-y-4 flex flex-row justify-center">
       <Tabs
         value={activeTab}
         onValueChange={setActiveTab}
-        className="flex flex-col "
+        className="flex flex-col w-full"
       >
         <TabsList className=" flex flex-row justify-around gap-6 h-auto">
           <TabsTrigger
@@ -289,7 +289,7 @@ export default function MatchTab({ matchesDetails, tournamentDetails }) {
               groupMatches.map((match) => (
                 <Card
                   key={match?.id}
-                  className="my-3 border-2 border-slate-200 hover:shadow-lg transition-shadow duration-300"
+                  className="my-3 cardFull border-2 border-slate-200 dark:border-slate-800  hover:shadow-lg transition-shadow duration-300"
                 >
                   <CardHeader>
                     {match?.type === "group" ? (
@@ -316,7 +316,9 @@ export default function MatchTab({ matchesDetails, tournamentDetails }) {
                   </CardHeader>
                   <CardContent>
                     <Badge
-                      className={"bg-cyan-600 dark:bg-cyan-400 "}
+                      className={
+                        "bg-cyan-600 dark:bg-cyan-400 dark:text-gray-50 "
+                      }
                       style={{
                         paddingLeft: 10,
                         paddingRight: 10,
@@ -330,8 +332,8 @@ export default function MatchTab({ matchesDetails, tournamentDetails }) {
                       }
                       className={
                         match?.status === "live"
-                          ? "bg-red-800 dark:bg-red-600"
-                          : "bg-slate-800 dark:bg-blue-400 text-white dark:text-black "
+                          ? "bg-red-800 dark:bg-red-600 dark:text-gray-50"
+                          : "bg-slate-800 dark:bg-blue-400 text-white dark:text-gray-50"
                       }
                       style={{
                         paddingLeft: 10,
@@ -396,10 +398,10 @@ export default function MatchTab({ matchesDetails, tournamentDetails }) {
                     <Badge
                       className={
                         match?.type === "quarter"
-                          ? "bg-cyan-900 dark:bg-cyan-400"
+                          ? "bg-cyan-900 dark:bg-cyan-400 dark:text-gray-50"
                           : match?.type === "semi"
-                          ? "bg-amber-500 dark:bg-amber-400"
-                          : "bg-indigo-700 dark:bg-indigo-400"
+                          ? "bg-amber-500 dark:bg-amber-400 dark:text-gray-50"
+                          : "bg-indigo-700 dark:bg-indigo-400 dark:text-gray-50"
                       }
                       style={{
                         paddingLeft: 10,
@@ -414,8 +416,8 @@ export default function MatchTab({ matchesDetails, tournamentDetails }) {
                       // }
                       className={
                         match?.status === "live"
-                          ? "bg-red-800 dark:bg-red-600 hover:bg-black hover:text-white"
-                          : "bg-slate-800 dark:bg-blue-400 text-white hover:bg-black hover:text-white"
+                          ? "bg-red-800 dark:bg-red-600 hover:bg-black hover:text-white dark:text-gray-50"
+                          : "bg-slate-800 dark:bg-blue-400 text-white hover:bg-black hover:text-white dark:text-gray-50"
                       }
                       style={{
                         paddingLeft: 10,

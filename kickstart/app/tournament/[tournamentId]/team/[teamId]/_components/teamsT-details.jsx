@@ -40,9 +40,13 @@ const sampleTeam = {
   __v: 0,
 };
 
-export default async function TeamDetails({ teamsTournament, topScorers }) {
-  const team = sampleTeam; // In a real app, you'd fetch this based on params.id
-
+export default async function TeamDetails({
+  teamsTournament,
+  topScorers,
+  yellowCards,
+  redCards,
+}) {
+  // In a real app, you'd fetch this based on params.i
   await dbConnect();
   const playersInfo = await getAllPlayersByIds(teamsTournament.players);
   // console.log("playersInfo query");
@@ -124,50 +128,54 @@ export default async function TeamDetails({ teamsTournament, topScorers }) {
       </Card>
       <h2 className="text-2xl font-bold mt-8 mb-4">Cards</h2>
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-        <Card>
+        <Card className="my-8 cardFull border-2 border-slate-200 dark:border-slate-800  hover:shadow-lg transition-shadow duration-300">
           <CardHeader>
             <CardTitle>Yellow Cards</CardTitle>
           </CardHeader>
           <CardContent>
             <ul className="space-y-2">
-              {team.yellow.players.map((player) => (
-                <li
-                  key={player.id}
-                  className="flex items-center justify-between p-2 hover:bg-gray-100 rounded"
-                >
-                  <span>{player.name}</span>
-                  <Badge variant="warning" className="flex items-center">
-                    <AlertTriangleIcon className="mr-1 h-4 w-4" />
-                    {player.count}
-                  </Badge>
-                </li>
-              ))}
+              {yellowCards.length > 0 ? (
+                yellowCards.map((player) => (
+                  <li
+                    key={player.id}
+                    className="flex items-center justify-between p-2 hover:bg-gray-100 dark:hover:bg-slate-800 rounded"
+                  >
+                    <span>{player.name}</span>
+                    <Badge variant="warning" className="flex items-center">
+                      <AlertTriangleIcon className="mr-1 h-4 w-4" />
+                      {player.yellow}
+                    </Badge>
+                  </li>
+                ))
+              ) : (
+                <p>No yellow cards</p>
+              )}
             </ul>
           </CardContent>
         </Card>
-        <Card>
+        <Card className="my-8 cardFull border-2 border-slate-200 dark:border-slate-800  hover:shadow-lg transition-shadow duration-300">
           <CardHeader>
             <CardTitle>Red Cards</CardTitle>
           </CardHeader>
           <CardContent>
-            {team.red.players.length > 0 ? (
-              <ul className="space-y-2">
-                {team.red.players.map((player) => (
+            <ul className="space-y-2">
+              {redCards.length > 0 ? (
+                redCards.map((player) => (
                   <li
                     key={player.id}
-                    className="flex items-center justify-between p-2 hover:bg-gray-100 rounded"
+                    className="flex items-center justify-between p-2 hover:bg-gray-100 dark:hover:bg-slate-800 rounded"
                   >
                     <span>{player.name}</span>
-                    <Badge variant="destructive" className="flex items-center">
+                    <Badge variant="warning" className="flex items-center">
                       <AlertTriangleIcon className="mr-1 h-4 w-4" />
-                      {player.count}
+                      {player.red}
                     </Badge>
                   </li>
-                ))}
-              </ul>
-            ) : (
-              <p>No red cards</p>
-            )}
+                ))
+              ) : (
+                <p>No red cards</p>
+              )}
+            </ul>
           </CardContent>
         </Card>
       </div>

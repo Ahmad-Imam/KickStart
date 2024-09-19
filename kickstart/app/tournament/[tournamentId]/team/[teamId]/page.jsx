@@ -7,7 +7,11 @@ import { getTeamsTournamentById } from "@/queries/teamsTournament";
 import { getTournamentById } from "@/queries/tournaments";
 import { dbConnect } from "@/service/mongo";
 import React from "react";
-import { getTopScorers } from "@/queries/players";
+import {
+  getRedScorers,
+  getTopScorers,
+  getYellowScorers,
+} from "@/queries/players";
 
 export async function generateMetadata({ params }) {
   await dbConnect();
@@ -52,8 +56,14 @@ export default async function TeamsTPage({ params }) {
   console.log(params.tournamentId);
 
   const topScorers = await getTopScorers(teamsTournament.scorers);
-  console.log(topScorers);
+  // console.log(topScorers);
   // console.log(teamsTournament);
+  const yellowCards = await getYellowScorers(teamsTournament?.yellow);
+  const redCards = await getRedScorers(teamsTournament?.red);
+  console.log("yellow");
+  console.log(teamsTournament?.yellow);
+  console.log(yellowCards);
+  console.log(redCards);
 
   return (
     <>
@@ -66,6 +76,8 @@ export default async function TeamsTPage({ params }) {
       <TeamDetails
         teamsTournament={JSON.parse(JSON.stringify(teamsTournament))}
         topScorers={JSON.parse(JSON.stringify(topScorers))}
+        yellowCards={JSON.parse(JSON.stringify(yellowCards))}
+        redCards={JSON.parse(JSON.stringify(redCards))}
       />
     </>
   );
