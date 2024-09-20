@@ -25,19 +25,16 @@ export function TeamsTPlayersDrawer({ playersInfo, teamsTournament }) {
   return (
     <Drawer open={open} onOpenChange={setOpen}>
       <DrawerTrigger asChild>
-        <div
-          className="w-40 text-white p-2 rounded-md text-sm text-center bg-slate-800 hover:bg-black dark:hover:bg-slate-900"
-          variant="outline"
-        >
-          Edit Squad
+        <div className="w-40 customButton" variant="outline">
+          Edit Team
         </div>
       </DrawerTrigger>
-      <DrawerContent>
+      <DrawerContent className="dark:bg-slate-950">
         <DrawerHeader className="text-left">
-          <DrawerTitle>Edit profile</DrawerTitle>
+          <DrawerTitle>Edit Squad</DrawerTitle>
           <DrawerDescription>
-            Make changes to your team squad in the tournament here. Click save
-            when you're done.
+            Make changes to your team squad in the tournament here. Save when
+            you're done.
           </DrawerDescription>
         </DrawerHeader>
         {/* <ProfileForm className="px-4" /> */}
@@ -58,31 +55,5 @@ export function TeamsTPlayersDrawer({ playersInfo, teamsTournament }) {
         </DrawerFooter>
       </DrawerContent>
     </Drawer>
-  );
-}
-
-function ProfileForm({ className }) {
-  function handleSubmit(event) {
-    event.preventDefault();
-    const formData = new FormData(event.target);
-    const data = Object.fromEntries(formData.entries());
-    console.log(data);
-  }
-
-  return (
-    <form
-      className={cn("grid items-start gap-4", className)}
-      onSubmit={handleSubmit}
-    >
-      <div className="grid gap-2">
-        <Label htmlFor="email">Email</Label>
-        <Input type="email" id="email" defaultValue="shadcn@example.com" />
-      </div>
-      <div className="grid gap-2">
-        <Label htmlFor="username">Username</Label>
-        <Input id="username" defaultValue="@shadcn" />
-      </div>
-      <Button type="submit">Save changes</Button>
-    </form>
   );
 }

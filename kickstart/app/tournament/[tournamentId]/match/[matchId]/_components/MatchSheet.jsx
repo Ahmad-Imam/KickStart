@@ -105,7 +105,7 @@ export default function MatchSheet({ team1, team2, matchDetails, type }) {
         <SheetTrigger asChild>
           <Button
             variant="outline"
-            className=" bg-slate-800 text-white dark:bg-slate-800 dark:hover:bg-slate-900"
+            className=" disabled:opacity-50 bg-slate-800 text-white dark:bg-slate-800 dark:hover:bg-slate-900"
           >
             {type === "score"
               ? "Add Goal"

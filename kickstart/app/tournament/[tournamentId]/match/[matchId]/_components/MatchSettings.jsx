@@ -64,7 +64,13 @@ export default function MatchSettings({ team1, team2, matchDetails }) {
       <div className="py-4 grid grid-cols-1 md:grid-cols-3 lg:grid-cols-5 gap-4 justify-items-center items-center w-full">
         <button
           // disabled={matchFinished}
-          className=" customButton m-2"
+          disabled={
+            loading ||
+            (matchStarted &&
+              matchDetails?.type !== "group" &&
+              matchDetails?.result?.team1 === matchDetails?.result?.team2)
+          }
+          className=" customButton m-2 disabled:opacity-50 disabled:cursor-not-allowed"
           onClick={handleClick}
         >
           {loading
@@ -108,7 +114,7 @@ export default function MatchSettings({ team1, team2, matchDetails }) {
             matchDetails?.result?.team1 !== matchDetails?.result?.team2 ||
             tiebreakerEnd
           }
-          className=" customButton disabled:opacity-50 m-2"
+          className=" customButton disabled:opacity-50 m-2 disabled:cursor-not-allowed"
           onClick={handleTiebreaker}
         >
           {loadingTie

@@ -10,8 +10,10 @@ export default async function TournamentsPage() {
   //   console.log(allTournaments);
 
   return (
-    <SearchTournament
-      allTournaments={JSON.parse(JSON.stringify(allTournaments))}
-    />
+    <div className="dark:bg-gray-950">
+      <SearchTournament
+        allTournaments={JSON.parse(JSON.stringify(allTournaments))}
+      />
+    </div>
   );
 }

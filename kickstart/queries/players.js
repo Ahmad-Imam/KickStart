@@ -20,7 +20,7 @@ export async function createPlayers(data) {
       const teamId = simplePlayerData.team;
       const team = await teamsModel.findById(teamId).lean();
       //update team with new player in the db
-      team.players.push(player._id);
+      team.players.push(player._id.toString());
       await teamsModel.findByIdAndUpdate(teamId, { players: team.players });
 
       console.log("team found");
@@ -211,13 +211,26 @@ export async function updatePlayerTeam(playersInTeam, teamsId) {
     //   { team: teamsId }
     // );
     const newPlayers = await Promise.all(
-      playersInTeam.map(async (playerId) =>
-        playersModel.findByIdAndUpdate(
-          playerId,
-          { team: teamsId },
-          { new: false }
-        )
-      )
+      playersInTeam.map(async (playerId) => {
+        const player = await playersModel.findById(playerId).lean();
+
+        if (player?.team) {
+          // Remove player from team table
+          console.log("player old team");
+          console.log(playerId);
+          console.log(player?.team.toString());
+
+          const updatedTeam = await teamsModel.updateOne(
+            { _id: player?.team.toString() },
+            { $pull: { players: playerId.toString() } }
+          );
+          console.log(updatedTeam);
+        }
+
+        return playersModel
+          .findByIdAndUpdate(playerId, { team: teamsId }, { new: true })
+          .lean();
+      })
     );
 
     console.log("newPlayers query");

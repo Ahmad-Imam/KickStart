@@ -29,10 +29,21 @@ export async function createMatches(allMatch, tournamentId, matchDate) {
 
     if (teamsPerGroup > 1) {
       if (teamsPerGroup === 2 && groupsNum === 1) {
+        const [team1T, team2T] = await Promise.all([
+          teamsTournamentModel.findOne({
+            teamId: groupMatch[0].teams[0].id,
+            tournamentId: tournamentId,
+          }),
+          teamsTournamentModel.findOne({
+            teamId: groupMatch[0].teams[1].id,
+            tournamentId: tournamentId,
+          }),
+        ]);
+
         const matchData = {
           tournamentId: tournamentId,
-          team1: groupMatch[0].teams[0],
-          team2: groupMatch[0].teams[1],
+          team1: team1T,
+          team2: team2T,
           matchDate: matchDate,
           type: "final",
           status: "upcoming",
@@ -52,126 +63,99 @@ export async function createMatches(allMatch, tournamentId, matchDate) {
           const teams = group.teams;
           for (let i = 0; i < teams.length; i++) {
             for (let j = i + 1; j < teams.length; j++) {
-              const matchData = {
-                tournamentId: tournamentId,
-                team1: teams[i],
-                team2: teams[j],
-                status: "upcoming",
-                result: {
-                  team1: 0,
-                  team2: 0,
-                },
-                groupName: group?.name,
-                matchDate: matchDate,
-                type: "group",
-              };
-              groupMatches.push(matchData);
+              try {
+                const [team1T, team2T] = await Promise.all([
+                  teamsTournamentModel.findOne({
+                    teamId: teams[i].id,
+                    tournamentId: tournamentId,
+                  }),
+                  teamsTournamentModel.findOne({
+                    teamId: teams[j].id,
+                    tournamentId: tournamentId,
+                  }),
+                ]);
+
+                const matchData = {
+                  tournamentId: tournamentId,
+                  team1: team1T,
+                  team2: team2T,
+                  status: "upcoming",
+                  result: {
+                    team1: 0,
+                    team2: 0,
+                  },
+                  groupName: group?.name,
+                  matchDate: matchDate,
+                  type: "group",
+                };
+                groupMatches.push(matchData);
+              } catch (error) {
+                console.log("error");
+                console.log(error);
+              }
             }
           }
           // Batch insert all matches for the group
           const createdMatches = await matchModel.insertMany(groupMatches);
           matchesList.push(...createdMatches.map(replaceMongoIdInObject));
+        }
+        if (quarterMatch.length > 0) {
+          console.log("quarterMatch");
 
-          if (quarterMatch.length > 0) {
-            console.log("quarterMatch");
-            const quarterMatches = [];
-            for (const match of quarterMatch) {
-              const matchData = {
-                tournamentId: tournamentId,
-                qName: {
-                  team1: match?.team1?.qName,
-                  team2: match?.team2?.qName,
-                },
-                status: "upcoming",
-                result: {
-                  team1: 0,
-                  team2: 0,
-                },
-                matchDate: matchDate,
-                type: "quarter",
-                tiebreaker: {},
-              };
-              quarterMatches.push(matchData);
-            }
-            //   const semiMatches = [];
-            for (let i = 0; i < 4; i = i + 2) {
-              const matchData = {
-                tournamentId: tournamentId,
-                qName: {
-                  team1: `qf${i + 1}`,
-                  team2: `qf${i + 2}`,
-                },
-                status: "upcoming",
-                result: {
-                  team1: 0,
-                  team2: 0,
-                },
-                matchDate: matchDate,
-                type: "semi",
-                tiebreaker: {},
-              };
-              quarterMatches.push(matchData);
-            }
-
-            //create final match
+          const quarterMatches = [];
+          for (const match of quarterMatch) {
             const matchData = {
               tournamentId: tournamentId,
-              qName: { team1: "sf1", team2: "sf2" },
+              qName: {
+                team1: match?.team1?.qName,
+                team2: match?.team2?.qName,
+              },
               status: "upcoming",
               result: {
                 team1: 0,
                 team2: 0,
               },
               matchDate: matchDate,
-              type: "final",
+              type: "quarter",
               tiebreaker: {},
             };
             quarterMatches.push(matchData);
-            if (isThirdPlace) {
-              const matchData = {
-                tournamentId: tournamentId,
-                qName: { team1: "sf1", team2: "sf2" },
-                status: "upcoming",
-                result: {
-                  team1: 0,
-                  team2: 0,
-                },
-                matchDate: matchDate,
-                type: "third",
-                tiebreaker: {},
-              };
-              quarterMatches.push(matchData);
-            }
-
-            const createdMatchesQ = await matchModel.insertMany(quarterMatches);
-            //   const createdMatchesS = await matchModel.insertMany(semiMatches);
-            matchesList.push(...createdMatchesQ.map(replaceMongoIdInObject));
-            //   matchesList.push(...createdMatchesS.map(replaceMongoIdInObject));
+          }
+          //   const semiMatches = [];
+          for (let i = 0; i < 4; i = i + 2) {
+            const matchData = {
+              tournamentId: tournamentId,
+              qName: {
+                team1: `qf${i + 1}`,
+                team2: `qf${i + 2}`,
+              },
+              status: "upcoming",
+              result: {
+                team1: 0,
+                team2: 0,
+              },
+              matchDate: matchDate,
+              type: "semi",
+              tiebreaker: {},
+            };
+            quarterMatches.push(matchData);
           }
 
-          if (semiMatch.length > 0) {
-            console.log("semiMatch");
-            const semiMatches = [];
-            for (const match of semiMatch) {
-              const matchData = {
-                tournamentId: tournamentId,
-                qName: {
-                  team1: match?.team1?.qName,
-                  team2: match?.team2?.qName,
-                },
-                status: "upcoming",
-                result: {
-                  team1: 0,
-                  team2: 0,
-                },
-                matchDate: matchDate,
-                type: "semi",
-                tiebreaker: {},
-              };
-              semiMatches.push(matchData);
-            }
-
-            //create final match
+          //create final match
+          const matchData = {
+            tournamentId: tournamentId,
+            qName: { team1: "sf1", team2: "sf2" },
+            status: "upcoming",
+            result: {
+              team1: 0,
+              team2: 0,
+            },
+            matchDate: matchDate,
+            type: "final",
+            tiebreaker: {},
+          };
+          quarterMatches.push(matchData);
+          if (isThirdPlace) {
             const matchData = {
               tournamentId: tournamentId,
               qName: { team1: "sf1", team2: "sf2" },
@@ -181,36 +165,90 @@ export async function createMatches(allMatch, tournamentId, matchDate) {
                 team2: 0,
               },
               matchDate: matchDate,
-              type: "final",
+              type: "third",
+              tiebreaker: {},
+            };
+            quarterMatches.push(matchData);
+          }
+
+          const createdMatchesQ = await matchModel.insertMany(quarterMatches);
+          //   const createdMatchesS = await matchModel.insertMany(semiMatches);
+          matchesList.push(...createdMatchesQ.map(replaceMongoIdInObject));
+          //   matchesList.push(...createdMatchesS.map(replaceMongoIdInObject));
+        }
+
+        if (semiMatch.length > 0) {
+          console.log("semiMatch");
+          const semiMatches = [];
+          for (const match of semiMatch) {
+            const matchData = {
+              tournamentId: tournamentId,
+              qName: {
+                team1: match?.team1?.qName,
+                team2: match?.team2?.qName,
+              },
+              status: "upcoming",
+              result: {
+                team1: 0,
+                team2: 0,
+              },
+              matchDate: matchDate,
+              type: "semi",
               tiebreaker: {},
             };
             semiMatches.push(matchData);
-            if (isThirdPlace) {
-              const matchData = {
-                tournamentId: tournamentId,
-                qName: { team1: "sf1", team2: "sf2" },
-                status: "upcoming",
-                result: {
-                  team1: 0,
-                  team2: 0,
-                },
-                matchDate: matchDate,
-                type: "third",
-                tiebreaker: {},
-              };
-              semiMatches.push(matchData);
-            }
-
-            const createdMatches = await matchModel.insertMany(semiMatches);
-            matchesList.push(...createdMatches.map(replaceMongoIdInObject));
           }
+
+          //create final match
+          const matchData = {
+            tournamentId: tournamentId,
+            qName: { team1: "sf1", team2: "sf2" },
+            status: "upcoming",
+            result: {
+              team1: 0,
+              team2: 0,
+            },
+            matchDate: matchDate,
+            type: "final",
+            tiebreaker: {},
+          };
+          semiMatches.push(matchData);
+          if (isThirdPlace) {
+            const matchData = {
+              tournamentId: tournamentId,
+              qName: { team1: "sf1", team2: "sf2" },
+              status: "upcoming",
+              result: {
+                team1: 0,
+                team2: 0,
+              },
+              matchDate: matchDate,
+              type: "third",
+              tiebreaker: {},
+            };
+            semiMatches.push(matchData);
+          }
+
+          const createdMatches = await matchModel.insertMany(semiMatches);
+          matchesList.push(...createdMatches.map(replaceMongoIdInObject));
         }
       }
     } else if (teamsPerGroup === 1 && groupsNum === 2) {
+      const [team1T, team2T] = await Promise.all([
+        teamsTournamentModel.findOne({
+          teamId: groupMatch[0].teams[0].id,
+          tournamentId: tournamentId,
+        }),
+        teamsTournamentModel.findOne({
+          teamId: groupMatch[1].teams[0].id,
+          tournamentId: tournamentId,
+        }),
+      ]);
+
       const matchData = {
         tournamentId: tournamentId,
-        team1: groupMatch[0].teams[0],
-        team2: groupMatch[1].teams[0],
+        team1: team1T,
+        team2: team2T,
         status: "upcoming",
         result: {
           team1: 0,
@@ -245,10 +283,21 @@ export async function createMatches(allMatch, tournamentId, matchDate) {
         const team1Index = qNameMap[match?.team1?.qName] ?? 3;
         const team2Index = qNameMap[match?.team2?.qName] ?? 3;
 
+        const [team1T, team2T] = await Promise.all([
+          teamsTournamentModel.findOne({
+            teamId: semiTeamList[team1Index].id,
+            tournamentId: tournamentId,
+          }),
+          teamsTournamentModel.findOne({
+            teamId: semiTeamList[team2Index].id,
+            tournamentId: tournamentId,
+          }),
+        ]);
+
         const matchData = {
           tournamentId: tournamentId,
-          team1: semiTeamList[team1Index],
-          team2: semiTeamList[team2Index],
+          team1: team1T,
+          team2: team1T,
           qName: { team1: match?.team1?.qName, team2: match?.team2?.qName },
           status: "upcoming",
           result: {
@@ -319,6 +368,17 @@ export async function createMatches(allMatch, tournamentId, matchDate) {
       for (const match of quarterMatch) {
         const team1Index = qNameMap[match?.team1?.qName] ?? 7;
         const team2Index = qNameMap[match?.team2?.qName] ?? 7;
+
+        const [team1T, team2T] = await Promise.all([
+          teamsTournamentModel.findOne({
+            teamId: quarterTeamList[team1Index].id,
+            tournamentId: tournamentId,
+          }),
+          teamsTournamentModel.findOne({
+            teamId: quarterTeamList[team2Index].id,
+            tournamentId: tournamentId,
+          }),
+        ]);
 
         const matchData = {
           tournamentId: tournamentId,

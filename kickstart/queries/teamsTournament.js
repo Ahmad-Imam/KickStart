@@ -77,83 +77,45 @@ export async function updateMatchPlayedTeamsT(matchDetails, tournament) {
       .map((team) => {
         let updateFields = { matchPlayed: 1 };
 
-        if (matchDetails?.type === "group") {
-          if (team?.teamId.toString() === matchDetails?.team1?.id.toString()) {
-            console.log("team1");
-            if (matchDetails.result.team1 > matchDetails.result.team2) {
-              updateFields.matchWon = 1;
-            } else if (matchDetails.result.team1 < matchDetails.result.team2) {
-              updateFields.matchLost = 1;
-            } else {
-              updateFields.matchDraw = 1;
-            }
-            return {
-              updateOne: {
-                filter: { _id: team.id },
-                update: { $inc: updateFields },
-              },
-            };
-          }
-
-          if (team.teamId.toString() === matchDetails.team2?.id.toString()) {
-            console.log("team2");
-            if (matchDetails.result.team2 > matchDetails.result.team1) {
-              updateFields.matchWon = 1;
-            } else if (matchDetails.result.team2 < matchDetails.result.team1) {
-              updateFields.matchLost = 1;
-            } else {
-              updateFields.matchDraw = 1;
-            }
-            return {
-              updateOne: {
-                filter: { _id: team.id },
-                update: { $inc: updateFields },
-              },
-            };
-          }
-        } else {
-          console.log("not group");
-          console.log(team);
-          console.log(matchDetails);
-          if (
-            team?.teamId?.toString() === matchDetails.team1?.id?.toString() ||
-            matchDetails?.team1?.teamId?.toString()
-          ) {
-            console.log("team1");
-            if (matchDetails?.result?.team1 > matchDetails?.result?.team2) {
-              updateFields.matchWon = 1;
-            } else if (
-              matchDetails?.result?.team1 < matchDetails?.result?.team2
-            ) {
-              updateFields.matchLost = 1;
-            } else {
-              updateFields.matchDraw = 1;
-            }
-            return {
-              updateOne: {
-                filter: { _id: team.id },
-                update: { $inc: updateFields },
-              },
-            };
+        console.log("in loop");
+        console.log(team);
+        console.log(matchDetails);
+        if (
+          team?.teamId?.toString() === matchDetails?.team1?.teamId?.toString()
+        ) {
+          console.log("team1");
+          if (matchDetails?.result?.team1 > matchDetails?.result?.team2) {
+            updateFields.matchWon = 1;
           } else if (
-            team?.teamId?.toString() === matchDetails.team2?.id?.toString() ||
-            matchDetails?.team2?.teamId?.toString()
+            matchDetails?.result?.team1 < matchDetails?.result?.team2
           ) {
-            console.log("team2");
-            if (matchDetails.result.team2 > matchDetails.result.team1) {
-              updateFields.matchWon = 1;
-            } else if (matchDetails.result.team2 < matchDetails.result.team1) {
-              updateFields.matchLost = 1;
-            } else {
-              updateFields.matchDraw = 1;
-            }
-            return {
-              updateOne: {
-                filter: { _id: team.id },
-                update: { $inc: updateFields },
-              },
-            };
+            updateFields.matchLost = 1;
+          } else {
+            updateFields.matchDraw = 1;
           }
+          return {
+            updateOne: {
+              filter: { _id: team.id },
+              update: { $inc: updateFields },
+            },
+          };
+        } else if (
+          team?.teamId?.toString() === matchDetails?.team2?.teamId?.toString()
+        ) {
+          console.log("team2");
+          if (matchDetails.result.team2 > matchDetails.result.team1) {
+            updateFields.matchWon = 1;
+          } else if (matchDetails.result.team2 < matchDetails.result.team1) {
+            updateFields.matchLost = 1;
+          } else {
+            updateFields.matchDraw = 1;
+          }
+          return {
+            updateOne: {
+              filter: { _id: team.id },
+              update: { $inc: updateFields },
+            },
+          };
         }
 
         return null;

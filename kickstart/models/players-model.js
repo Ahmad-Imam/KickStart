@@ -14,6 +14,10 @@ const playerSchema = new Schema({
     required: true,
     type: String,
   },
+  position: {
+    required: true,
+    type: String,
+  },
   jersey: {
     required: true,
     type: Number,

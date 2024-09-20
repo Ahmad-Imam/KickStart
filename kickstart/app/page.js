@@ -56,7 +56,7 @@ export default function Home() {
         <CardDemo type="players" />
       </div> */}
 
-      <div className="flex flex-col min-h-dvh">
+      <div className="flex flex-col min-h-dvh bg-red-500">
         <main className="">
           <div className="flex flex-row flex-wrap gap-5 bg-blue-500 w-auto h-full mt-20 sm:flex-row md:justify-center items-start">
             <CardDemo type="tournament" />

@@ -90,49 +90,42 @@ export default async function MatchDetails({ matchDetails, sortedEvents }) {
   let team2;
   //todo check for all match types
 
-  if (matchDetails?.team1?.id) {
-    console.log("in id");
-    team1 = await getTeamsTByTeamId(
-      matchDetails?.team1?.id,
-      matchDetails?.tournamentId
-    );
-    team2 = await getTeamsTByTeamId(
-      matchDetails?.team2?.id,
-      matchDetails?.tournamentId
-    );
-  } else if (matchDetails?.team1?.teamId) {
-    console.log("in teamid");
-    team1 = await getTeamsTByTeamId(
-      matchDetails?.team1?.teamId,
-      matchDetails?.tournamentId
-    );
-    team2 = await getTeamsTByTeamId(
-      matchDetails?.team2?.teamId,
-      matchDetails?.tournamentId
-    );
-  }
+  console.log("in teamid");
+  team1 = await getTeamsTByTeamId(
+    matchDetails?.team1?.teamId,
+    matchDetails?.tournamentId
+  );
+  team2 = await getTeamsTByTeamId(
+    matchDetails?.team2?.teamId,
+    matchDetails?.tournamentId
+  );
 
   console.log("team2");
-  // console.log(matchDetails?.team2);
+
+  console.log(matchDetails?.tournamentId);
+  console.log(matchDetails?.team1);
+  console.log(matchDetails?.team2);
   // console.log(matchDetails?.team1);
   // console.log(team1);
   // console.log(match?.status);
 
   return (
     <div className="container mx-auto px-4 py-8  h-full">
-      <Link
-        href={`/tournament/${matchDetails?.tournamentId}`}
-        className=""
-        passHref
-      >
-        <div className="customButton my-4">Back to Tournament</div>
-      </Link>
+      <div className="w-min">
+        <Link
+          href={`/tournament/${matchDetails?.tournamentId}`}
+          className=""
+          passHref
+        >
+          <div className="customButton my-4 ">Back to Tournament</div>
+        </Link>
+      </div>
       <h1 className="text-2xl lg:text-4xl font-bold my-6">
         {matchDetails?.team1?.name || matchDetails?.qName?.team1} vs{" "}
         {matchDetails?.team2?.name || matchDetails?.qName?.team2}
       </h1>
       <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
-        <Card className="cardFull border-2 border-slate-200 dark:border-slate-800  hover:shadow-lg transition-shadow duration-300">
+        <Card className="dark:bg-slate-900 cardFull border-2 border-slate-200 dark:border-slate-800  hover:shadow-lg transition-shadow duration-300">
           <CardHeader>
             <CardTitle className="text-xl lg:text-2xl">Match Type</CardTitle>
           </CardHeader>
@@ -150,7 +143,7 @@ export default async function MatchDetails({ matchDetails, sortedEvents }) {
             </Badge>
           </CardContent>
         </Card>
-        <Card className="cardFull border-2 border-slate-200 dark:border-slate-800  hover:shadow-lg transition-shadow duration-300">
+        <Card className="dark:bg-slate-950 cardFull border-2 border-slate-200 dark:border-slate-800  hover:shadow-lg transition-shadow duration-300">
           <CardHeader>
             <CardTitle className="text-xl lg:text-2xl">Date</CardTitle>
           </CardHeader>
@@ -159,7 +152,7 @@ export default async function MatchDetails({ matchDetails, sortedEvents }) {
             <span>{new Date(matchDetails?.matchDate).toLocaleString()}</span>
           </CardContent>
         </Card>
-        <Card className="cardFull border-2 border-slate-200 dark:border-slate-800  hover:shadow-lg transition-shadow duration-300">
+        <Card className=" dark:bg-slate-950 cardFull border-2 border-slate-200 dark:border-slate-800  hover:shadow-lg transition-shadow duration-300">
           <CardHeader>
             <CardTitle className="text-xl lg:text-2xl">Status</CardTitle>
           </CardHeader>
@@ -184,7 +177,12 @@ export default async function MatchDetails({ matchDetails, sortedEvents }) {
       {matchDetails?.team1?.name && matchDetails?.team2?.name && (
         <div>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
-            <Card className="cardFull border-2 border-slate-200 dark:border-slate-800  hover:shadow-lg transition-shadow duration-300">
+            {/* <Link
+              href={`/tournament/${matchDetails?.tournamentId}/team/${
+                matchDetails?.team1?.teamId || matchDetails?.team1?.id
+              }`}
+            > */}
+            <Card className="dark:bg-slate-950 cardFull border-2 border-slate-200 dark:border-slate-800  hover:shadow-lg transition-shadow duration-300">
               <CardHeader>
                 <CardTitle className="text-xl lg:text-2xl">
                   {matchDetails?.team1.name}
@@ -201,7 +199,12 @@ export default async function MatchDetails({ matchDetails, sortedEvents }) {
                 </div>
               </CardContent>
             </Card>
-            <Card className="cardFull border-2 border-slate-200 dark:border-slate-800  hover:shadow-lg transition-shadow duration-300">
+            {/* </Link> */}
+
+            {/* <Link
+              href={`/tournament/${matchDetails?.tournamentId}/team/${matchDetails?.team2?.id}`}
+            > */}
+            <Card className="dark:bg-slate-950 cardFull border-2 border-slate-200 dark:border-slate-800  hover:shadow-lg transition-shadow duration-300">
               <CardHeader>
                 <CardTitle className="text-xl lg:text-2xl">
                   {matchDetails?.team2.name}
@@ -218,10 +221,11 @@ export default async function MatchDetails({ matchDetails, sortedEvents }) {
                 </div>
               </CardContent>
             </Card>
+            {/* </Link> */}
           </div>
 
           <h2 className="text-2xl font-bold mt-8 mb-4">Score</h2>
-          <Card className="cardFull border-2 border-slate-200 dark:border-slate-800  hover:shadow-lg transition-shadow duration-300">
+          <Card className="dark:bg-slate-950 cardFull border-2 border-slate-200 dark:border-slate-800  hover:shadow-lg transition-shadow duration-300">
             <CardContent className="text-center py-6">
               <p className="text-xl lg:text-2xl font-bold">
                 {matchDetails?.team1?.name} {matchDetails?.result?.team1} -{" "}
@@ -264,7 +268,7 @@ export default async function MatchDetails({ matchDetails, sortedEvents }) {
           {/* <h2 className="text-2xl font-bold mt-8 mb-4">Match Events</h2> */}
           {sortedEvents?.length > 0 && (
             <div className="pb-6">
-              <Card className="cardFull border-2 border-slate-200 dark:border-slate-800  hover:shadow-lg transition-shadow duration-300">
+              <Card className="dark:bg-slate-950 cardFull border-2 border-slate-200 dark:border-slate-800  hover:shadow-lg transition-shadow duration-300">
                 <CardHeader>
                   <CardTitle className="text-xl lg:text-2xl">
                     Match Events

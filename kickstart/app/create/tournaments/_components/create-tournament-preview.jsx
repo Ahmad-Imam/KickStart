@@ -13,13 +13,6 @@ export default function TournamentPreview({
   startDate,
   endDate,
 }) {
-  const matches = [
-    { team1: "A1", team2: "B2" },
-    { team1: "C1", team2: "D2" },
-    { team1: "E1", team2: "F2" },
-    { team1: "G1", team2: "H2" },
-  ];
-
   const transformData = (data) => {
     const rounds = [];
     const roundSize = 4; // Assuming each round has 4 matches

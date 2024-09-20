@@ -66,7 +66,7 @@ export default async function TeamsTPage({ params }) {
   console.log(redCards);
 
   return (
-    <>
+    <div className="dark:bg-zinc-950">
       {/* <TournamentDetails
         tournamentDetails={tournament}
         matchesDetails={matches}
@@ -79,6 +79,6 @@ export default async function TeamsTPage({ params }) {
         yellowCards={JSON.parse(JSON.stringify(yellowCards))}
         redCards={JSON.parse(JSON.stringify(redCards))}
       />
-    </>
+    </div>
   );
 }

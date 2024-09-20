@@ -210,7 +210,7 @@ export default function MatchTab({ matchesDetails, tournamentDetails }) {
         onValueChange={setActiveTab}
         className="flex flex-col w-full"
       >
-        <TabsList className=" flex flex-row justify-around gap-6 h-auto">
+        <TabsList className=" flex flex-row justify-around gap-6 h-auto dark:bg-slate-800 cardFull custom-border-shadow border-1">
           <TabsTrigger
             value="group"
             className="px-6 py-2 my-1 "
@@ -289,7 +289,7 @@ export default function MatchTab({ matchesDetails, tournamentDetails }) {
               groupMatches.map((match) => (
                 <Card
                   key={match?.id}
-                  className="my-3 cardFull border-2 border-slate-200 dark:border-slate-800  hover:shadow-lg transition-shadow duration-300"
+                  className=" dark:bg-slate-950 my-3 cardFull border-2 border-slate-200 dark:border-slate-800  hover:shadow-lg transition-shadow duration-300"
                 >
                   <CardHeader>
                     {match?.type === "group" ? (
@@ -354,7 +354,7 @@ export default function MatchTab({ matchesDetails, tournamentDetails }) {
                 </Card>
               ))
             ) : (
-              <Card className="p-4 my-3 cardFull border-2 border-slate-200 dark:border-slate-800  hover:shadow-lg transition-shadow duration-300">
+              <Card className="dark:bg-slate-950 p-4 my-3 cardFull border-2 border-slate-200 dark:border-slate-800  hover:shadow-lg transition-shadow duration-300">
                 <p className="text-center font-semibold">
                   No group matches available for this tournament.
                 </p>
@@ -369,7 +369,7 @@ export default function MatchTab({ matchesDetails, tournamentDetails }) {
               knockoutMatches.map((match) => (
                 <Card
                   key={match?.id}
-                  className="my-3 cardFull border-2 border-slate-200 dark:border-slate-800  hover:shadow-lg transition-shadow duration-300"
+                  className="dark:bg-slate-950 my-3 cardFull border-2 border-slate-200 dark:border-slate-800  hover:shadow-lg transition-shadow duration-300"
                 >
                   <CardHeader>
                     {match?.type === "group" ? (
@@ -439,7 +439,7 @@ export default function MatchTab({ matchesDetails, tournamentDetails }) {
                 </Card>
               ))
             ) : (
-              <Card className="p-4 my-3 cardFull border-2 border-slate-200 dark:border-slate-800  hover:shadow-lg transition-shadow duration-300">
+              <Card className="dark:bg-slate-950 p-4 my-3 cardFull border-2 border-slate-200 dark:border-slate-800  hover:shadow-lg transition-shadow duration-300">
                 <p className="text-center font-semibold">
                   There are no matches available for this tournament.
                 </p>
@@ -476,7 +476,7 @@ export default function MatchTab({ matchesDetails, tournamentDetails }) {
               )}
             {tournamentDetails?.quarterMatch.length === 0 &&
               tournamentDetails?.semiMatch.length === 0 && (
-                <Card className="p-4 my-3 cardFull border-2 border-slate-200 dark:border-slate-800  hover:shadow-lg transition-shadow duration-300">
+                <Card className="dark:bg-slate-950 p-4 my-3 cardFull border-2 border-slate-200 dark:border-slate-800  hover:shadow-lg transition-shadow duration-300">
                   <p className="text-center font-semibold">
                     There are no brackets available for this tournament.
                   </p>

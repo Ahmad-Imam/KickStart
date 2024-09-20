@@ -55,7 +55,7 @@ export default function Tiebreaker({ matchDetails }) {
       <div className="flex justify-center space-x-4">
         <Dialog open={tieDrawer} onOpenChange={setTieDrawer}>
           <DialogTrigger asChild>
-            <Button variant="outline">
+            <Button variant="outline" className="dark:bg-slate-800">
               <Trophy className="mr-2 h-4 w-4" />
               Tiebreaker
             </Button>

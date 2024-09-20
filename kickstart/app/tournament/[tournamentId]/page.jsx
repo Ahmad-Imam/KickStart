@@ -47,7 +47,7 @@ export default async function TournamentPage({ params }) {
   // console.log(tournamentId);
   return (
     <>
-      <div className="w-full px-6 py-10 h-full">
+      <div className="w-full px-6 py-10 h-full dark:bg-zinc-950">
         <TournamentDetails
           tournamentDetails={JSON.parse(JSON.stringify(tournament))}
           matchesDetails={JSON.parse(JSON.stringify(matches))}

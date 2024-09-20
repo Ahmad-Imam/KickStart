@@ -58,14 +58,23 @@ export default async function TeamDetails({
 
   return (
     <div className="container mx-auto px-4 py-8">
-      <Link href={`/tournament/${teamsTournament?.tournamentId}`} passHref>
-        <Button variant="outline" className="mb-4">
-          Back to Tournament
-        </Button>
-      </Link>
+      <div className="w-min">
+        <Link
+          href={`/tournament/${teamsTournament?.tournamentId}`}
+          passHref
+          className=""
+        >
+          <button
+            variant="outline"
+            className="mb-4 customButton bg-slate-900 hover:bg-black dark:hover:bg-slate-800"
+          >
+            Back to Tournament
+          </button>
+        </Link>
+      </div>
       <h1 className="text-4xl font-bold mb-6">{teamsTournament?.name}</h1>
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
-        <Card className=" cardFull border-2 border-slate-200 dark:border-slate-800  hover:shadow-lg transition-shadow duration-300">
+        <Card className="dark:bg-slate-950 cardFull border-2 border-slate-200 dark:border-slate-800  hover:shadow-lg transition-shadow duration-300">
           <CardHeader>
             <CardTitle>Location</CardTitle>
           </CardHeader>
@@ -75,22 +84,22 @@ export default async function TeamDetails({
           </CardContent>
         </Card>
 
-        <Card className="flex flex-row justify-between items-center p-4 shadow-sm  cardFull border-2 border-slate-200 dark:border-slate-800  hover:shadow-lg transition-shadow duration-300 ">
+        <Card className="dark:bg-slate-950 flex flex-row justify-between items-center p-4 shadow-sm  cardFull border-2 border-slate-200 dark:border-slate-800  hover:shadow-lg transition-shadow duration-300 ">
           <div className="flex flex-col justify-end items-center">
             <div className="font-semibold text-lg">Played</div>
             <div className="font-semibold">{teamsTournament?.matchPlayed}</div>
           </div>
           <div className="flex flex-col justify-end items-center">
             <div className="font-semibold text-lg">Won</div>
-            <div className="font-semibold">{teamsTournament?.matchPlayed}</div>
+            <div className="font-semibold">{teamsTournament?.matchWon}</div>
           </div>
           <div className="flex flex-col justify-end items-center">
             <div className="font-semibold text-lg">Draw</div>
-            <div className="font-semibold">{teamsTournament?.matchPlayed}</div>
+            <div className="font-semibold">{teamsTournament?.matchDraw}</div>
           </div>
           <div className="flex flex-col justify-end items-center">
             <div className="font-semibold text-lg">Lost</div>
-            <div className="font-semibold">{teamsTournament?.matchPlayed}</div>
+            <div className="font-semibold">{teamsTournament?.matchLost}</div>
           </div>
         </Card>
       </div>
@@ -99,7 +108,7 @@ export default async function TeamDetails({
         teamsTournament={teamsTournament}
       />
 
-      <Card className="my-8 cardFull border-2 border-slate-200 dark:border-slate-800  hover:shadow-lg transition-shadow duration-300">
+      <Card className="dark:bg-slate-950 my-8 cardFull border-2 border-slate-200 dark:border-slate-800  hover:shadow-lg transition-shadow duration-300">
         <CardHeader>
           <CardTitle>Team Top Scorers: </CardTitle>
         </CardHeader>
@@ -112,23 +121,22 @@ export default async function TeamDetails({
             ) : (
               topScorers.slice(0, 5)?.map((scorer, index) => (
                 <div key={index}>
-                  <li className="flex items-center justify-between p-2 hover:bg-slate-800 hover:text-white rounded">
+                  <li className="flex items-center justify-between p-2 dark:bg-slate-900 dark:hover:bg-slate-800 border-1 rounded-md last:border-b-0 cursor-pointer hover:bg-gray-200 ">
                     <span>{scorer?.name}</span>
                     <Badge variant="secondary" className="flex items-center">
                       <TrophyIcon className="mr-1 h-4 w-4" />
                       {scorer?.score}
                     </Badge>
                   </li>
-                  <Separator className="" />
+                  {/* <Separator className="" /> */}
                 </div>
               ))
             )}
           </ul>
         </CardContent>
       </Card>
-      <h2 className="text-2xl font-bold mt-8 mb-4">Cards</h2>
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-        <Card className="my-8 cardFull border-2 border-slate-200 dark:border-slate-800  hover:shadow-lg transition-shadow duration-300">
+        <Card className="dark:bg-slate-950 my-8 cardFull border-2 border-slate-200 dark:border-slate-800  hover:shadow-lg transition-shadow duration-300">
           <CardHeader>
             <CardTitle>Yellow Cards</CardTitle>
           </CardHeader>
@@ -138,7 +146,7 @@ export default async function TeamDetails({
                 yellowCards.map((player) => (
                   <li
                     key={player.id}
-                    className="flex items-center justify-between p-2 hover:bg-gray-100 dark:hover:bg-slate-800 rounded"
+                    className="flex items-center justify-between p-2 dark:bg-slate-900 dark:hover:bg-slate-800 border-1 rounded-md last:border-b-0 cursor-pointer hover:bg-gray-200 "
                   >
                     <span>{player.name}</span>
                     <Badge variant="warning" className="flex items-center">
@@ -153,7 +161,7 @@ export default async function TeamDetails({
             </ul>
           </CardContent>
         </Card>
-        <Card className="my-8 cardFull border-2 border-slate-200 dark:border-slate-800  hover:shadow-lg transition-shadow duration-300">
+        <Card className="dark:bg-slate-950 my-8 cardFull border-2 border-slate-200 dark:border-slate-800  hover:shadow-lg transition-shadow duration-300">
           <CardHeader>
             <CardTitle>Red Cards</CardTitle>
           </CardHeader>
@@ -163,7 +171,7 @@ export default async function TeamDetails({
                 redCards.map((player) => (
                   <li
                     key={player.id}
-                    className="flex items-center justify-between p-2 hover:bg-gray-100 dark:hover:bg-slate-800 rounded"
+                    className="flex items-center justify-between p-2 dark:bg-slate-900 dark:hover:bg-slate-800 border-1 rounded-md last:border-b-0 cursor-pointer hover:bg-gray-200 bg-gray-100"
                   >
                     <span>{player.name}</span>
                     <Badge variant="warning" className="flex items-center">

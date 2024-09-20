@@ -14,6 +14,8 @@ import {
   deleteFromPrevAddPlayersToCurrentTeam,
   deletePlayersFromCurrentTeam,
 } from "@/app/actions";
+import { Badge } from "@/components/ui/badge";
+import { capitalizeFirstLetter } from "@/utils/data-util";
 
 export default function TeamsTPlayersForm({
   playersInfo,
@@ -149,26 +151,32 @@ export default function TeamsTPlayersForm({
             placeholder="Search..."
             value={query}
             onChange={(e) => setQuery(e.target.value)}
-            className="w-full"
+            className="w-full dark:bg-slate-900"
             // disabled={savedItems.length === groupsNum * teamsPerGroup}
           />
           {query.trim() !== "" && (
             <ScrollArea className="h-[200px] w-full rounded-md border">
               {results?.length > 0 ? (
                 <ul className="p-4">
-                  {results?.map((item, index) => (
+                  {results?.map((player, index) => (
                     <li
                       key={index}
                       type="button"
-                      className="py-2 border-b last:border-b-0 cursor-pointer hover:bg-gray-100 dark:hover:bg-slate-800 rounded-sm p-2"
-                      onClick={() => handleResultClick(item)}
+                      className=" dark:bg-slate-900 dark:hover:bg-slate-600 p-2 border-1 rounded-md my-1 last:border-b-0 cursor-pointer hover:bg-gray-200 bg-gray-100 mb-2"
+                      onClick={() => handleResultClick(player)}
                     >
-                      <div className="flex flex-row justify-between items-center gap-2 text-sm">
-                        <div>{`${item?.name} # ${item?.jersey}`}</div>
-                        <div>Team: {item?.team?.name}</div>
+                      <div className="flex flex-row justify-between text-start items-center gap-2 text-sm">
+                        <div>{`${capitalizeFirstLetter(player?.name).slice(
+                          0,
+                          10
+                        )}
+                             ${player?.name.length > 10 ? "..." : ""}
+                            #${player?.jersey}`}</div>
+                        <div>{`(${player?.team?.name})`}</div>
                         <div className="flex flex-row items-center gap-1">
-                          <MapPin className="ml-8" /> {item?.country}
+                          <MapPin className="ml-8" /> {player?.country}
                         </div>
+                        <Badge>{capitalizeFirstLetter(player?.position)}</Badge>
                       </div>
                     </li>
                   ))}

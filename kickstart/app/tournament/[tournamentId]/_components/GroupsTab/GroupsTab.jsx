@@ -19,6 +19,7 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
+import Link from "next/link";
 
 export default function GroupsTab({ groupsDetails, tournamentDetails }) {
   return (
@@ -57,7 +58,7 @@ export default function GroupsTab({ groupsDetails, tournamentDetails }) {
             .map((group) => (
               <Card
                 key={group?.id}
-                className="cardFull border-2 border-slate-200 dark:border-slate-800  hover:shadow-lg transition-shadow duration-300"
+                className="dark:bg-slate-900 cardFull border-2 border-slate-200 dark:border-slate-800  hover:shadow-lg transition-shadow duration-300"
               >
                 <CardHeader>
                   <CardTitle>{group?.name}</CardTitle>
@@ -99,12 +100,12 @@ export default function GroupsTab({ groupsDetails, tournamentDetails }) {
                             {index + 1}
                           </TableCell>
                           <TableCell className="w-auto p-0">
-                            <div
-                              // href={`/tournament/${tournamentDetails?.id}/team/${team?.teamId}`}
+                            <Link
+                              href={`/tournament/${tournamentDetails?.id}/team/${team?.teamId}`}
                               className="hover:underline text-xs "
                             >
                               {team?.name}
-                            </div>
+                            </Link>
                           </TableCell>
                           <TableCell className="text-right">
                             {team?.matchPlayed}

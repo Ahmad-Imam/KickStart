@@ -6,8 +6,6 @@
   --foreground-rgb: 0, 0, 0;
   --background-start-rgb: 214, 219, 220;
   --background-end-rgb: 255, 255, 255;
-
-  /* background-color: black; */
 }
 
 @media (prefers-color-scheme: dark) {
@@ -32,8 +30,8 @@
 
 @layer base {
   :root {
-    --background: 0 0% 100%;
-    --foreground: 222.2 84% 4.9%;
+    --background: 0 20% 50%;
+    --foreground: 0 0% 0%;
     --card: 0 0% 100%;
     --card-foreground: 222.2 84% 4.9%;
     --popover: 0 0% 100%;
@@ -62,7 +60,7 @@
   }
 
   .dark {
-    --background: 222.2 84% 4.9%;
+    --background: 228 100% 10%;
     --foreground: 210 40% 98%;
     --card: 222.2 84% 4.9%;
     --card-foreground: 210 40% 98%;
@@ -94,7 +92,7 @@
 @layer components {
   .cardFull {
     @apply dark:hover:shadow-md 
-    dark:hover:shadow-slate-400;
+    dark:hover:shadow-slate-400 transition-shadow duration-300;
   }
   .custom-border-shadow {
     @apply border-2 border-slate-300 dark:border-slate-500 hover:shadow-lg transition-shadow duration-300;

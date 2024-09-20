@@ -15,7 +15,7 @@ export default function TeamsTab({ tournamentDetails }) {
         {tournamentDetails?.teamsTournament.map((team) => (
           <Card
             key={team?.id}
-            className="my-8 cardFull border-2 border-slate-200 dark:border-slate-800  hover:shadow-lg transition-shadow duration-300"
+            className="dark:bg-slate-950 my-8 cardFull border-2 border-slate-200 dark:border-slate-800  hover:shadow-lg transition-shadow duration-300"
           >
             <CardHeader>
               <CardTitle>{team.name}</CardTitle>

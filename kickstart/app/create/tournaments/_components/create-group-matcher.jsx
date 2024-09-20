@@ -110,7 +110,7 @@ export default function GroupMatcher({
 
   const getIncompleteGroups = () => {
     return groups
-      .filter((group) => group.teams.length < config.teamsPerGroup)
+      .filter((group) => group.teams.length < config.teamsPerGroupI)
       .map((group) => group.name)
       .join(", ");
   };

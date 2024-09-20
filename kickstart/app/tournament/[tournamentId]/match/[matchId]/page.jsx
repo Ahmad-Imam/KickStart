@@ -45,7 +45,7 @@ export default async function MatchPage({ params }) {
 
   // console.log(tournamentId);
   return (
-    <>
+    <div className="dark:bg-zinc-950">
       {/* <TournamentDetails
         tournamentDetails={tournament}
         matchesDetails={matches}
@@ -56,6 +56,6 @@ export default async function MatchPage({ params }) {
         matchDetails={JSON.parse(JSON.stringify(match))}
         sortedEvents={sortedEvents}
       />
-    </>
+    </div>
   );
 }

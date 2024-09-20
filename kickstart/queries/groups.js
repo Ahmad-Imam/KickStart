@@ -89,7 +89,8 @@ export async function updateMatchPlayedGroups(matchDetails, tournament) {
                   };
 
                   if (
-                    team.teamId.toString() === matchDetails.team1.id.toString()
+                    team.teamId.toString() ===
+                    matchDetails.team1.teamId.toString()
                   ) {
                     console.log("team1");
                     updateFields.matchPlayed += 1;
@@ -108,7 +109,8 @@ export async function updateMatchPlayedGroups(matchDetails, tournament) {
                       updateFields.points += 1;
                     }
                   } else if (
-                    team.teamId.toString() === matchDetails.team2.id.toString()
+                    team.teamId.toString() ===
+                    matchDetails.team2.teamId.toString()
                   ) {
                     console.log("team2");
                     updateFields.matchPlayed += 1;

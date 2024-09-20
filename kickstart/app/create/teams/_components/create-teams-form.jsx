@@ -14,33 +14,21 @@ import { Label } from "@/components/ui/label";
 import { addTeams, editPlayerTeam } from "@/app/actions";
 import { useState, useEffect } from "react";
 import { ScrollArea } from "@/components/ui/scroll-area";
-import { X } from "lucide-react";
+import { MapPinIcon, X } from "lucide-react";
 import { set } from "mongoose";
 import { toast } from "sonner";
+import { capitalizeFirstLetter } from "@/utils/data-util";
+import { Badge } from "@/components/ui/badge";
+import { ca } from "date-fns/locale";
 
 export function TeamsForm() {
-  const fruits = [
-    "Apple",
-    "Banana",
-    "Cherry",
-    "Date",
-    "Elderberry",
-    "Fig",
-    "Grape",
-    "Honeydew",
-    "Kiwi",
-    "Lemon",
-    "Mango",
-    "Nectarine",
-    "Orange",
-    "Papaya",
-    "Quince",
-  ];
-
   const [playersList, setPlayersList] = useState([]);
   const [query, setQuery] = useState("");
   const [results, setResults] = useState([]);
   const [savedItems, setSavedItems] = useState([]);
+
+  const [loadingPlayer, setLoadingPlayer] = useState(false);
+
   console.log("saved");
   console.log(Array.isArray(savedItems));
   console.log(savedItems);
@@ -103,9 +91,16 @@ export function TeamsForm() {
   }
 
   const fetchPlayers = async () => {
-    const res = await fetch("/api/players");
-    const data = await res.json();
-    setPlayersList(data);
+    try {
+      setLoadingPlayer(true);
+      const res = await fetch("/api/players");
+      const data = await res.json();
+      setPlayersList(data);
+      setLoadingPlayer(false);
+    } catch (error) {
+      console.log(error);
+    }
+
     // console.log(data);
   };
 
@@ -114,9 +109,9 @@ export function TeamsForm() {
   }, []);
 
   return (
-    <Card className="mx-auto max-w-lg w-full ">
+    <Card className="dark:bg-slate-800 mx-auto max-w-xl w-full cardFull border-2 border-slate-200 dark:border-slate-800  hover:shadow-lg transition-shadow duration-300 ">
       <CardHeader>
-        <CardTitle className="text-2xl">Create Your teams</CardTitle>
+        <CardTitle className="text-2xl">Create Your team</CardTitle>
         <CardDescription>Enter your team information</CardDescription>
       </CardHeader>
       <CardContent>
@@ -130,6 +125,7 @@ export function TeamsForm() {
                 type="text"
                 placeholder="Chelsea FC"
                 required
+                className="dark:bg-slate-900 border-slate-400"
               />
             </div>
 
@@ -141,6 +137,7 @@ export function TeamsForm() {
                 type="text"
                 placeholder="London is Blue"
                 required
+                className="dark:bg-slate-900  border-slate-400"
               />
             </div>
             <div className="grid gap-2">
@@ -151,70 +148,97 @@ export function TeamsForm() {
                 type="text"
                 placeholder="London"
                 required
+                className="dark:bg-slate-900  border-slate-400"
               />
             </div>
 
             <Label htmlFor="players">Players</Label>
 
-            <div className="w-full max-w-lg mx-auto space-y-4">
-              <Input
-                type="search"
-                placeholder="Search..."
-                value={query}
-                onChange={(e) => setQuery(e.target.value)}
-                className="w-full"
-              />
-              {query.trim() !== "" && (
-                <ScrollArea className="h-[200px] w-full rounded-md border">
-                  {results?.length > 0 ? (
-                    <ul className="p-4">
-                      {results?.map((item, index) => (
-                        <li
-                          key={index}
-                          type="button"
-                          className="py-2 border-b last:border-b-0 cursor-pointer hover:bg-gray-100"
-                          onClick={() => handleResultClick(item)}
-                        >
-                          {item?.name} #{item?.jersey} {`(${item?.nickName})`}
-                        </li>
-                      ))}
-                    </ul>
-                  ) : (
-                    <p className="p-4 text-center text-muted-foreground">
-                      No results found
-                    </p>
-                  )}
-                </ScrollArea>
-              )}
-            </div>
+            {loadingPlayer ? (
+              <div className="flex flex-col justify-center items-center h-32 gap-2">
+                <div className="animate-spin rounded-full h-20 w-20 border-t-2 border-b-2 border-gray-900"></div>
+                <div>Loading Players</div>
+              </div>
+            ) : (
+              <div className="w-full mx-auto space-y-4">
+                <Input
+                  type="search"
+                  placeholder="Search..."
+                  value={query}
+                  onChange={(e) => setQuery(e.target.value)}
+                  className=" dark:bg-slate-900  border-slate-400"
+                />
+                {query.trim() !== "" && (
+                  <ScrollArea className="h-[200px] w-full rounded-md border ">
+                    {results?.length > 0 ? (
+                      <ul className="p-4">
+                        {results?.map((player, index) => (
+                          <li
+                            key={index}
+                            type="button"
+                            className="flex flex-row gap-2 justify-between items-center dark:bg-slate-900 dark:hover:bg-slate-600 px-2 py-2 border-1 rounded-md my-1 last:border-b-0 cursor-pointer hover:bg-gray-200 bg-gray-100 mb-2"
+                            onClick={() => handleResultClick(player)}
+                          >
+                            <div className="">{`${capitalizeFirstLetter(
+                              player?.name
+                            ).slice(0, 10)}
+                             ${player?.name.length > 10 ? "..." : ""}
+                            #${player?.jersey}`}</div>
+                            <div>{`(${capitalizeFirstLetter(
+                              player?.team?.name
+                            )})`}</div>
+                            <div className="flex justify-center items-center gap-2">
+                              <MapPinIcon />{" "}
+                              {capitalizeFirstLetter(player?.country)}
+                            </div>
+                            <Badge>
+                              {capitalizeFirstLetter(player?.position)}
+                            </Badge>
+                          </li>
+                        ))}
+                      </ul>
+                    ) : (
+                      <p className="p-4 text-center text-muted-foreground">
+                        No results found
+                      </p>
+                    )}
+                  </ScrollArea>
+                )}
+              </div>
+            )}
 
             {savedItems?.length > 0 && (
               <div className="mt-4 ">
                 <h3 className="font-semibold mb-2">Squad:</h3>
-                <ul className="flex flex-wrap gap-2 w-full max-w-lg">
-                  {savedItems?.map((item, index) => (
+                <ul className="flex flex-wrap gap-3 w-full max-w-lg">
+                  {savedItems?.map((player, index) => (
                     <li
                       key={index}
-                      className="flex justify-between items-center bg-gray-100 p-2 rounded"
+                      className="dark:bg-slate-900 flex justify-between items-center gap-2 bg-gray-100 p-2 px-2 rounded"
                     >
-                      {item?.name}
-                      <Button
+                      {`${capitalizeFirstLetter(player?.name).slice(0, 10)}
+                             ${player?.name.length > 10 ? "..." : ""}`}
+                      <button
                         variant="ghost"
                         size="icon"
                         type="button"
-                        onClick={() => removeSavedItem(item)}
+                        onClick={() => removeSavedItem(player)}
+                        className="p-3  hover:bg-gray-200 dark:hover:bg-slate-800 rounded-md"
                       >
                         <X className="h-4 w-4" />
-                      </Button>
+                      </button>
                     </li>
                   ))}
                 </ul>
               </div>
             )}
 
-            <Button type="submit" className="w-full">
+            <button
+              type="submit"
+              className="w-full customButton bg-slate-900 hover:bg-black dark:hover:bg-slate-950"
+            >
               Submit
-            </Button>
+            </button>
           </div>
         </form>
       </CardContent>

@@ -225,6 +225,9 @@ export function TournamentMultiForm() {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+
+    setLoading(true);
+
     if (page < totalPages) {
       return; // Prevent form submission if not on the last page
     }
@@ -260,7 +263,8 @@ export function TournamentMultiForm() {
     const createdTournament = await addTournaments(tournamentData);
     console.log("createdTournament");
     console.log(createdTournament);
-    // router.push(`/tournament/${createdTournament.id}`);
+    router.push(`/tournament/${createdTournament.id}`);
+    setLoading(false);
 
     //     {
     //     "name": "tname",
@@ -862,11 +866,12 @@ export function TournamentMultiForm() {
             </div>
           ) : (
             <button
-              className="customButton w-28"
+              className="customButton w-28 disabled:opacity-50 disabled:cursor-not-allowed"
+              disabled={loading}
               type="button"
               onClick={(e) => handleSubmit(e)}
             >
-              Submit
+              {loading ? "Creating..." : "Submit"}
             </button>
           )}
         </CardFooter>
