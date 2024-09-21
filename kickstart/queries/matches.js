@@ -1,5 +1,6 @@
 import { groupsModel } from "@/models/groups-model";
 import { matchModel } from "@/models/matches-model";
+import { playersModel } from "@/models/players-model";
 import { teamsTournamentModel } from "@/models/teamsTournament-model";
 import { tournamentsModel } from "@/models/tournaments-model";
 
@@ -871,6 +872,17 @@ export async function updateMatchGoal(gfTeam, gaTeam, player, matchDetails) {
       matchId,
     };
 
+    //increase goal by 1 for player in players table
+    const updatedPlyer = await playersModel.findByIdAndUpdate(
+      player.id,
+      {
+        $inc: { goals: 1 },
+      },
+      { new: true }
+    );
+
+    console.log("player goals updated");
+
     // Update the tournament document in the database
     const updatedTournamentEvent = await updateTournamentEvent(
       tournamentEvent,
@@ -918,7 +930,7 @@ export async function updateMatchCard(team, player, matchDetails, type) {
     console.log("matchResult updated");
 
     console.log("gfTeam");
-    console.log(team);
+    // console.log(team);
 
     if (type === "yellow") {
       const updateResult = await teamsTournamentModel.findByIdAndUpdate(
@@ -932,6 +944,17 @@ export async function updateMatchCard(team, player, matchDetails, type) {
           upsert: true,
         }
       );
+
+      const updatedPlyer = await playersModel.findByIdAndUpdate(
+        player.id,
+        {
+          $inc: { yellow: 1 },
+        },
+        { new: true }
+      );
+      console.log("player yellow updated");
+      console.log(player.id);
+      // console.log("update result:", updatedPlyer);
     } else {
       const updateResult = await teamsTournamentModel.findByIdAndUpdate(
         { _id: team.id, tournamentId: matchDetails.tournamentId },
@@ -944,19 +967,15 @@ export async function updateMatchCard(team, player, matchDetails, type) {
           upsert: true,
         }
       );
-    }
 
-    const updateResult = await teamsTournamentModel.findByIdAndUpdate(
-      { _id: team.id, tournamentId: matchDetails.tournamentId },
-      {
-        $inc: { "yellow.$[elem].score": 1 },
-      },
-      {
-        arrayFilters: [{ "elem.playerId": player.id }],
-        new: true,
-        upsert: true,
-      }
-    );
+      const updatedPlyer = await playersModel.findByIdAndUpdate(
+        player.id,
+        {
+          $inc: { red: 1 },
+        },
+        { new: true }
+      );
+    }
 
     // console.log("Update result:", updateResult);
     console.log("teamsT scorers for updated");
@@ -1342,6 +1361,82 @@ export async function updateMatchData(matchData, matchDetails) {
     console.log("matchResult updated");
 
     return replaceMongoIdInObject(updatedMatch);
+  } catch (error) {
+    throw new Error(error);
+  }
+}
+
+export async function updateMatchMOTM(team, player, matchDetails) {
+  try {
+    const matchId = matchDetails?.id;
+    const currentTime = new Date().toLocaleTimeString();
+    const currentDate = new Date().toLocaleDateString();
+    const matchEvent = {
+      type: "motm",
+      time: currentTime,
+      date: currentDate,
+      description: `${player.name} from ${team.name} was awarded Man of the Match!`,
+    };
+
+    const tournamentEvent = {
+      type: "motm",
+      time: currentTime,
+      date: currentDate,
+      description: `${player.name} from ${team.name} was awarded Man of the Match in (${matchDetails.team1.name} vs ${matchDetails.team2.name})`,
+    };
+
+    const motmMatch = {
+      player,
+      team,
+    };
+
+    // Update the match document in the database
+    const updatedMatch = await matchModel
+      .findByIdAndUpdate(
+        matchId,
+        {
+          $push: { events: matchEvent },
+          $set: { motm: motmMatch },
+        },
+        {
+          new: true,
+          upsert: true,
+        }
+      )
+      .lean();
+
+    const motmTeamsT = {
+      player,
+      matchDetails,
+    };
+
+    const updatedTeamsT = await teamsTournamentModel
+      .findOneAndUpdate(
+        { _id: team._id, tournamentId: matchDetails.tournamentId },
+
+        {
+          $push: { events: matchEvent, motm: { $each: [motmTeamsT] } },
+          // $set: { motm: motmTeamsT },
+        },
+        {
+          new: true,
+          upsert: true,
+        }
+      )
+      .lean();
+
+    const updatedPlyer = await playersModel.findByIdAndUpdate(
+      player.id,
+      {
+        $inc: { motm: 1 },
+      },
+      { new: true }
+    );
+
+    const tournamentUpdated = await updateTournamentEvent(
+      tournamentEvent,
+      matchDetails.tournamentId
+    );
   } catch (error) {
     throw new Error(error);
   }

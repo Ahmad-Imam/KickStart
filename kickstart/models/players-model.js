@@ -26,6 +26,18 @@ const playerSchema = new Schema({
     required: false,
     type: {},
   },
+  yellow: {
+    required: false,
+    type: {},
+  },
+  red: {
+    required: false,
+    type: {},
+  },
+  motm: {
+    required: false,
+    type: {},
+  },
   tournament: { type: Schema.ObjectId, ref: "tournaments", required: false },
   team: { type: Schema.ObjectId, ref: "teams", required: false },
 });

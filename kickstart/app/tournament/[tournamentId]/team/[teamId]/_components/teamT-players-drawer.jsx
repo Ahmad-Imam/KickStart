@@ -29,7 +29,7 @@ export function TeamsTPlayersDrawer({ playersInfo, teamsTournament }) {
           Edit Team
         </div>
       </DrawerTrigger>
-      <DrawerContent className="dark:bg-slate-950">
+      <DrawerContent className="dark:bg-slate-900">
         <DrawerHeader className="text-left">
           <DrawerTitle>Edit Squad</DrawerTitle>
           <DrawerDescription>
@@ -45,12 +45,9 @@ export function TeamsTPlayersDrawer({ playersInfo, teamsTournament }) {
         />
         <DrawerFooter className="pt-2 flex flex-row justify-center">
           <DrawerClose asChild className="">
-            <Button
-              variant="outline"
-              className="w-1/2 bg-slate-800 dark:bg-slate-800  text-white"
-            >
+            <button variant="outline" className="w-1/2 customButton">
               Cancel
-            </Button>
+            </button>
           </DrawerClose>
         </DrawerFooter>
       </DrawerContent>

@@ -107,6 +107,15 @@ export default function MatchSettings({ team1, team2, matchDetails }) {
           />
         )}
 
+        {matchStarted && (
+          <MatchSheet
+            team1={JSON.parse(JSON.stringify(team1))}
+            team2={JSON.parse(JSON.stringify(team2))}
+            matchDetails={matchDetails}
+            type="motm"
+          />
+        )}
+
         <button
           disabled={
             !matchStarted ||

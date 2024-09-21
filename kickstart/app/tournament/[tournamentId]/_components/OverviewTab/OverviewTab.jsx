@@ -32,7 +32,7 @@ export default function OverViewTab({
 
   return (
     <>
-      <Card className="dark:bg-slate-800 my-8 cardFull border-2 border-slate-200 dark:border-slate-800  hover:shadow-lg transition-shadow duration-300">
+      <Card className="dark:bg-slate-900 my-8 cardFull border-2 border-slate-200 dark:border-slate-800  hover:shadow-lg transition-shadow duration-300">
         <CardHeader>
           <CardTitle className="">Tournament Overview</CardTitle>
           <CardDescription>{tournamentDetails?.bio}</CardDescription>
@@ -55,7 +55,7 @@ export default function OverViewTab({
             </p>
           </div>
 
-          <Card className="dark:bg-slate-900  my-8 cardFull border-2 border-slate-200 dark:border-slate-800  hover:shadow-lg transition-shadow duration-300">
+          <Card className="dark:bg-slate-950  my-8 cardFull border-2 border-slate-200 dark:border-slate-800  hover:shadow-lg transition-shadow duration-300">
             <CardHeader>
               <CardTitle>Tournament Top Scorers</CardTitle>
             </CardHeader>
@@ -87,7 +87,7 @@ export default function OverViewTab({
           </Card>
 
           {sortedEvents?.length > 0 && (
-            <Card className="dark:bg-slate-900 my-8 cardFull border-2 border-slate-200 dark:border-slate-800  hover:shadow-lg transition-shadow duration-300">
+            <Card className="dark:bg-slate-950 my-8 cardFull border-2 border-slate-200 dark:border-slate-800  hover:shadow-lg transition-shadow duration-300">
               <CardHeader>
                 <CardTitle>Live Updates</CardTitle>
               </CardHeader>
@@ -133,6 +133,11 @@ export default function OverViewTab({
                             <BadgeXIcon
                               size={20}
                               className="mr-2 text-red-600 group-hover:text-red-400"
+                            />
+                          ) : event.type === "motm" ? (
+                            <PartyPopperIcon
+                              size={20}
+                              className="mr-2 dark:text-green-400 text-green-600 group-hover:text-green-400"
                             />
                           ) : (
                             <div></div>

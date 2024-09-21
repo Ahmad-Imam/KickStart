@@ -15,6 +15,7 @@ import {
   updateMatchCard,
   updateTiebreaker,
   updateMatchData,
+  updateMatchMOTM,
 } from "@/queries/matches";
 import {
   createPlayers,
@@ -295,7 +296,7 @@ export async function addCardToMatch(team, player, matchDetails, type) {
       type
     );
     console.log("match");
-    console.log(match);
+    // console.log(match);
 
     revalidatePath(`/tournament/${matchDetails.tournamentId}`);
     revalidatePath(
@@ -372,6 +373,25 @@ export async function editMatchData(matchData, matchDetails) {
     console.log(matchData);
     console.log(matchDetails);
     const match = await updateMatchData(matchData, matchDetails);
+    console.log("match");
+    console.log(match);
+
+    revalidatePath(`/tournament/${matchDetails.tournamentId}`);
+    revalidatePath(
+      `/tournament/${matchDetails.tournamentId}/match/${matchDetails.id}`
+    );
+  } catch (error) {
+    throw new Error(error);
+  }
+}
+
+export async function addMOTMToMatch(team, player, matchDetails) {
+  try {
+    await dbConnect();
+    console.log(team);
+    console.log(player);
+    console.log(matchDetails);
+    const match = await updateMatchMOTM(team, player, matchDetails);
     console.log("match");
     console.log(match);
 

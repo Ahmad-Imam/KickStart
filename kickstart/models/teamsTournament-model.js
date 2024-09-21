@@ -55,6 +55,7 @@ const teamsTournamentSchema = new Schema({
   scorers: [],
   yellow: [],
   red: [],
+  motm: [],
 });
 
 export const teamsTournamentModel =

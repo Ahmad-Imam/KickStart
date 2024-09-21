@@ -1,6 +1,3 @@
-"use client";
-import React from "react";
-import { useEffect, useState } from "react";
 import {
   Card,
   CardContent,
@@ -44,7 +41,7 @@ export default function TeamsTPlayers({ playersInfo, teamsTournament }) {
           teamsTournament={teamsTournament}
         />
       </div>
-      <Card className="dark:bg-slate-950 cardFull border-2 border-slate-200 dark:border-slate-800  hover:shadow-lg transition-shadow duration-300">
+      <Card className="dark:bg-slate-900 cardFull border-2 border-slate-200 dark:border-slate-800  hover:shadow-lg transition-shadow duration-300">
         <CardContent className="py-2 px-2">
           <ul className="">
             {playersInfo?.length === 0 ? (
@@ -55,7 +52,7 @@ export default function TeamsTPlayers({ playersInfo, teamsTournament }) {
                 .map((player) => (
                   <li
                     key={player.id}
-                    className="flex flex-row gap-2 justify-between items-center dark:bg-slate-900 dark:hover:bg-slate-800 p-3 border-1 rounded-md my-4 mx-1 last:border-b-0 cursor-pointer hover:bg-gray-200 "
+                    className="flex flex-row gap-2 justify-between items-center dark:bg-slate-800 dark:hover:bg-slate-700 p-3 border-1 rounded-md my-4 mx-1 last:border-b-0 cursor-pointer hover:bg-gray-200 "
                   >
                     <div>{`${capitalizeFirstLetter(player?.name)} #${
                       player?.jersey

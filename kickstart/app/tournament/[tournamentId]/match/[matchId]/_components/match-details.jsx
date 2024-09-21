@@ -103,8 +103,8 @@ export default async function MatchDetails({ matchDetails, sortedEvents }) {
   console.log("team2");
 
   console.log(matchDetails?.tournamentId);
-  console.log(matchDetails?.team1);
-  console.log(matchDetails?.team2);
+  // console.log(matchDetails?.team1);
+  // console.log(matchDetails?.team2);
   // console.log(matchDetails?.team1);
   // console.log(team1);
   // console.log(match?.status);
@@ -174,15 +174,9 @@ export default async function MatchDetails({ matchDetails, sortedEvents }) {
           </CardHeader>
           <CardContent>
             <Badge
-              // variant={
-              //   tournament.status === "upcoming" ? "secondary" : "default"
-              // }
-
-              className={
-                matchDetails?.status === "live"
-                  ? "bg-red-800 dark:bg-red-600 hover:bg-black hover:text-white dark:text-gray-50"
-                  : "bg-slate-800 dark:bg-blue-400 text-white hover:bg-black hover:text-white dark:text-gray-50"
-              }
+            // variant={
+            //   tournament.status === "upcoming" ? "secondary" : "default"
+            // }
             >
               {matchDetails?.location?.toUpperCase()}
             </Badge>
@@ -214,55 +208,53 @@ export default async function MatchDetails({ matchDetails, sortedEvents }) {
       {matchDetails?.team1?.name && matchDetails?.team2?.name && (
         <div>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
-            {/* <Link
-              href={`/tournament/${matchDetails?.tournamentId}/team/${
-                matchDetails?.team1?.teamId || matchDetails?.team1?.id
-              }`}
-            > */}
-            <Card className="dark:bg-slate-950 cardFull border-2 border-slate-200 dark:border-slate-800  hover:shadow-lg transition-shadow duration-300">
-              <CardHeader>
-                <CardTitle className="text-xl lg:text-2xl">
-                  {matchDetails?.team1.name}
-                </CardTitle>
-                <CardDescription>
-                  {matchDetails?.team1.location}
-                </CardDescription>
-              </CardHeader>
-              <CardContent>
-                <p className="mb-2">{matchDetails?.team1.bio}</p>
-                <div className="flex items-center">
-                  <MapPinIcon className="mr-2" />
-                  <span>{matchDetails?.team1.location}</span>
-                </div>
-              </CardContent>
-            </Card>
-            {/* </Link> */}
+            <Link
+              href={`/tournament/${matchDetails?.tournamentId}/team/${matchDetails?.team1?.teamId}`}
+            >
+              <Card className="dark:bg-slate-900 cardFull border-2 border-slate-200 dark:border-slate-800  hover:shadow-lg transition-shadow duration-300">
+                <CardHeader>
+                  <CardTitle className="text-xl lg:text-2xl">
+                    {matchDetails?.team1.name}
+                  </CardTitle>
+                  <CardDescription>
+                    {matchDetails?.team1.location}
+                  </CardDescription>
+                </CardHeader>
+                <CardContent>
+                  <p className="mb-2">{matchDetails?.team1.bio}</p>
+                  <div className="flex items-center">
+                    <MapPinIcon className="mr-2" />
+                    <span>{matchDetails?.team1.location}</span>
+                  </div>
+                </CardContent>
+              </Card>
+            </Link>
 
-            {/* <Link
-              href={`/tournament/${matchDetails?.tournamentId}/team/${matchDetails?.team2?.id}`}
-            > */}
-            <Card className="dark:bg-slate-950 cardFull border-2 border-slate-200 dark:border-slate-800  hover:shadow-lg transition-shadow duration-300">
-              <CardHeader>
-                <CardTitle className="text-xl lg:text-2xl">
-                  {matchDetails?.team2.name}
-                </CardTitle>
-                <CardDescription>
-                  {matchDetails?.team2.location}
-                </CardDescription>
-              </CardHeader>
-              <CardContent>
-                <p className="mb-2">{matchDetails?.team2.bio}</p>
-                <div className="flex items-center">
-                  <MapPinIcon className="mr-2" />
-                  <span>{matchDetails?.team2.location}</span>
-                </div>
-              </CardContent>
-            </Card>
-            {/* </Link> */}
+            <Link
+              href={`/tournament/${matchDetails?.tournamentId}/team/${matchDetails?.team2?.teamId}`}
+            >
+              <Card className="dark:bg-slate-900 cardFull border-2 border-slate-200 dark:border-slate-800  hover:shadow-lg transition-shadow duration-300">
+                <CardHeader>
+                  <CardTitle className="text-xl lg:text-2xl">
+                    {matchDetails?.team2.name}
+                  </CardTitle>
+                  <CardDescription>
+                    {matchDetails?.team2.location}
+                  </CardDescription>
+                </CardHeader>
+                <CardContent>
+                  <p className="mb-2">{matchDetails?.team2.bio}</p>
+                  <div className="flex items-center">
+                    <MapPinIcon className="mr-2" />
+                    <span>{matchDetails?.team2.location}</span>
+                  </div>
+                </CardContent>
+              </Card>
+            </Link>
           </div>
 
           <h2 className="text-2xl font-bold mt-8 mb-4">Score</h2>
-          <Card className="dark:bg-slate-950 cardFull border-2 border-slate-200 dark:border-slate-800  hover:shadow-lg transition-shadow duration-300">
+          <Card className="dark:bg-slate-900 cardFull border-2 border-slate-200 dark:border-slate-800  hover:shadow-lg transition-shadow duration-300">
             <CardContent className="text-center py-6">
               <p className="text-xl lg:text-2xl font-bold">
                 {matchDetails?.team1?.name} {matchDetails?.result?.team1} -{" "}
@@ -305,7 +297,7 @@ export default async function MatchDetails({ matchDetails, sortedEvents }) {
           {/* <h2 className="text-2xl font-bold mt-8 mb-4">Match Events</h2> */}
           {sortedEvents?.length > 0 && (
             <div className="pb-6">
-              <Card className="dark:bg-slate-950 cardFull border-2 border-slate-200 dark:border-slate-800  hover:shadow-lg transition-shadow duration-300">
+              <Card className="dark:bg-slate-900 cardFull border-2 border-slate-200 dark:border-slate-800  hover:shadow-lg transition-shadow duration-300">
                 <CardHeader>
                   <CardTitle className="text-xl lg:text-2xl">
                     Match Events
@@ -351,6 +343,11 @@ export default async function MatchDetails({ matchDetails, sortedEvents }) {
                             <BadgeXIcon
                               size={20}
                               className="mr-2 text-red-600 group-hover:text-red-400"
+                            />
+                          ) : event.type === "motm" ? (
+                            <PartyPopperIcon
+                              size={20}
+                              className="mr-2 dark:text-green-400 text-green-600 group-hover:text-green-400"
                             />
                           ) : (
                             <div></div>

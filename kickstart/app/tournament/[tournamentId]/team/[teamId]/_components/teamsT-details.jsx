@@ -64,17 +64,14 @@ export default async function TeamDetails({
           passHref
           className=""
         >
-          <button
-            variant="outline"
-            className="mb-4 customButton bg-slate-900 hover:bg-black dark:hover:bg-slate-800"
-          >
+          <button variant="outline" className="mb-4 customButton ">
             Back to Tournament
           </button>
         </Link>
       </div>
       <h1 className="text-4xl font-bold mb-6">{teamsTournament?.name}</h1>
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
-        <Card className="dark:bg-slate-950 cardFull border-2 border-slate-200 dark:border-slate-800  hover:shadow-lg transition-shadow duration-300">
+        <Card className="dark:bg-slate-900 cardFull border-2 border-slate-200 dark:border-slate-800  hover:shadow-lg transition-shadow duration-300">
           <CardHeader>
             <CardTitle>Location</CardTitle>
           </CardHeader>
@@ -84,7 +81,7 @@ export default async function TeamDetails({
           </CardContent>
         </Card>
 
-        <Card className="dark:bg-slate-950 flex flex-row justify-between items-center p-4 shadow-sm  cardFull border-2 border-slate-200 dark:border-slate-800  hover:shadow-lg transition-shadow duration-300 ">
+        <Card className="dark:bg-slate-900 flex flex-row justify-between items-center p-4 shadow-sm  cardFull border-2 border-slate-200 dark:border-slate-800  hover:shadow-lg transition-shadow duration-300 ">
           <div className="flex flex-col justify-end items-center">
             <div className="font-semibold text-lg">Played</div>
             <div className="font-semibold">{teamsTournament?.matchPlayed}</div>
@@ -108,7 +105,7 @@ export default async function TeamDetails({
         teamsTournament={teamsTournament}
       />
 
-      <Card className="dark:bg-slate-950 my-8 cardFull border-2 border-slate-200 dark:border-slate-800  hover:shadow-lg transition-shadow duration-300">
+      <Card className="dark:bg-slate-900 my-8 cardFull border-2 border-slate-200 dark:border-slate-800  hover:shadow-lg transition-shadow duration-300">
         <CardHeader>
           <CardTitle>Team Top Scorers: </CardTitle>
         </CardHeader>
@@ -121,11 +118,11 @@ export default async function TeamDetails({
             ) : (
               topScorers.slice(0, 5)?.map((scorer, index) => (
                 <div key={index}>
-                  <li className="flex items-center justify-between p-2 dark:bg-slate-900 dark:hover:bg-slate-800 border-1 rounded-md last:border-b-0 cursor-pointer hover:bg-gray-200 ">
+                  <li className="flex items-center justify-between p-2 px-4 dark:bg-slate-800 dark:hover:bg-slate-700 border-1 rounded-md last:border-b-0 cursor-pointer hover:bg-slate-200 bg-slate-100 my-3">
                     <span>{scorer?.name}</span>
                     <Badge variant="secondary" className="flex items-center">
-                      <TrophyIcon className="mr-1 h-4 w-4" />
-                      {scorer?.score}
+                      <TrophyIcon size={22} className="mr-1 h-4 w-4" />
+                      <div className="md:text-lg">{scorer?.score}</div>
                     </Badge>
                   </li>
                   {/* <Separator className="" /> */}
@@ -136,7 +133,7 @@ export default async function TeamDetails({
         </CardContent>
       </Card>
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-        <Card className="dark:bg-slate-950 my-8 cardFull border-2 border-slate-200 dark:border-slate-800  hover:shadow-lg transition-shadow duration-300">
+        <Card className="dark:bg-slate-900 my-8 cardFull border-2 border-slate-200 dark:border-slate-800  hover:shadow-lg transition-shadow duration-300">
           <CardHeader>
             <CardTitle>Yellow Cards</CardTitle>
           </CardHeader>
@@ -146,12 +143,12 @@ export default async function TeamDetails({
                 yellowCards.map((player) => (
                   <li
                     key={player.id}
-                    className="flex items-center justify-between p-2 dark:bg-slate-900 dark:hover:bg-slate-800 border-1 rounded-md last:border-b-0 cursor-pointer hover:bg-gray-200 "
+                    className="flex items-center justify-between p-2 px-4 dark:bg-slate-800 dark:hover:bg-slate-700 border-1 rounded-md last:border-b-0 cursor-pointer hover:bg-slate-200 bg-slate-100 my-3"
                   >
                     <span>{player.name}</span>
-                    <Badge variant="warning" className="flex items-center">
-                      <AlertTriangleIcon className="mr-1 h-4 w-4" />
-                      {player.yellow}
+                    <Badge variant="secondary" className="flex items-center">
+                      <AlertTriangleIcon size={22} className="mr-1 h-4 w-4" />
+                      <div className="md:text-lg">{player.yellow}</div>
                     </Badge>
                   </li>
                 ))
@@ -161,7 +158,7 @@ export default async function TeamDetails({
             </ul>
           </CardContent>
         </Card>
-        <Card className="dark:bg-slate-950 my-8 cardFull border-2 border-slate-200 dark:border-slate-800  hover:shadow-lg transition-shadow duration-300">
+        <Card className="dark:bg-slate-900 my-8 cardFull border-2 border-slate-200 dark:border-slate-800  hover:shadow-lg transition-shadow duration-300">
           <CardHeader>
             <CardTitle>Red Cards</CardTitle>
           </CardHeader>
@@ -171,12 +168,13 @@ export default async function TeamDetails({
                 redCards.map((player) => (
                   <li
                     key={player.id}
-                    className="flex items-center justify-between p-2 dark:bg-slate-900 dark:hover:bg-slate-800 border-1 rounded-md last:border-b-0 cursor-pointer hover:bg-gray-200 bg-gray-100"
+                    className="flex items-center justify-between p-2 px-4 dark:bg-slate-800 dark:hover:bg-slate-700 border-1 rounded-md last:border-b-0 cursor-pointer hover:bg-slate-200 bg-slate-100 my-3"
                   >
                     <span>{player.name}</span>
-                    <Badge variant="warning" className="flex items-center">
-                      <AlertTriangleIcon className="mr-1 h-4 w-4" />
-                      {player.red}
+                    <Badge variant="secondary" className="flex items-center">
+                      <AlertTriangleIcon size={22} className="mr-1 h-4 w-4" />
+
+                      <div className="md:text-lg">{player.red}</div>
                     </Badge>
                   </li>
                 ))

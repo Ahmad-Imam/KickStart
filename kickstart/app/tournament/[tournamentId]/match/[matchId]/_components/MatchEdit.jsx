@@ -17,13 +17,15 @@ import { ScrollArea } from "@/components/ui/scroll-area";
 import { X } from "lucide-react";
 import { set } from "mongoose";
 import { DateTimePicker } from "@/app/create/tournaments/_components/date-time-picker";
+import { useRouter } from "next/navigation";
 
 export default function MatchEdit({ matchDetails }) {
   const [matchDate, setMatchDate] = useState(
     new Date(new Date().setHours(0, 0, 0, 0))
   );
   const [location, setLocation] = useState(matchDetails?.location || "");
-
+  const [loading, setLoading] = useState(false);
+  const router = useRouter();
   console.log("saved");
   // console.log(Array.isArray(savedItems));
   // console.log(savedItems);
@@ -31,6 +33,7 @@ export default function MatchEdit({ matchDetails }) {
 
   async function handleSubmit(e) {
     e.preventDefault();
+    setLoading(true);
     const formData = new FormData(e.target);
     const location = formData.get("location");
 
@@ -43,6 +46,10 @@ export default function MatchEdit({ matchDetails }) {
     console.log(matchData);
 
     const matchUpdated = await editMatchData(matchData, matchDetails);
+    router.push(
+      `/tournament/${matchDetails.tournamentId}/match/${matchDetails.id}`
+    );
+    setLoading(false);
 
     console.log("matchUpdated");
     // Call the API to create the team
@@ -52,10 +59,14 @@ export default function MatchEdit({ matchDetails }) {
   return (
     <Card className="mx-auto max-w-lg w-full dark:bg-slate-900 cardFull border-2 border-slate-200 dark:border-slate-800  hover:shadow-lg transition-shadow duration-300">
       <CardHeader>
-        <CardTitle className="text-2xl">Create Your teams</CardTitle>
-        <CardDescription>Enter your team information</CardDescription>
+        <CardTitle className="text-2xl">Edit Match</CardTitle>
+        <CardDescription>Enter match information</CardDescription>
       </CardHeader>
       <CardContent>
+        <h1 className="text-xl py-3">
+          {matchDetails?.team1?.name} vs {""}
+          {matchDetails?.team2?.name}
+        </h1>
         <form onSubmit={handleSubmit}>
           <div className="grid gap-4">
             <div className="grid gap-2">
@@ -77,9 +88,13 @@ export default function MatchEdit({ matchDetails }) {
               <DateTimePicker value={matchDate} onChange={setMatchDate} />
             </div>
 
-            <Button type="submit" className="w-full">
-              Submit
-            </Button>
+            <button
+              type="submit"
+              disabled={loading}
+              className="w-full customButton dark:hover:bg-slate-500 disabled:opacity-50 disabled:cursor-not-allowed"
+            >
+              {loading ? "Saving..." : "Submit"}
+            </button>
           </div>
         </form>
       </CardContent>

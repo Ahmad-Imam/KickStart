@@ -162,7 +162,7 @@ export default function TeamsTPlayersForm({
                     <li
                       key={index}
                       type="button"
-                      className=" dark:bg-slate-900 dark:hover:bg-slate-600 p-2 border-1 rounded-md my-1 last:border-b-0 cursor-pointer hover:bg-gray-200 bg-gray-100 mb-2"
+                      className=" dark:bg-slate-800 dark:hover:bg-slate-600 p-2 border-1 rounded-md last:border-b-0 cursor-pointer hover:bg-slate-200 bg-slate-100 my-3"
                       onClick={() => handleResultClick(player)}
                     >
                       <div className="flex flex-row justify-between text-start items-center gap-2 text-sm">
@@ -202,7 +202,7 @@ export default function TeamsTPlayersForm({
             {playersInfo?.map((item, index) => (
               <li
                 key={index}
-                className="flex justify-between items-center bg-gray-100 dark:bg-slate-800 p-2 rounded text-[13px] md:text-sm"
+                className="flex justify-between items-center  dark:bg-slate-800 dark:hover:bg-slate-600 p-2 rounded text-[13px] md:text-sm hover:bg-slate-200 bg-slate-100 "
               >
                 {`${item?.name} # ${item?.jersey}`}
               </li>
@@ -218,7 +218,7 @@ export default function TeamsTPlayersForm({
             {savedItems?.map((item, index) => (
               <li
                 key={index}
-                className="flex justify-between items-center bg-gray-100 p-2 dark:bg-slate-800 rounded text-[13px] md:text-sm"
+                className="flex justify-between items-center hover:bg-slate-200 bg-slate-100 p-2 dark:bg-slate-800 dark:hover:bg-slate-600 rounded text-[13px] md:text-sm"
               >
                 {`${item?.name} # ${item?.jersey}`}
                 <Button
@@ -241,13 +241,13 @@ export default function TeamsTPlayersForm({
           <div>Saving Squad</div>
         </div>
       ) : (
-        <Button
+        <button
           variant="outline"
-          className="w-1/2 my-4 bg-slate-800 dark:bg-slate-800 text-white"
+          className="w-1/2 my-4 customButton"
           onClick={handleSubmit}
         >
           Save Squad
-        </Button>
+        </button>
       )}
     </div>
   );

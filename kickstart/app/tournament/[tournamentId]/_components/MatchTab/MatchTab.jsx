@@ -210,7 +210,7 @@ export default function MatchTab({ matchesDetails, tournamentDetails }) {
         onValueChange={setActiveTab}
         className="flex flex-col w-full"
       >
-        <TabsList className=" flex flex-row justify-around gap-6 h-auto dark:bg-slate-800 cardFull custom-border-shadow border-1">
+        <TabsList className=" flex flex-row justify-around gap-6 h-auto dark:bg-slate-900 cardFull custom-border-shadow border-1">
           <TabsTrigger
             value="group"
             className="px-6 py-2 my-1 "
@@ -289,7 +289,7 @@ export default function MatchTab({ matchesDetails, tournamentDetails }) {
               groupMatches.map((match) => (
                 <Card
                   key={match?.id}
-                  className=" dark:bg-slate-950 my-3 cardFull border-2 border-slate-200 dark:border-slate-800  hover:shadow-lg transition-shadow duration-300"
+                  className="flex flex-col justify-between dark:bg-slate-900 my-3 cardFull border-2 border-slate-200 dark:border-slate-800  hover:shadow-lg transition-shadow duration-300"
                 >
                   <CardHeader>
                     {match?.type === "group" ? (
@@ -314,39 +314,41 @@ export default function MatchTab({ matchesDetails, tournamentDetails }) {
                       {new Date(match?.matchDate).toLocaleString()}
                     </CardDescription>
                   </CardHeader>
-                  <CardContent>
-                    <Badge
-                      className={
-                        "bg-cyan-600 dark:bg-cyan-400 dark:text-gray-50 "
-                      }
-                      style={{
-                        paddingLeft: 10,
-                        paddingRight: 10,
-                      }}
-                    >
-                      {match?.type}
-                    </Badge>
-                    <Badge
-                      variant={
-                        match?.type === "group" ? "outline" : "destructive"
-                      }
-                      className={
-                        match?.status === "live"
-                          ? "bg-red-800 dark:bg-red-600 dark:text-gray-50"
-                          : "bg-slate-800 dark:bg-blue-400 text-white dark:text-gray-50"
-                      }
-                      style={{
-                        paddingLeft: 10,
-                        paddingRight: 10,
-                        marginLeft: 10,
-                      }}
-                    >
-                      {match?.status}
-                    </Badge>
+                  <CardContent className=" ">
+                    <div className="pt-2">
+                      <Badge
+                        className={
+                          "bg-cyan-600 dark:bg-cyan-400 dark:text-gray-50 "
+                        }
+                        style={{
+                          paddingLeft: 10,
+                          paddingRight: 10,
+                        }}
+                      >
+                        {match?.type}
+                      </Badge>
+                      <Badge
+                        variant={
+                          match?.type === "group" ? "outline" : "destructive"
+                        }
+                        className={
+                          match?.status === "live"
+                            ? "bg-red-800 dark:bg-red-600 dark:text-gray-50"
+                            : "bg-slate-800 dark:bg-blue-400 text-white dark:text-gray-50"
+                        }
+                        style={{
+                          paddingLeft: 10,
+                          paddingRight: 10,
+                          marginLeft: 10,
+                        }}
+                      >
+                        {match?.status}
+                      </Badge>
+                    </div>
                     <Link
                       href={`/tournament/${tournamentDetails?.id}/match/${match?.id}`}
                     >
-                      <div className="mt-4 w-40 text-white p-2 rounded-md text-sm text-center bg-slate-800 hover:bg-black dark:hover:bg-slate-900">
+                      <div className="mt-4 w-40 customButton">
                         View Match Details
                       </div>
                     </Link>
@@ -369,7 +371,7 @@ export default function MatchTab({ matchesDetails, tournamentDetails }) {
               knockoutMatches.map((match) => (
                 <Card
                   key={match?.id}
-                  className="dark:bg-slate-950 my-3 cardFull border-2 border-slate-200 dark:border-slate-800  hover:shadow-lg transition-shadow duration-300"
+                  className="flex flex-col justify-between dark:bg-slate-900 my-3 cardFull border-2 border-slate-200 dark:border-slate-800  hover:shadow-lg transition-shadow duration-300"
                 >
                   <CardHeader>
                     {match?.type === "group" ? (
@@ -395,43 +397,45 @@ export default function MatchTab({ matchesDetails, tournamentDetails }) {
                     </CardDescription>
                   </CardHeader>
                   <CardContent>
-                    <Badge
-                      className={
-                        match?.type === "quarter"
-                          ? "bg-cyan-900 dark:bg-cyan-400 dark:text-gray-50"
-                          : match?.type === "semi"
-                          ? "bg-amber-500 dark:bg-amber-400 dark:text-gray-50"
-                          : "bg-indigo-700 dark:bg-indigo-400 dark:text-gray-50"
-                      }
-                      style={{
-                        paddingLeft: 10,
-                        paddingRight: 10,
-                      }}
-                    >
-                      {match?.type}
-                    </Badge>
-                    <Badge
-                      // variant={
-                      //   match?.type === "quarter" ? "outline" : "secondary"
-                      // }
-                      className={
-                        match?.status === "live"
-                          ? "bg-red-800 dark:bg-red-600 hover:bg-black hover:text-white dark:text-gray-50"
-                          : "bg-slate-800 dark:bg-blue-400 text-white hover:bg-black hover:text-white dark:text-gray-50"
-                      }
-                      style={{
-                        paddingLeft: 10,
-                        paddingRight: 10,
-                        marginLeft: 10,
-                        marginRight: 10,
-                      }}
-                    >
-                      {match?.status}
-                    </Badge>
+                    <div className="pt-2">
+                      <Badge
+                        className={
+                          match?.type === "quarter"
+                            ? "bg-cyan-900 dark:bg-cyan-400 dark:text-gray-50"
+                            : match?.type === "semi"
+                            ? "bg-amber-500 dark:bg-amber-400 dark:text-gray-50"
+                            : "bg-indigo-700 dark:bg-indigo-400 dark:text-gray-50"
+                        }
+                        style={{
+                          paddingLeft: 10,
+                          paddingRight: 10,
+                        }}
+                      >
+                        {match?.type}
+                      </Badge>
+                      <Badge
+                        // variant={
+                        //   match?.type === "quarter" ? "outline" : "secondary"
+                        // }
+                        className={
+                          match?.status === "live"
+                            ? "bg-red-800 dark:bg-red-600 hover:bg-black hover:text-white dark:text-gray-50"
+                            : "bg-slate-800 dark:bg-blue-400 text-white hover:bg-black hover:text-white dark:text-gray-50"
+                        }
+                        style={{
+                          paddingLeft: 10,
+                          paddingRight: 10,
+                          marginLeft: 10,
+                          marginRight: 10,
+                        }}
+                      >
+                        {match?.status}
+                      </Badge>
+                    </div>
                     <Link
                       href={`/tournament/${tournamentDetails?.id}/match/${match?.id}`}
                     >
-                      <div className="mt-4 w-40 text-white p-2 rounded-md text-sm text-center bg-slate-800 hover:bg-black dark:hover:bg-slate-900">
+                      <div className="mt-4 w-40 customButton">
                         View Match Details
                       </div>
                     </Link>

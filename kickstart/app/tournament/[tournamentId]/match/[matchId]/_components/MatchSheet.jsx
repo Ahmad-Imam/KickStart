@@ -19,7 +19,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { addGoalToMatch, addCardToMatch } from "@/app/actions";
+import { addGoalToMatch, addCardToMatch, addMOTMToMatch } from "@/app/actions";
 
 export default function MatchSheet({ team1, team2, matchDetails, type }) {
   const [isOpen, setIsOpen] = useState(false);
@@ -67,6 +67,9 @@ export default function MatchSheet({ team1, team2, matchDetails, type }) {
           matchDetails,
           type
         );
+      } else if (type === "motm") {
+        console.log("inside motm");
+        await addMOTMToMatch(selectedTeam, selectedPlayerObject, matchDetails);
       }
 
       console.log("Goal added successfully");
@@ -78,53 +81,50 @@ export default function MatchSheet({ team1, team2, matchDetails, type }) {
     }
   };
 
-  // useEffect(() => {
-  //   if (isLoading) {
-  //     const timer = setTimeout(() => {
-  //       setIsLoading(false);
-  //       setIsOpen(false);
-  //     }, 2000); // Wait for 2 seconds before closing
-
-  //     return () => clearTimeout(timer);
-  //   }
-  // }, [isLoading]);
-
-  const handleButtonClick = () => {
-    setIsLoading(true);
-  };
-
-  // Combining the two teams into an array for easier mapping
-
   return (
     <div>
       <Sheet
         open={isOpen}
         onOpenChange={setIsOpen}
-        className="dark:bg-slate-900"
+        className="dark:bg-slate-900 "
       >
         <SheetTrigger asChild>
-          <Button
+          <button
             variant="outline"
-            className=" disabled:opacity-50 bg-slate-800 text-white dark:bg-slate-800 dark:hover:bg-slate-900"
+            className=" disabled:opacity-50 customButton"
           >
             {type === "score"
               ? "Add Goal"
               : type === "yellow"
               ? "Add Yellow"
-              : "Add Red"}
-          </Button>
+              : type === "red"
+              ? "Add Red"
+              : "Add MOTM"}
+          </button>
         </SheetTrigger>
         <SheetContent
           side="bottom"
-          className="sm:max-w-[425px] mx-auto bg-white dark:bg-slate-900"
+          className="sm:max-w-[425px] mx-auto bg-white dark:bg-slate-900 rounded-md border-2 border-slate-400"
         >
           <SheetHeader className="mb-6 dark:bg-slate-900">
-            <SheetTitle className="text-3xl font-bold">
+            <SheetTitle
+              className="text-3xl font-bold "
+              style={{
+                color:
+                  type === "yellow"
+                    ? "rgb(245 158 11 / var(--tw-bg-opacity))"
+                    : type === "red"
+                    ? "red"
+                    : "default",
+              }}
+            >
               {type === "score"
                 ? "Add Score"
                 : type === "yellow"
                 ? "Add Yellow Card"
-                : "Add Red Card"}
+                : type === "red"
+                ? "Add Red Card"
+                : "Add Man of the match"}
             </SheetTitle>
             <SheetDescription className="text-lg text-gray-600 dark:text-slate-400">
               Choose the team and player.

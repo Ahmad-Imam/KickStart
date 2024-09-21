@@ -9,7 +9,7 @@ export default function TournamentTabs({ children }) {
   return (
     <>
       <Tabs value={activeTab} onValueChange={setActiveTab}>
-        <TabsList className="grid w-full grid-cols-4 gap-2 px-2 h-auto py-2 dark:bg-slate-800 cardFull custom-border-shadow border-1">
+        <TabsList className="grid w-full grid-cols-4 gap-2 px-2 h-auto py-2 dark:bg-slate-900 cardFull custom-border-shadow border-1">
           <TabsTrigger
             value="overview"
             // style={{

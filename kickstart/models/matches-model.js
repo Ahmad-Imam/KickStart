@@ -36,6 +36,7 @@ const matchSchema = new Schema({
   yellow: [],
 
   red: [],
+  motm: [],
   events: [],
   tiebreaker: {},
 });
