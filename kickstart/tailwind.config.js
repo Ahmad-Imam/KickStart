@@ -22,6 +22,9 @@ module.exports = {
         warning: "hsl(var(--warning))",
         "warning-foreground": "hsl(var(--warning-foreground))",
       },
+      screens: {
+        nlg: "1540px",
+      },
     },
   },
   plugins: [require("tailwindcss-animate")],

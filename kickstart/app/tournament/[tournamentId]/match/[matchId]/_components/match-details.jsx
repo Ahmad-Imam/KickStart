@@ -111,20 +111,31 @@ export default async function MatchDetails({ matchDetails, sortedEvents }) {
 
   return (
     <div className="container mx-auto px-4 py-8  h-full">
-      <div className="w-min">
-        <Link
-          href={`/tournament/${matchDetails?.tournamentId}`}
-          className=""
-          passHref
-        >
-          <div className="customButton my-4 ">Back to Tournament</div>
-        </Link>
+      <div className="flex flex-row justify-between">
+        <div className="w-min">
+          <Link
+            href={`/tournament/${matchDetails?.tournamentId}`}
+            className=""
+            passHref
+          >
+            <div className="customButton my-4 ">Back to Tournament</div>
+          </Link>
+        </div>
+        <div>
+          <Link
+            href={`/tournament/${matchDetails?.tournamentId}/match/${matchDetails?.id}/edit`}
+            className=""
+            passHref
+          >
+            <div className="customButton my-4 ">Edit Match</div>
+          </Link>
+        </div>
       </div>
       <h1 className="text-2xl lg:text-4xl font-bold my-6">
         {matchDetails?.team1?.name || matchDetails?.qName?.team1} vs{" "}
         {matchDetails?.team2?.name || matchDetails?.qName?.team2}
       </h1>
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
+      <div className="grid grid-cols-1 md:grid-cols-2 nlg:grid-cols-4 gap-6 mb-8 items-start ">
         <Card className="dark:bg-slate-900 cardFull border-2 border-slate-200 dark:border-slate-800  hover:shadow-lg transition-shadow duration-300">
           <CardHeader>
             <CardTitle className="text-xl lg:text-2xl">Match Type</CardTitle>
@@ -143,16 +154,42 @@ export default async function MatchDetails({ matchDetails, sortedEvents }) {
             </Badge>
           </CardContent>
         </Card>
-        <Card className="dark:bg-slate-950 cardFull border-2 border-slate-200 dark:border-slate-800  hover:shadow-lg transition-shadow duration-300">
+
+        <Card className="dark:bg-slate-900 cardFull border-2 border-slate-200 dark:border-slate-800  hover:shadow-lg transition-shadow duration-300">
           <CardHeader>
-            <CardTitle className="text-xl lg:text-2xl">Date</CardTitle>
+            <CardTitle className="text-xl lg:text-2xl flex flex-row justify-between items-center">
+              <div>Date</div>
+            </CardTitle>
           </CardHeader>
-          <CardContent className="flex items-center">
-            <CalendarIcon className="mr-2" />
-            <span>{new Date(matchDetails?.matchDate).toLocaleString()}</span>
+          <CardContent className="w-max">
+            <div className="flex items-center">
+              <CalendarIcon className="mr-2" />
+              <span>{new Date(matchDetails?.matchDate).toLocaleString()}</span>
+            </div>
           </CardContent>
         </Card>
-        <Card className=" dark:bg-slate-950 cardFull border-2 border-slate-200 dark:border-slate-800  hover:shadow-lg transition-shadow duration-300">
+        <Card className=" dark:bg-slate-900 cardFull border-2 border-slate-200 dark:border-slate-800  hover:shadow-lg transition-shadow duration-300">
+          <CardHeader>
+            <CardTitle className="text-xl lg:text-2xl">Location</CardTitle>
+          </CardHeader>
+          <CardContent>
+            <Badge
+              // variant={
+              //   tournament.status === "upcoming" ? "secondary" : "default"
+              // }
+
+              className={
+                matchDetails?.status === "live"
+                  ? "bg-red-800 dark:bg-red-600 hover:bg-black hover:text-white dark:text-gray-50"
+                  : "bg-slate-800 dark:bg-blue-400 text-white hover:bg-black hover:text-white dark:text-gray-50"
+              }
+            >
+              {matchDetails?.location?.toUpperCase()}
+            </Badge>
+          </CardContent>
+        </Card>
+
+        <Card className=" dark:bg-slate-900 cardFull border-2 border-slate-200 dark:border-slate-800  hover:shadow-lg transition-shadow duration-300">
           <CardHeader>
             <CardTitle className="text-xl lg:text-2xl">Status</CardTitle>
           </CardHeader>

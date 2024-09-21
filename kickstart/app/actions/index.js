@@ -14,6 +14,7 @@ import {
   updateMatchStatus,
   updateMatchCard,
   updateTiebreaker,
+  updateMatchData,
 } from "@/queries/matches";
 import {
   createPlayers,
@@ -128,11 +129,7 @@ export async function addTournaments(data) {
     console.log("allMatch");
     // console.log(allMatch);
 
-    const matches = await createMatches(
-      allMatch,
-      tournament?.id,
-      data?.startDate
-    );
+    const matches = await createMatches(allMatch, tournament, data?.startDate);
 
     // console.log(teams);
     return tournament;
@@ -359,6 +356,24 @@ export async function endTiebreaker(matchDetails) {
     const tiebreaker = await finishTieBreaker(matchDetails);
     console.log("tiebreaker");
     console.log(tiebreaker);
+
+    revalidatePath(`/tournament/${matchDetails.tournamentId}`);
+    revalidatePath(
+      `/tournament/${matchDetails.tournamentId}/match/${matchDetails.id}`
+    );
+  } catch (error) {
+    throw new Error(error);
+  }
+}
+
+export async function editMatchData(matchData, matchDetails) {
+  try {
+    await dbConnect();
+    console.log(matchData);
+    console.log(matchDetails);
+    const match = await updateMatchData(matchData, matchDetails);
+    console.log("match");
+    console.log(match);
 
     revalidatePath(`/tournament/${matchDetails.tournamentId}`);
     revalidatePath(

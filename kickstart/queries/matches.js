@@ -10,8 +10,9 @@ import {
 } from "@/utils/data-util";
 import { da } from "date-fns/locale";
 
-export async function createMatches(allMatch, tournamentId, matchDate) {
+export async function createMatches(allMatch, tournament, matchDate) {
   console.log("creating matches");
+  const tournamentId = tournament.id;
   console.log(tournamentId);
   console.log(allMatch);
   const {
@@ -52,6 +53,7 @@ export async function createMatches(allMatch, tournamentId, matchDate) {
             team2: 0,
           },
           tiebreaker: {},
+          location: tournament.location,
         };
         console.log("hereeeeeeeeeeeeeeeeeeeeee");
         const createdMatch = await matchModel.create(matchData);
@@ -86,6 +88,7 @@ export async function createMatches(allMatch, tournamentId, matchDate) {
                   },
                   groupName: group?.name,
                   matchDate: matchDate,
+                  location: tournament.location,
                   type: "group",
                 };
                 groupMatches.push(matchData);
@@ -118,6 +121,7 @@ export async function createMatches(allMatch, tournamentId, matchDate) {
               matchDate: matchDate,
               type: "quarter",
               tiebreaker: {},
+              location: tournament.location,
             };
             quarterMatches.push(matchData);
           }
@@ -137,6 +141,7 @@ export async function createMatches(allMatch, tournamentId, matchDate) {
               matchDate: matchDate,
               type: "semi",
               tiebreaker: {},
+              location: tournament.location,
             };
             quarterMatches.push(matchData);
           }
@@ -167,6 +172,7 @@ export async function createMatches(allMatch, tournamentId, matchDate) {
               matchDate: matchDate,
               type: "third",
               tiebreaker: {},
+              location: tournament.location,
             };
             quarterMatches.push(matchData);
           }
@@ -195,6 +201,7 @@ export async function createMatches(allMatch, tournamentId, matchDate) {
               matchDate: matchDate,
               type: "semi",
               tiebreaker: {},
+              location: tournament.location,
             };
             semiMatches.push(matchData);
           }
@@ -211,6 +218,7 @@ export async function createMatches(allMatch, tournamentId, matchDate) {
             matchDate: matchDate,
             type: "final",
             tiebreaker: {},
+            location: tournament.location,
           };
           semiMatches.push(matchData);
           if (isThirdPlace) {
@@ -225,6 +233,7 @@ export async function createMatches(allMatch, tournamentId, matchDate) {
               matchDate: matchDate,
               type: "third",
               tiebreaker: {},
+              location: tournament.location,
             };
             semiMatches.push(matchData);
           }
@@ -257,6 +266,7 @@ export async function createMatches(allMatch, tournamentId, matchDate) {
         matchDate: matchDate,
         type: "final",
         tiebreaker: {},
+        location: tournament.location,
       };
       const createdMatch = await matchModel.create(matchData);
       console.log("match created g1 t2");
@@ -307,6 +317,7 @@ export async function createMatches(allMatch, tournamentId, matchDate) {
           matchDate: matchDate,
           type: "semi",
           tiebreaker: {},
+          location: tournament.location,
         };
         semiMatches.push(matchData);
       }
@@ -323,6 +334,7 @@ export async function createMatches(allMatch, tournamentId, matchDate) {
         matchDate: matchDate,
         type: "final",
         tiebreaker: {},
+        location: tournament.location,
       };
       semiMatches.push(matchData);
       if (isThirdPlace) {
@@ -337,6 +349,7 @@ export async function createMatches(allMatch, tournamentId, matchDate) {
           matchDate: matchDate,
           type: "third",
           tiebreaker: {},
+          location: tournament.location,
         };
         semiMatches.push(matchData);
       }
@@ -393,6 +406,7 @@ export async function createMatches(allMatch, tournamentId, matchDate) {
           matchDate: matchDate,
           type: "quarter",
           tiebreaker: {},
+          location: tournament.location,
         };
         quarterMatches.push(matchData);
       }
@@ -413,6 +427,7 @@ export async function createMatches(allMatch, tournamentId, matchDate) {
           matchDate: matchDate,
           type: "semi",
           tiebreaker: {},
+          location: tournament.location,
         };
         quarterMatches.push(matchData);
       }
@@ -429,6 +444,7 @@ export async function createMatches(allMatch, tournamentId, matchDate) {
         matchDate: matchDate,
         type: "final",
         tiebreaker: {},
+        location: tournament.location,
       };
       quarterMatches.push(matchData);
       if (isThirdPlace) {
@@ -443,6 +459,7 @@ export async function createMatches(allMatch, tournamentId, matchDate) {
           matchDate: matchDate,
           type: "third",
           tiebreaker: {},
+          location: tournament.location,
         };
         quarterMatches.push(matchData);
       }
@@ -1298,6 +1315,31 @@ export async function finishTieBreaker(matchDetails) {
     );
 
     console.log("Tiebreaker finished");
+
+    return replaceMongoIdInObject(updatedMatch);
+  } catch (error) {
+    throw new Error(error);
+  }
+}
+
+export async function updateMatchData(matchData, matchDetails) {
+  try {
+    const matchId = matchDetails?.id;
+
+    const updatedMatch = await matchModel
+      .findByIdAndUpdate(
+        matchId,
+        {
+          $set: matchData,
+        },
+        {
+          new: true,
+          upsert: true,
+        }
+      )
+      .lean();
+
+    console.log("matchResult updated");
 
     return replaceMongoIdInObject(updatedMatch);
   } catch (error) {
