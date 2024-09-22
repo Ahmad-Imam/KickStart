@@ -11,7 +11,7 @@ import {
 } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { addPlayers, addTeams } from "@/app/actions";
+import { addPlayers, addTeams, editPlayerData } from "@/app/actions";
 
 import { useState, useEffect } from "react";
 import { ScrollArea } from "@/components/ui/scroll-area";
@@ -20,21 +20,38 @@ import { MapPinIcon, X } from "lucide-react";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { set } from "mongoose";
 import { capitalizeFirstLetter } from "@/utils/data-util";
+import { useRouter } from "next/navigation";
 
-export function PlayersForm() {
+export default function PlayerEdit({ playerDetails }) {
   const [query, setQuery] = useState("");
   const [results, setResults] = useState([]);
   const [savedItems, setSavedItems] = useState([]);
 
   const [teamsList, setTeamsList] = useState([]);
-  console.log(teamsList);
+
+  const formData = {
+    name: playerDetails.name,
+    nickName: playerDetails.nickName,
+    country: playerDetails.country,
+    jersey: playerDetails.jersey,
+    team: playerDetails.team,
+    position: playerDetails.position,
+  };
+
+  const [initialFormData, setInitialFormData] = useState(formData);
+
+  //   console.log(teamsList);
 
   const [loadingTeam, setLoadingTeam] = useState(false);
 
   const positions = ["goalkeeper", "defender", "midfielder", "striker"];
 
-  const [selectedPosition, setSelectedPosition] = useState(positions[2]);
-  console.log(selectedPosition);
+  const [loading, setLoading] = useState(false);
+  const router = useRouter();
+  const [selectedPosition, setSelectedPosition] = useState(
+    initialFormData.position
+  );
+  //   console.log(selectedPosition);
 
   useEffect(() => {
     if (query.trim() === "") {
@@ -64,23 +81,31 @@ export function PlayersForm() {
 
   async function handleSubmit(e) {
     e.preventDefault();
-    const formData = new FormData(e.target);
-    const name = formData.get("name");
-    const nickName = formData.get("nickName");
-    const country = formData.get("country");
-    const jersey = formData.get("jersey");
-    const team = savedItems[0]?.id;
+    setLoading(true);
+    // const formData = new FormData(e.target);
+    const name = initialFormData.name;
+    console.log(name);
+    const nickName = initialFormData.nickName;
+    const country = initialFormData.country;
+    const jersey = initialFormData.jersey;
+    const team = savedItems[0]?.id || playerDetails.team._id || null;
     const playerData = {
+      ...playerDetails,
       name,
       nickName,
       country,
       jersey,
       team,
       position: selectedPosition,
+      //   ...playerDetails,
     };
 
     console.log(playerData);
-    const teams = await addPlayers(playerData);
+    const teams = await editPlayerData(playerData, playerDetails.id);
+    setLoading(false);
+    console.log("ipdted");
+    router.push(`/player/${playerDetails.id}`);
+
     // Call the API to create the team
   }
 
@@ -102,11 +127,24 @@ export function PlayersForm() {
     fetchTeams();
   }, []);
 
+  const handleInputChange = (e) => {
+    const { name, value } = e.target;
+
+    setInitialFormData((prevData) => {
+      return {
+        ...prevData,
+        [name]: value,
+      };
+    });
+  };
+
   return (
-    <Card className="dark:bg-slate-900 mx-auto max-w-xl w-full cardFull border-2 border-slate-200 dark:border-slate-800  hover:shadow-lg transition-shadow duration-300 ">
+    <Card className="dark:bg-slate-900 mx-2 max-w-xl w-full cardFull border-2 border-slate-200 dark:border-slate-800  hover:shadow-lg transition-shadow duration-300 ">
       <CardHeader>
-        <CardTitle className="text-2xl">Create Your player</CardTitle>
-        <CardDescription>Enter your player information</CardDescription>
+        <CardTitle className="text-2xl">Edit Your player</CardTitle>
+        <CardDescription>
+          Modify player information. This will affect ongoing tournaments
+        </CardDescription>
       </CardHeader>
       <CardContent>
         <form onSubmit={handleSubmit}>
@@ -118,7 +156,8 @@ export function PlayersForm() {
                 name="name"
                 type="text"
                 placeholder="Lionel Messi"
-                required
+                value={initialFormData?.name}
+                onChange={handleInputChange}
                 className="dark:bg-slate-800"
               />
             </div>
@@ -130,7 +169,8 @@ export function PlayersForm() {
                 name="nickName"
                 type="text"
                 placeholder="Goat"
-                required
+                value={initialFormData?.nickName}
+                onChange={handleInputChange}
                 className="dark:bg-slate-800"
               />
             </div>
@@ -141,7 +181,8 @@ export function PlayersForm() {
                 name="country"
                 type="text"
                 placeholder="Argentina"
-                required
+                value={initialFormData.country}
+                onChange={handleInputChange}
                 className="dark:bg-slate-800"
               />
             </div>
@@ -153,7 +194,8 @@ export function PlayersForm() {
                 name="jersey"
                 type="text"
                 placeholder="10"
-                required
+                value={initialFormData.jersey}
+                onChange={handleInputChange}
                 className="dark:bg-slate-800"
               />
             </div>
@@ -221,7 +263,7 @@ export function PlayersForm() {
                     )}
                   </ScrollArea>
                 )}
-
+                <div>Selected Team:</div>
                 {savedItems?.length > 0 && (
                   <div className="mt-4 ">
                     {/* <h3 className="font-semibold mb-2">Saved Items:</h3> */}
@@ -246,11 +288,17 @@ export function PlayersForm() {
                     </ul>
                   </div>
                 )}
+                <div>Current Team: </div>
+                {capitalizeFirstLetter(playerDetails?.team?.name) || "N/A"}
               </div>
             )}
 
-            <button type="submit" className="w-full customButton">
-              Submit
+            <button
+              type="submit"
+              className="w-full customButton "
+              disabled={loading}
+            >
+              {loading ? "Updating..." : "Update Player"}
             </button>
           </div>
         </form>

@@ -24,6 +24,7 @@ import {
   removeFromPrevAddPlayersToCurrentTeamTeamsT,
   removePlayersFromCurrentTeam,
   removePlayersFromCurrentTeamTeamsT,
+  updatePlayerData,
   updatePlayersTournament,
   updatePlayerTeam,
 } from "@/queries/players";
@@ -72,6 +73,19 @@ export async function addPlayers(data) {
     const player = await createPlayers(data);
     // console.log(teams);
     // return user;
+  } catch (error) {
+    throw new Error(error);
+  }
+}
+
+export async function editPlayerData(playerData, playerId) {
+  try {
+    await dbConnect();
+    // console.log(data);
+    const player = await updatePlayerData(playerData, playerId);
+    // console.log(teams);
+    // return user;
+    revalidatePath(`/player/${playerId}`);
   } catch (error) {
     throw new Error(error);
   }

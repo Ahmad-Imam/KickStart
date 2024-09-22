@@ -6,6 +6,8 @@ import {
   AlertTriangleIcon,
   BadgeDollarSign,
   EclipseIcon,
+  Edit2,
+  Edit2Icon,
   FlagIcon,
   PinIcon,
   ShirtIcon,
@@ -15,25 +17,14 @@ import {
 
 import { Badge } from "@/components/ui/badge";
 import { truncateLongString } from "@/utils/data-util";
+import Link from "next/link";
 
 export default function PlayerDetails({ playerDetails }) {
-  const player = {
-    name: "messi",
-    nickName: "goat",
-    country: "arg",
-    jersey: 10,
-    team: "Inter Miami CF",
-    tournament: "MLS",
-    position: "striker",
-    goals: 3,
-    yellow: 2,
-    red: 2,
-    motm: 6,
-  };
+  console.log("serversssssssssssssssssssssssssssssssss");
 
   function PlayerStat({ icon, label, value }) {
     return (
-      <div className="flex items-center space-x-3">
+      <div className="flex items-start space-x-3">
         <div className="bg-primary/10 p-3 rounded-full">{icon}</div>
         <div>
           <p className="text-sm text-muted-foreground">{label}</p>
@@ -61,12 +52,15 @@ export default function PlayerDetails({ playerDetails }) {
     <div className="min-h-screen  flex items-center justify-center p-4">
       <Card className="dark:bg-slate-900 w-full max-w-4xl cardFull">
         <CardHeader className="text-center">
-          <CardTitle className="text-4xl font-bold">
+          <CardTitle className="text-4xl font-bold flex items-center justify-center gap-2">
             {truncateLongString(playerDetails.name, 25)}
+            <Link href={`/player/${playerDetails.id}/edit`}>
+              <Edit2Icon className="w-6 h-6" />
+            </Link>
           </CardTitle>
-          <Badge variant="secondary" className="text-lg mt-2">
+          <div className="text-lg mt-2 text-center">
             {playerDetails.nickName.toUpperCase()}
-          </Badge>
+          </div>
         </CardHeader>
         <CardContent>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">

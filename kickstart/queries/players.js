@@ -33,6 +33,20 @@ export async function createPlayers(data) {
   }
 }
 
+export async function updatePlayerData(playerData, playerId) {
+  try {
+    const player = await playersModel.findByIdAndUpdate(playerId, playerData, {
+      new: true,
+    });
+
+    console.log("player data editetttttttt");
+
+    // return replaceMongoIdInObject(player);
+  } catch (error) {
+    throw new Error(error);
+  }
+}
+
 export async function getPlayers() {
   try {
     const players = await playersModel

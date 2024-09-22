@@ -56,9 +56,7 @@ export default function TeamsTPlayers({ playersInfo, teamsTournament }) {
                       <div>{`${capitalizeFirstLetter(player?.name)} #${
                         player?.jersey
                       }`}</div>
-                      <div>{`(${capitalizeFirstLetter(
-                        player?.nickName
-                      )})`}</div>
+
                       <div className="flex justify-center items-center gap-2">
                         <MapPinIcon /> {capitalizeFirstLetter(player?.country)}
                       </div>

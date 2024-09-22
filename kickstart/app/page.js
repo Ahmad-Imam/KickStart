@@ -6,8 +6,9 @@ import { Sheet, SheetTrigger, SheetContent } from "@/components/ui/sheet";
 import { Button, buttonVariants } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { ModeToggle } from "@/components/ModeToggle";
+import Home from "@/components/Home";
 
-export default function Home() {
+export default function HomePage() {
   function MenuIcon(props) {
     return (
       <svg
@@ -55,10 +56,13 @@ export default function Home() {
         <CardDemo type="team" />
         <CardDemo type="players" />
       </div> */}
-      <div className="dark:bg-slate-950 w-full min-h-screen grid grid-col-1 gap-2 md:flex md:flex-row justify-center items-center">
+      {/* <div className="dark:bg-slate-950 w-full min-h-screen grid grid-col-1 gap-2 md:flex md:flex-row justify-center items-center">
         <CardDemo type="tournament" />
         <CardDemo type="team" />
         <CardDemo type="players" />
+      </div> */}
+      <div className="dark:bg-slate-950">
+        <Home />
       </div>
     </>
   );

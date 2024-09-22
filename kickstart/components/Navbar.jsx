@@ -1,7 +1,14 @@
 "use client";
 import React, { useState } from "react";
 import { ModeToggle } from "./ModeToggle";
-import { ChevronDownIcon, MenuIcon, MountainIcon } from "lucide-react";
+import {
+  ChevronDownIcon,
+  Dribbble,
+  DribbbleIcon,
+  EclipseIcon,
+  MenuIcon,
+  MountainIcon,
+} from "lucide-react";
 import Link from "next/link";
 
 import { Sheet, SheetTrigger, SheetContent } from "@/components/ui/sheet";
@@ -37,20 +44,21 @@ export default function Navbar() {
   const isActive = (path) => pathname === path;
 
   return (
-    <header className="bg-background border-b m-0 ">
+    <header className="bg-background border-b m-0 sticky top-0 z-50">
       <div className="container flex items-center justify-between h-14 px-10  dark:bg-slate-900 min-w-full">
         <Link href="/" className="flex items-center gap-2" prefetch={false}>
-          <MountainIcon className="h-6 w-6" />
+          <DribbbleIcon className="h-6 w-6" />
+
           <span className="sr-only">Acme Inc</span>
         </Link>
-        <ModeToggle />
+
         <nav className="hidden md:flex items-center gap-6">
           {navItems.map((item) => (
             <Link
               key={item.href}
               href={item.href}
               className={cn(
-                "text-sm font-semibold transition-colors hover:text-foreground hover:underline",
+                "text-sm font-semibold transition-colors hover:text-foreground hover:underline md:text-lg",
                 isActive(item.href)
                   ? "dark:text-teal-400 text-emerald-600"
                   : "text-muted-foreground"
@@ -65,7 +73,10 @@ export default function Navbar() {
           <DropdownMenu>
             <DropdownMenuTrigger asChild>
               <div className="flex flex-row justify-between items-center cursor-pointer hover:underline">
-                <button variant="link" className="text-sm font-semibold">
+                <button
+                  variant="link"
+                  className="text-sm font-semibold md:text-lg"
+                >
                   Create
                 </button>
                 <ChevronDownIcon className="ml-1 h-4 w-4" />
@@ -79,7 +90,7 @@ export default function Navbar() {
                 <DropdownMenuItem key={item.href}>
                   <Link
                     href={item.href}
-                    className="w-full hover:underline p-1"
+                    className="w-full hover:underline p-1 md:text-lg"
                     prefetch={false}
                   >
                     {item.label}
@@ -88,6 +99,7 @@ export default function Navbar() {
               ))}
             </DropdownMenuContent>
           </DropdownMenu>
+          <ModeToggle />
         </nav>
         <Sheet open={isOpen} onOpenChange={setIsOpen}>
           <SheetTrigger asChild>
@@ -128,6 +140,7 @@ export default function Navbar() {
                   {item.label}
                 </Link>
               ))}
+              <ModeToggle />
             </nav>
           </SheetContent>
         </Sheet>

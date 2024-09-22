@@ -9,7 +9,7 @@ export default async function TeamsPage() {
   const allTeams = await getTeams();
 
   return (
-    <div>
+    <div className="dark:bg-slate-950">
       <SearchTeams allTeams={JSON.parse(JSON.stringify(allTeams))} />
     </div>
   );
