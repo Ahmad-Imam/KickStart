@@ -92,7 +92,7 @@ export default function CreateTeamsTournament({
             placeholder="Search..."
             value={savedItems.length === groupsNum * teamsPerGroup ? "" : query}
             onChange={(e) => setQuery(e.target.value)}
-            className="w-full"
+            className="w-full dark:bg-slate-800"
             disabled={savedItems.length === groupsNum * teamsPerGroup}
           />
           {query.trim() !== "" &&
@@ -123,8 +123,8 @@ export default function CreateTeamsTournament({
             )}
         </div>
       ) : (
-        <div className="flex justify-center items-center h-96 gap-2">
-          <div className="animate-spin rounded-full h-32 w-32 border-t-2 border-b-2 border-gray-900"></div>
+        <div className="flex flex-col justify-center items-center h-32 gap-2">
+          <div className="animate-spin rounded-full h-24 w-24 border-t-2 border-b-2 border-gray-900 dark:border-white"></div>
           <div>Loading Teams</div>
         </div>
       )}
@@ -135,7 +135,7 @@ export default function CreateTeamsTournament({
             {savedItems?.map((item, index) => (
               <li
                 key={index}
-                className="flex justify-between items-center bg-gray-100 dark:bg-slate-800 p-2 rounded text-[13px] md:text-sm"
+                className="dark:bg-slate-800 hover:dark:bg-slate-600 flex justify-between items-center gap-2 bg-gray-100 p-2 px-2 rounded"
               >
                 {item?.name}
                 <Button

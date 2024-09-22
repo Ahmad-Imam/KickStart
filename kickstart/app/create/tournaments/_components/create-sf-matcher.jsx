@@ -181,7 +181,7 @@ export default function SFMatcher({ teamsQ, setSemiMatch }) {
       </div>
       {isAllTeamsSelected && (
         <p className="text-center text-sm text-muted-foreground">
-          All teams have been selected. Clear a selection.
+          All teams have been selected. Clear a selection or proceed.
         </p>
       )}
     </div>

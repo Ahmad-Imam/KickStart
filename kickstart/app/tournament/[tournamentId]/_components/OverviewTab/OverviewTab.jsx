@@ -32,13 +32,13 @@ export default function OverViewTab({
 
   return (
     <>
-      <Card className="dark:bg-slate-900 my-8 cardFull border-2 border-slate-200 dark:border-slate-800  hover:shadow-lg transition-shadow duration-300">
+      <Card className="dark:bg-slate-900 my-8 cardFull ">
         <CardHeader>
           <CardTitle className="">Tournament Overview</CardTitle>
           <CardDescription>{tournamentDetails?.bio}</CardDescription>
         </CardHeader>
         <CardContent>
-          <div className="dark:bg-slate-950  cardFull border-2 border-slate-200 dark:border-slate-800  p-6 rounded-lg shadow-sm hover:shadow-lg transition-shadow duration-300  ">
+          <div className="dark:bg-slate-950  cardFull p-6 rounded-lg  ">
             <p className="hover:bg-slate-800 rounded-sm cursor-pointer hover:text-white transition duration-300 ease-in-out p-2">
               <strong>Organizer:</strong> {tournamentDetails?.organizer}
             </p>
@@ -55,7 +55,7 @@ export default function OverViewTab({
             </p>
           </div>
 
-          <Card className="dark:bg-slate-950  my-8 cardFull border-2 border-slate-200 dark:border-slate-800  hover:shadow-lg transition-shadow duration-300">
+          <Card className="dark:bg-slate-950  my-8 cardFull ">
             <CardHeader>
               <CardTitle>Tournament Top Scorers</CardTitle>
             </CardHeader>
@@ -87,7 +87,7 @@ export default function OverViewTab({
           </Card>
 
           {sortedEvents?.length > 0 && (
-            <Card className="dark:bg-slate-950 my-8 cardFull border-2 border-slate-200 dark:border-slate-800  hover:shadow-lg transition-shadow duration-300">
+            <Card className="dark:bg-slate-950 my-8 cardFull ">
               <CardHeader>
                 <CardTitle>Live Updates</CardTitle>
               </CardHeader>

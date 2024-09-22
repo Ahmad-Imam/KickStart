@@ -107,11 +107,11 @@ export default function TournamentPreview({
   };
 
   return (
-    <div className="container mx-auto p-4">
+    <div className="p-4">
       <h1 className="text-2xl font-bold mb-4">Tournament Preview</h1>
 
       <section
-        className="mb-8 mt-10 p-6 bg-white rounded-lg transition duration-300 ease-in-out transform hover:-translate-y-1 hover:scale-105 dark:bg-slate-900"
+        className="mb-8 mt-10 p-6 bg-white rounded-lg cardFull dark:bg-slate-950"
         style={{
           boxShadow:
             "0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 -4px 6px -1px rgba(0, 0, 0, 0.1), 4px 0 6px -1px rgba(0, 0, 0, 0.1), -4px 0 6px -1px rgba(0, 0, 0, 0.1)",
@@ -120,7 +120,7 @@ export default function TournamentPreview({
         <h2 className="text-xl font-semibold py-2 mb-4 ">
           Tournament Settings
         </h2>
-        <div className="bg-gray-100 p-6 rounded-lg shadow-md dark:bg-slate-800">
+        <div className="bg-gray-100 p-6 rounded-lg shadow-md dark:bg-slate-900">
           <p className="mb-2 dark:hover:bg-slate-500 hover:bg-slate-800 rounded-sm cursor-pointer hover:text-white transition duration-300 ease-in-out p-2">
             <strong className="">Name:</strong>{" "}
             <span className="">{formData.name}</span>
@@ -169,7 +169,7 @@ export default function TournamentPreview({
           {groupMatch.map((group, index) => (
             <div
               key={index}
-              className=" bg-gray-100 dark:bg-slate-900 p-4 rounded mb-4 w-1/3 hover:shadow-lg transition duration-300 ease-in-out transform hover:-translate-y-1 hover:scale-105"
+              className=" bg-gray-100 dark:bg-slate-950 p-4 rounded mb-4 w-1/3 hover:shadow-lg transition duration-300 ease-in-out transform hover:-translate-y-1 hover:scale-105"
             >
               <h3 className=" pl-2 text-lg font-semibold pb-2">{group.name}</h3>
               <ul>

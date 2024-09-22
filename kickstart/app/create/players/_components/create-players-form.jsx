@@ -103,7 +103,7 @@ export function PlayersForm() {
   }, []);
 
   return (
-    <Card className="dark:bg-slate-800 mx-auto max-w-xl w-full cardFull border-2 border-slate-200 dark:border-slate-800  hover:shadow-lg transition-shadow duration-300 ">
+    <Card className="dark:bg-slate-900 mx-auto max-w-xl w-full cardFull border-2 border-slate-200 dark:border-slate-800  hover:shadow-lg transition-shadow duration-300 ">
       <CardHeader>
         <CardTitle className="text-2xl">Create Your player</CardTitle>
         <CardDescription>Enter your player information</CardDescription>
@@ -119,7 +119,7 @@ export function PlayersForm() {
                 type="text"
                 placeholder="Lionel Messi"
                 required
-                className="dark:bg-slate-900"
+                className="dark:bg-slate-800"
               />
             </div>
 
@@ -131,7 +131,7 @@ export function PlayersForm() {
                 type="text"
                 placeholder="Goat"
                 required
-                className="dark:bg-slate-900"
+                className="dark:bg-slate-800"
               />
             </div>
             <div className="grid gap-2">
@@ -142,7 +142,7 @@ export function PlayersForm() {
                 type="text"
                 placeholder="Argentina"
                 required
-                className="dark:bg-slate-900"
+                className="dark:bg-slate-800"
               />
             </div>
 
@@ -154,7 +154,7 @@ export function PlayersForm() {
                 type="text"
                 placeholder="10"
                 required
-                className="dark:bg-slate-900"
+                className="dark:bg-slate-800"
               />
             </div>
 
@@ -194,7 +194,7 @@ export function PlayersForm() {
                   placeholder="Search..."
                   value={query}
                   onChange={(e) => setQuery(e.target.value)}
-                  className="dark:bg-slate-900"
+                  className="dark:bg-slate-800"
                 />
                 {query.trim() !== "" && savedItems.length < 1 && (
                   <ScrollArea className="h-[200px] w-full rounded-md border">
@@ -203,7 +203,7 @@ export function PlayersForm() {
                         {results?.map((item, index) => (
                           <li
                             key={index}
-                            className="mb-2 flex flex-row gap-2 justify-between items-center dark:bg-slate-900 dark:hover:bg-slate-600 p-3 border-1 rounded-md my-1 last:border-b-0 cursor-pointer hover:bg-gray-200 bg-gray-100"
+                            className="mb-2 flex flex-row gap-2 justify-between items-center dark:bg-slate-800 dark:hover:bg-slate-600 p-3 border-1 rounded-md my-1 last:border-b-0 cursor-pointer hover:bg-gray-200 bg-gray-100"
                             onClick={() => handleResultClick(item)}
                           >
                             {item.name}
@@ -229,7 +229,7 @@ export function PlayersForm() {
                       {savedItems?.map((team, index) => (
                         <li
                           key={index}
-                          className="dark:bg-slate-900 flex justify-between items-center bg-gray-100 p-2 rounded"
+                          className="dark:bg-slate-800 hover:dark:bg-slate-600 flex justify-between gap-4 items-center bg-gray-100 p-2 rounded"
                         >
                           {`${capitalizeFirstLetter(team?.name).slice(0, 10)}
                              ${team?.name.length > 10 ? "..." : ""}`}{" "}
@@ -237,7 +237,7 @@ export function PlayersForm() {
                             variant="ghost"
                             size="icon"
                             onClick={() => removeSavedItem(team)}
-                            className="p-3  hover:bg-gray-200 dark:hover:bg-slate-800 rounded-md"
+                            className="p-2 hover:bg-gray-200 dark:hover:bg-slate-800 rounded-md m-0"
                           >
                             <X className="h-4 w-4" />
                           </button>
@@ -249,10 +249,7 @@ export function PlayersForm() {
               </div>
             )}
 
-            <button
-              type="submit"
-              className="w-full text-white p-2 rounded-md text-sm text-center bg-slate-900 hover:bg-black dark:hover:bg-slate-950"
-            >
+            <button type="submit" className="w-full customButton">
               Submit
             </button>
           </div>

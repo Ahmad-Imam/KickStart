@@ -16,7 +16,7 @@ import Link from "next/link";
 
 const tournamentNotifications = [
   {
-    title: "Select tournament type",
+    title: "Select tournament configurations",
     description: "Many tournament types are available",
   },
   {
@@ -31,15 +31,15 @@ const tournamentNotifications = [
 
 const teamsNotifications = [
   {
-    title: "Create teams",
+    title: "Create your teams",
     description: "Teams are available for all tournaments",
   },
   {
-    title: "Add players",
+    title: "Add players in the team",
     description: "add players from player lists or create new ones",
   },
   {
-    title: "Update teams in the tournament",
+    title: "Update squad",
     description: "Teams can be updated in the tournament",
   },
 ];
@@ -54,7 +54,7 @@ const playersNotifications = [
     description: "add players to team lists or create new ones",
   },
   {
-    title: "View player stats in the team",
+    title: "Update player information",
     description: "Player stats will be updated in the tournament",
   },
 ];
@@ -78,7 +78,7 @@ export default function CardDemo({ className, ...props }) {
 
   console.log(type);
   return (
-    <Card className={cn("w-[380px]", className)} {...props}>
+    <Card className="cardFull max-w-xl m-4 dark:bg-slate-900 h-fit">
       <CardHeader>
         <CardTitle>Create your {headerText}</CardTitle>
         <CardDescription>
@@ -97,9 +97,6 @@ export default function CardDemo({ className, ...props }) {
                 <p className="text-sm font-medium leading-none">
                   {notification.title}
                 </p>
-                <p className="text-sm text-muted-foreground">
-                  {notification.description}
-                </p>
               </div>
             </div>
           ))}
@@ -116,7 +113,7 @@ export default function CardDemo({ className, ...props }) {
           }
           className="w-full"
         >
-          <Button className="w-full">Create</Button>
+          <button className="w-full customButton">Create</button>
           {/* <Check className="mr-2 h-4 w-4" /> */}
         </Link>
       </CardFooter>

@@ -1,4 +1,4 @@
-import SearchTournament from "@/components/Search/SearchTournament";
+import SearchTournaments from "@/components/Search/SearchTournaments";
 import { getAllTournaments } from "@/queries/tournaments";
 import { dbConnect } from "@/service/mongo";
 import React from "react";
@@ -10,8 +10,8 @@ export default async function TournamentsPage() {
   //   console.log(allTournaments);
 
   return (
-    <div className="dark:bg-gray-950">
-      <SearchTournament
+    <div className="dark:bg-gray-950 w-full min-h-screen flex flex-row justify-center ">
+      <SearchTournaments
         allTournaments={JSON.parse(JSON.stringify(allTournaments))}
       />
     </div>

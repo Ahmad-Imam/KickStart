@@ -66,7 +66,19 @@ export async function getPlayers() {
 
 export async function getPlayerById(id) {
   try {
-    const player = await playersModel.findById(id).lean();
+    const player = await playersModel
+      .findById(id)
+      .populate({
+        path: "team",
+        model: teamsModel,
+      })
+      .populate({
+        path: "tournament",
+        model: tournamentsModel,
+        //todo check here
+        // match: { status: "live" }, // Only populate tournaments with status "live"
+      })
+      .lean();
     return replaceMongoIdInObject(player);
   } catch (error) {
     throw new Error(error);
@@ -286,7 +298,7 @@ export async function updatePlayersTournament(teamsTournament, tournament) {
   }
 }
 
-export async function removeFromPrevAddPlayersToCurrentTeam(
+export async function removeFromPrevAddPlayersToCurrentTeamTeamsT(
   playersInTeam,
   teamsTournament
 ) {
@@ -521,7 +533,62 @@ export async function removeFromPrevAddPlayersToCurrentTeam(
   }
 }
 
-export async function removePlayersFromCurrentTeam(
+export async function removeFromPrevAddPlayersToCurrentTeam(
+  playersInTeam,
+  team
+) {
+  try {
+    console.log("removeAddPlayersFromPrevCurrentTeam");
+    console.log(playersInTeam);
+    // console.log(teamsTournament);
+
+    const teamsTId = team.id;
+
+    const newPlayers = await Promise.all(
+      playersInTeam.map(async (player) => {
+        //player is in a team table - player has a team id?
+
+        // remove player from chelsea team
+        if (player?.team) {
+          const updatedTeam = await teamsModel.updateOne(
+            { _id: player?.team },
+            { $pull: { players: player.id } }
+          );
+        }
+
+        console.log("newTeams");
+
+        //add player to city team table
+        const currentTeam = await teamsModel.findById(team.id).lean();
+        console.log(currentTeam);
+        currentTeam.players.push(player.id);
+        const newTeam = await teamsModel.findByIdAndUpdate(team.id, {
+          players: currentTeam.players,
+        });
+
+        console.log("newTeam");
+        console.log(newTeam);
+
+        //add city to players table
+
+        console.log(player.id);
+        const playerCurrent = await playersModel.findByIdAndUpdate(player.id, {
+          team: team.id,
+        });
+        console.log(playerCurrent);
+
+        return player;
+      })
+    );
+
+    console.log("prev remove new add done");
+    // console.log(replaceMongoIdInArray(newPlayers));
+  } catch (error) {
+    throw new Error(error);
+  }
+}
+
+export async function removePlayersFromCurrentTeamTeamsT(
   playersInTeam,
   teamsTournament
 ) {
@@ -569,6 +636,33 @@ export async function removePlayersFromCurrentTeam(
         const updatedPlayers = await playersModel.findByIdAndUpdate(player.id, {
           team: null,
           tournament: null,
+        });
+
+        return player;
+      })
+    );
+
+    console.log("newPlayers query delete");
+    // console.log(replaceMongoIdInArray(newPlayers));
+  } catch (error) {
+    throw new Error(error);
+  }
+}
+
+export async function removePlayersFromCurrentTeam(playersInTeam, team) {
+  try {
+    const newPlayers = await Promise.all(
+      playersInTeam.map(async (player) => {
+        // Remove player from team table
+        const updatedTeam = await teamsModel.updateOne(
+          { _id: team?.id },
+          { $pull: { players: player.id } }
+        );
+        console.log(updatedTeam);
+
+        //remove team,tournament from player table
+        const updatedPlayers = await playersModel.findByIdAndUpdate(player.id, {
+          team: null,
         });
 
         return player;

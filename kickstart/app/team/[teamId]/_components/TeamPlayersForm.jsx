@@ -12,16 +12,14 @@ import { toast } from "sonner";
 import { cn } from "@/lib/utils";
 import {
   deleteFromPrevAddPlayersToCurrentTeam,
+  deleteFromPrevAddPlayersToCurrentTeamTeamsT,
   deletePlayersFromCurrentTeam,
+  deletePlayersFromCurrentTeamTeamsT,
 } from "@/app/actions";
 import { Badge } from "@/components/ui/badge";
-import { capitalizeFirstLetter } from "@/utils/data-util";
+import { capitalizeFirstLetter, truncateLongString } from "@/utils/data-util";
 
-export default function TeamsTPlayersForm({
-  playersInfo,
-  setOpen,
-  teamsTournament,
-}) {
+export default function TeamPlayersForm({ playersInfo, setOpen, team }) {
   const [playerList, setPlayerList] = useState([]);
   const [query, setQuery] = useState("");
   const [results, setResults] = useState([]);
@@ -99,7 +97,7 @@ export default function TeamsTPlayersForm({
 
   useEffect(() => {
     setLoading(true);
-    // setTeamsTournament(savedItems);
+    // setteam(savedItems);
     fetchPlayers();
   }, []);
 
@@ -116,20 +114,18 @@ export default function TeamsTPlayersForm({
 
     console.log(newPlayers);
     console.log(removedPlayers);
+    console.log(team);
 
     if (newPlayers.length > 0) {
       const test = await deleteFromPrevAddPlayersToCurrentTeam(
         newPlayers,
-        teamsTournament
+        team
       );
       console.log("test");
       console.log(test);
     }
     if (removedPlayers.length > 0) {
-      const test = await deletePlayersFromCurrentTeam(
-        removedPlayers,
-        teamsTournament
-      );
+      const test = await deletePlayersFromCurrentTeam(removedPlayers, team);
       console.log("test");
       console.log(test);
     }
@@ -166,13 +162,10 @@ export default function TeamsTPlayersForm({
                       onClick={() => handleResultClick(player)}
                     >
                       <div className="flex flex-row justify-between text-start items-center gap-2 text-sm">
-                        <div>{`${capitalizeFirstLetter(player?.name).slice(
-                          0,
-                          10
-                        )}
-                             ${player?.name.length > 10 ? "..." : ""}
+                        <div>{`${truncateLongString(player?.name, 10)}
+                             
                             #${player?.jersey}`}</div>
-                        <div>{`(${player?.team?.name})`}</div>
+                        <div>{`(${player?.team?.name || "N/A"})`}</div>
                         <div className="flex flex-row items-center gap-1">
                           <MapPin className="ml-8" /> {player?.country}
                         </div>

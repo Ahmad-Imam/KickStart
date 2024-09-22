@@ -92,7 +92,7 @@
 @layer components {
   .cardFull {
     @apply dark:hover:shadow-md 
-    dark:hover:shadow-slate-400 transition-shadow duration-300;
+    dark:hover:shadow-slate-400 transition-shadow duration-300 border-2 border-slate-200 dark:border-slate-800  hover:shadow-lg;
   }
   .custom-border-shadow {
     @apply border-2 border-slate-200 dark:border-slate-500 hover:shadow-lg transition-shadow duration-300;

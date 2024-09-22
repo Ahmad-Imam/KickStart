@@ -7,40 +7,17 @@ import {
 } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
-import { TeamsTPlayersDrawer } from "./TeamsTPlayersDrawer";
 import { capitalizeFirstLetter } from "@/utils/data-util";
 import { MapPinIcon } from "lucide-react";
+import { TeamsPlayersDrawer } from "./TeamPlayersDrawer";
 import Link from "next/link";
 
-export default function TeamsTPlayers({ playersInfo, teamsTournament }) {
-  //   const [playersInfo, setPlayersInfo] = useState([]);
-
-  //   useEffect(() => {
-  //     console.log("fetching player info");
-  //     const fetchPlayerInfo = async () => {
-  //       if (team?.players) {
-  //         const playerPromises = team.players.map(async (playerId) => {
-  //           const response = await fetch(`/api/players/${playerId.toString()}`); // Adjust the API endpoint based on your project
-  //           const playerData = await response.json();
-  //           return playerData;
-  //         });
-
-  //         const playersData = await Promise.all(playerPromises);
-  //         setPlayersInfo(playersData);
-  //       }
-  //     };
-
-  //     fetchPlayerInfo();
-  //   }, [team]);
-
+export default function TeamPlayers({ playersInfo, team }) {
   return (
     <>
       <div className="flex items-center justify-between">
         <h2 className="text-2xl font-bold mt-4 mb-4">Players</h2>
-        <TeamsTPlayersDrawer
-          playersInfo={playersInfo}
-          teamsTournament={teamsTournament}
-        />
+        <TeamsPlayersDrawer playersInfo={playersInfo} team={team} />
       </div>
       <Card className="dark:bg-slate-900 cardFull ">
         <CardContent className="py-2 px-2">

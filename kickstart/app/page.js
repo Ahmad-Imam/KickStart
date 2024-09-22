@@ -55,15 +55,10 @@ export default function Home() {
         <CardDemo type="team" />
         <CardDemo type="players" />
       </div> */}
-
-      <div className="flex flex-col min-h-dvh bg-red-500">
-        <main className="">
-          <div className="flex flex-row flex-wrap gap-5 bg-blue-500 w-auto h-full mt-20 sm:flex-row md:justify-center items-start">
-            <CardDemo type="tournament" />
-            <CardDemo type="team" />
-            <CardDemo type="players" />
-          </div>
-        </main>
+      <div className="dark:bg-slate-950 w-full min-h-screen grid grid-col-1 gap-2 md:flex md:flex-row justify-center items-center">
+        <CardDemo type="tournament" />
+        <CardDemo type="team" />
+        <CardDemo type="players" />
       </div>
     </>
   );

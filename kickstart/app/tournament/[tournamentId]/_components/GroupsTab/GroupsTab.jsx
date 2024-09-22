@@ -56,10 +56,7 @@ export default function GroupsTab({ groupsDetails, tournamentDetails }) {
             })
             .sort((a, b) => a.name.localeCompare(b.name))
             .map((group) => (
-              <Card
-                key={group?.id}
-                className="dark:bg-slate-900 cardFull border-2 border-slate-200 dark:border-slate-800  hover:shadow-lg transition-shadow duration-300"
-              >
+              <Card key={group?.id} className="dark:bg-slate-900 cardFull ">
                 <CardHeader>
                   <CardTitle>{group?.name}</CardTitle>
                 </CardHeader>
@@ -140,7 +137,7 @@ export default function GroupsTab({ groupsDetails, tournamentDetails }) {
             ))}
         </div>
       ) : (
-        <Card className="p-4 my-3 cardFull border-2 border-slate-200 dark:border-slate-800  hover:shadow-lg transition-shadow duration-300">
+        <Card className="p-4 my-3 cardFull ">
           <p className="text-center font-semibold">
             There are no groups available for this tournament.
           </p>

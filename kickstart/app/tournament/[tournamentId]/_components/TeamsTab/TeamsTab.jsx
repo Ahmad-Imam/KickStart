@@ -13,10 +13,7 @@ export default function TeamsTab({ tournamentDetails }) {
     <>
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
         {tournamentDetails?.teamsTournament.map((team) => (
-          <Card
-            key={team?.id}
-            className="dark:bg-slate-900 my-8 cardFull border-2 border-slate-200 dark:border-slate-800  hover:shadow-lg transition-shadow duration-300"
-          >
+          <Card key={team?.id} className="dark:bg-slate-900 my-8 cardFull ">
             <CardHeader>
               <CardTitle>{team.name}</CardTitle>
               <CardDescription>{team.location}</CardDescription>

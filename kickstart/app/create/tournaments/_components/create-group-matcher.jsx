@@ -120,9 +120,9 @@ export default function GroupMatcher({
       <div>{`Groups: ${numberOfGroups}`}</div>
       <div>{`Teams in a group: ${teamsPerGroup}`}</div>
       <h1 className="text-lg font-semibold mb-4">Create Group:</h1>
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 justify-center">
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
         {groups.map((group, groupIndex) => (
-          <Card key={group.name} className="w-full">
+          <Card key={group.name} className="w-full cardFull dark:bg-slate-800">
             <CardHeader className="m-0 text-center py-1 ">
               <CardTitle className="text-lg">{group.name}</CardTitle>
             </CardHeader>
@@ -130,14 +130,14 @@ export default function GroupMatcher({
               <Select
                 onValueChange={(value) => addTeamToGroup(groupIndex, value)}
                 disabled={group.teams.length >= config.teamsPerGroupI}
-                className="m-0 p-0"
+                className="m-0 p-0 "
               >
-                <SelectTrigger>
+                <SelectTrigger className="dark:bg-slate-900">
                   <SelectValue placeholder="Select a team" />
                 </SelectTrigger>
-                <SelectContent>
+                <SelectContent className="">
                   {availableTeams.map((team) => (
-                    <SelectItem key={team?.id} value={team?.name}>
+                    <SelectItem key={team?.id} value={team?.name} className="">
                       {team?.name}
                     </SelectItem>
                   ))}
@@ -147,7 +147,7 @@ export default function GroupMatcher({
                 {group.teams.map((team, teamIndex) => (
                   <li
                     key={team?.id}
-                    className={`flex justify-between items-center p-2 text-sm rounded bg-gray-100 dark:bg-slate-800`}
+                    className={`flex justify-between items-center p-2 text-sm rounded bg-gray-100 dark:bg-slate-900`}
                   >
                     {team?.name}
                     <Button
@@ -156,7 +156,7 @@ export default function GroupMatcher({
                       onClick={() =>
                         removeTeamFromGroup(groupIndex, team?.name)
                       }
-                      className="h-3 w-3 md:h-5 md:w-5"
+                      className=" p-2"
                     >
                       <X className="" />
                       <span className="sr-only">Clear selection</span>

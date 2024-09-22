@@ -44,7 +44,7 @@ const sampleTeam = {
   __v: 0,
 };
 
-export default async function TeamDetails({
+export default async function TeamsTDetails({
   teamsTournament,
   topScorers,
   yellowCards,
@@ -82,7 +82,7 @@ export default async function TeamDetails({
       </div>
       <h1 className="text-4xl font-bold mb-6">{teamsTournament?.name}</h1>
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
-        <Card className="dark:bg-slate-900 cardFull border-2 border-slate-200 dark:border-slate-800  hover:shadow-lg transition-shadow duration-300">
+        <Card className="dark:bg-slate-900 cardFull ">
           <CardHeader>
             <CardTitle>Location</CardTitle>
           </CardHeader>
@@ -92,7 +92,7 @@ export default async function TeamDetails({
           </CardContent>
         </Card>
 
-        <Card className="dark:bg-slate-900 flex flex-row justify-between items-center p-4 shadow-sm  cardFull border-2 border-slate-200 dark:border-slate-800  hover:shadow-lg transition-shadow duration-300 ">
+        <Card className="dark:bg-slate-900 flex flex-row justify-between items-center p-4 shadow-sm  cardFull  ">
           <div className="flex flex-col justify-end items-center">
             <div className="font-semibold text-lg">Played</div>
             <div className="font-semibold">{teamsTournament?.matchPlayed}</div>
@@ -118,7 +118,7 @@ export default async function TeamDetails({
 
       <TeamsTTabs>
         <TabsContent value="overview" className="py-4">
-          <Card className="dark:bg-slate-900 mb-6 cardFull border-2 border-slate-200 dark:border-slate-800  hover:shadow-lg transition-shadow duration-300">
+          <Card className="dark:bg-slate-900 mb-6 cardFull ">
             <CardHeader>
               <CardTitle>Team Top Scorers: </CardTitle>
             </CardHeader>
@@ -129,7 +129,7 @@ export default async function TeamDetails({
                     No scorers yet
                   </li>
                 ) : (
-                  topScorers.slice(0, 5)?.map((scorer, index) => (
+                  topScorers?.map((scorer, index) => (
                     <div key={index}>
                       <li className="flex items-center justify-between p-2 px-4 dark:bg-slate-800 dark:hover:bg-slate-700 border-1 rounded-md last:border-b-0 cursor-pointer hover:bg-slate-200 bg-slate-100 my-3">
                         <span>{scorer?.name}</span>
@@ -148,8 +148,42 @@ export default async function TeamDetails({
               </ul>
             </CardContent>
           </Card>
+
+          <Card className="dark:bg-slate-900 mb-6 cardFull ">
+            <CardHeader>
+              <CardTitle>Team Top Performances: </CardTitle>
+            </CardHeader>
+            <CardContent>
+              <ul className="space-y-2">
+                {teamsTournament?.motm?.length === 0 ? (
+                  <li className="flex items-center justify-between p-2 hover:bg-slate-800 hover:text-white rounded">
+                    No Performances yet
+                  </li>
+                ) : (
+                  teamsTournament?.motm?.map((motm, index) => (
+                    <Link
+                      key={index}
+                      href={`/tournament/${motm?.matchDetails?.tournamentId}/match/${motm?.matchDetails?.id}`}
+                    >
+                      <li className="flex items-center justify-between p-2 px-4 dark:bg-slate-800 dark:hover:bg-slate-700 border-1 rounded-md last:border-b-0 cursor-pointer hover:bg-slate-200 bg-slate-100 my-3">
+                        <span>{motm?.player?.name}</span>
+                        <div>Man of the match</div>
+
+                        <div>
+                          {motm?.matchDetails?.team1?.name} vs{" "}
+                          {motm?.matchDetails?.team2?.name}
+                        </div>
+                      </li>
+                      {/* <Separator className="" /> */}
+                    </Link>
+                  ))
+                )}
+              </ul>
+            </CardContent>
+          </Card>
+
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-            <Card className="dark:bg-slate-900 my-4 cardFull border-2 border-slate-200 dark:border-slate-800  hover:shadow-lg transition-shadow duration-300">
+            <Card className="dark:bg-slate-900 my-4 cardFull ">
               <CardHeader>
                 <CardTitle>Yellow Cards</CardTitle>
               </CardHeader>
@@ -180,7 +214,7 @@ export default async function TeamDetails({
                 </ul>
               </CardContent>
             </Card>
-            <Card className="dark:bg-slate-900 my-4 cardFull border-2 border-slate-200 dark:border-slate-800  hover:shadow-lg transition-shadow duration-300">
+            <Card className="dark:bg-slate-900 my-4 cardFull ">
               <CardHeader>
                 <CardTitle>Red Cards</CardTitle>
               </CardHeader>

@@ -21,7 +21,9 @@ import {
 import {
   createPlayers,
   removeFromPrevAddPlayersToCurrentTeam,
+  removeFromPrevAddPlayersToCurrentTeamTeamsT,
   removePlayersFromCurrentTeam,
+  removePlayersFromCurrentTeamTeamsT,
   updatePlayersTournament,
   updatePlayerTeam,
 } from "@/queries/players";
@@ -140,7 +142,7 @@ export async function addTournaments(data) {
   }
 }
 
-export async function deleteFromPrevAddPlayersToCurrentTeam(
+export async function deleteFromPrevAddPlayersToCurrentTeamTeamsT(
   playersInTeam,
   teamsTournament
 ) {
@@ -149,7 +151,7 @@ export async function deleteFromPrevAddPlayersToCurrentTeam(
     console.log(playersInTeam);
 
     // console.log(teamsTournament.id);
-    const playersUpdated = await removeFromPrevAddPlayersToCurrentTeam(
+    const playersUpdated = await removeFromPrevAddPlayersToCurrentTeamTeamsT(
       playersInTeam,
       teamsTournament
     );
@@ -165,7 +167,32 @@ export async function deleteFromPrevAddPlayersToCurrentTeam(
   }
 }
 
-export async function deletePlayersFromCurrentTeam(
+export async function deleteFromPrevAddPlayersToCurrentTeam(
+  playersInTeam,
+  team
+) {
+  try {
+    await dbConnect();
+    console.log(playersInTeam);
+
+    // console.log(teamsTournament.id);
+    const playersUpdated = await removeFromPrevAddPlayersToCurrentTeam(
+      playersInTeam,
+      team
+    );
+
+    // console.log(playersUpdated);
+
+    revalidatePath(`/team/${team.id}`);
+    // revalidatePath(`/tournament/${teamsTournament.id}/team/[teamId]`);
+    console.log("newPlayers");
+    // console.log(playersUpdated);
+  } catch (error) {
+    throw new Error(error);
+  }
+}
+
+export async function deletePlayersFromCurrentTeamTeamsT(
   playersInTeam,
   teamsTournament
 ) {
@@ -174,7 +201,7 @@ export async function deletePlayersFromCurrentTeam(
     console.log(playersInTeam);
 
     // console.log(teamsTournament.id);
-    const playersUpdated = await removePlayersFromCurrentTeam(
+    const playersUpdated = await removePlayersFromCurrentTeamTeamsT(
       playersInTeam,
       teamsTournament
     );
@@ -182,6 +209,28 @@ export async function deletePlayersFromCurrentTeam(
     // console.log(playersUpdated);
 
     revalidatePath(`/tournament/${teamsTournament.id}`);
+    // revalidatePath(`/tournament/${teamsTournament.id}/team/[teamId]`);
+    console.log("newPlayers");
+    // console.log(playersUpdated);
+  } catch (error) {
+    throw new Error(error);
+  }
+}
+
+export async function deletePlayersFromCurrentTeam(playersInTeam, team) {
+  try {
+    await dbConnect();
+    console.log(playersInTeam);
+
+    // console.log(teamsTournament.id);
+    const playersUpdated = await removePlayersFromCurrentTeam(
+      playersInTeam,
+      team
+    );
+
+    // console.log(playersUpdated);
+
+    revalidatePath(`/team/${team.id}`);
     // revalidatePath(`/tournament/${teamsTournament.id}/team/[teamId]`);
     console.log("newPlayers");
     // console.log(playersUpdated);

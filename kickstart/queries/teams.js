@@ -51,7 +51,7 @@ export async function getTeamById(id) {
         model: playersModel,
       })
       .lean();
-    return replaceMongoIdInArray(teams);
+    return replaceMongoIdInObject(teams);
   } catch (error) {
     throw new Error(error);
   }

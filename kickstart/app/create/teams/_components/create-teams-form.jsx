@@ -109,7 +109,7 @@ export function TeamsForm() {
   }, []);
 
   return (
-    <Card className="dark:bg-slate-800 mx-auto max-w-xl w-full cardFull border-2 border-slate-200 dark:border-slate-800  hover:shadow-lg transition-shadow duration-300 ">
+    <Card className="dark:bg-slate-900 mx-auto max-w-xl w-full cardFull ">
       <CardHeader>
         <CardTitle className="text-2xl">Create Your team</CardTitle>
         <CardDescription>Enter your team information</CardDescription>
@@ -125,7 +125,7 @@ export function TeamsForm() {
                 type="text"
                 placeholder="Chelsea FC"
                 required
-                className="dark:bg-slate-900 border-slate-400"
+                className="dark:bg-slate-800 border-slate-400"
               />
             </div>
 
@@ -137,7 +137,7 @@ export function TeamsForm() {
                 type="text"
                 placeholder="London is Blue"
                 required
-                className="dark:bg-slate-900  border-slate-400"
+                className="dark:bg-slate-800  border-slate-400"
               />
             </div>
             <div className="grid gap-2">
@@ -148,7 +148,7 @@ export function TeamsForm() {
                 type="text"
                 placeholder="London"
                 required
-                className="dark:bg-slate-900  border-slate-400"
+                className="dark:bg-slate-800  border-slate-400"
               />
             </div>
 
@@ -156,7 +156,7 @@ export function TeamsForm() {
 
             {loadingPlayer ? (
               <div className="flex flex-col justify-center items-center h-32 gap-2">
-                <div className="animate-spin rounded-full h-20 w-20 border-t-2 border-b-2 border-gray-900"></div>
+                <div className="animate-spin rounded-full h-20 w-20 border-t-2 border-b-2 border-gray-900 dark:border-white"></div>
                 <div>Loading Players</div>
               </div>
             ) : (
@@ -166,7 +166,7 @@ export function TeamsForm() {
                   placeholder="Search..."
                   value={query}
                   onChange={(e) => setQuery(e.target.value)}
-                  className=" dark:bg-slate-900  border-slate-400"
+                  className=" dark:bg-slate-800  border-slate-400"
                 />
                 {query.trim() !== "" && (
                   <ScrollArea className="h-[200px] w-full rounded-md border ">
@@ -176,7 +176,7 @@ export function TeamsForm() {
                           <li
                             key={index}
                             type="button"
-                            className="flex flex-row gap-2 justify-between items-center dark:bg-slate-900 dark:hover:bg-slate-600 px-2 py-2 border-1 rounded-md my-1 last:border-b-0 cursor-pointer hover:bg-gray-200 bg-gray-100 mb-2"
+                            className="flex flex-row gap-2 justify-between items-center dark:bg-slate-800 dark:hover:bg-slate-600 px-2 py-2 border-1 rounded-md my-1 last:border-b-0 cursor-pointer hover:bg-gray-200 bg-gray-100 mb-2"
                             onClick={() => handleResultClick(player)}
                           >
                             <div className="">{`${capitalizeFirstLetter(
@@ -214,7 +214,7 @@ export function TeamsForm() {
                   {savedItems?.map((player, index) => (
                     <li
                       key={index}
-                      className="dark:bg-slate-900 flex justify-between items-center gap-2 bg-gray-100 p-2 px-2 rounded"
+                      className="dark:bg-slate-800 hover:dark:bg-slate-600 flex justify-between items-center gap-2 bg-gray-100 p-2 px-2 rounded"
                     >
                       {`${capitalizeFirstLetter(player?.name).slice(0, 10)}
                              ${player?.name.length > 10 ? "..." : ""}`}
@@ -233,10 +233,7 @@ export function TeamsForm() {
               </div>
             )}
 
-            <button
-              type="submit"
-              className="w-full customButton bg-slate-900 hover:bg-black dark:hover:bg-slate-950"
-            >
+            <button type="submit" className="w-full customButton ">
               Submit
             </button>
           </div>

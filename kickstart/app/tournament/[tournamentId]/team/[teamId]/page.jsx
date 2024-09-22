@@ -1,5 +1,5 @@
 import MatchDetails from "@/app/tournament/[tournamentId]/match/[matchId]/_components/match-details";
-import TeamDetails from "@/app/tournament/[tournamentId]/team/[teamId]/_components/TeamsTDetails";
+import TeamsTDetails from "@/app/tournament/[tournamentId]/team/[teamId]/_components/TeamsTDetails";
 import TournamentDetails from "@/app/tournament/[tournamentId]/_components/tournament-details";
 import { getGroupsByTournamentId } from "@/queries/groups";
 import { getMatchById, getMatchesByTournamentId } from "@/queries/matches";
@@ -66,14 +66,14 @@ export default async function TeamsTPage({ params }) {
   // console.log(redCards);
 
   return (
-    <div className="dark:bg-zinc-950">
+    <div className="dark:bg-slate-950">
       {/* <TournamentDetails
         tournamentDetails={tournament}
         matchesDetails={matches}
         groupsDetails={JSON.parse(JSON.stringify(groups))}
       /> */}
 
-      <TeamDetails
+      <TeamsTDetails
         teamsTournament={JSON.parse(JSON.stringify(teamsTournament))}
         topScorers={JSON.parse(JSON.stringify(topScorers))}
         yellowCards={JSON.parse(JSON.stringify(yellowCards))}

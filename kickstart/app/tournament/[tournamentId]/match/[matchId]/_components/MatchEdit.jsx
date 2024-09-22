@@ -57,7 +57,7 @@ export default function MatchEdit({ matchDetails }) {
   }
 
   return (
-    <Card className="mx-auto max-w-lg w-full dark:bg-slate-900 cardFull border-2 border-slate-200 dark:border-slate-800  hover:shadow-lg transition-shadow duration-300">
+    <Card className="mx-auto max-w-lg w-full dark:bg-slate-900 cardFull ">
       <CardHeader>
         <CardTitle className="text-2xl">Edit Match</CardTitle>
         <CardDescription>Enter match information</CardDescription>

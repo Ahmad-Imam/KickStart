@@ -458,7 +458,7 @@ export function TournamentMultiForm() {
   // console.log("filler" + isAllGroupsFilled);
 
   return (
-    <Card className="mx-auto w-full max-w-screen-xl">
+    <Card className=" max-w-xl w-full cardFull dark:bg-slate-900">
       <form>
         <CardHeader>
           <CardTitle>
@@ -477,6 +477,7 @@ export function TournamentMultiForm() {
                   onChange={handleInputChange}
                   placeholder="Your name"
                   required
+                  className="dark:bg-slate-800"
                 />
               </div>
               <div className="flex flex-col space-y-1.5">
@@ -488,6 +489,7 @@ export function TournamentMultiForm() {
                   value={formData?.bio}
                   onChange={handleInputChange}
                   placeholder="Tournament Description"
+                  className="dark:bg-slate-800"
                 />
               </div>
               <div className="flex flex-col space-y-1.5">
@@ -499,6 +501,7 @@ export function TournamentMultiForm() {
                   value={formData?.location}
                   onChange={handleInputChange}
                   placeholder="Tournament Location"
+                  className="dark:bg-slate-800"
                 />
               </div>
               <div className="flex flex-col space-y-1.5">
@@ -559,6 +562,7 @@ export function TournamentMultiForm() {
                   onChange={handleInputChange}
                   placeholder="Tournament organizer"
                   required
+                  className="dark:bg-slate-800"
                 />
               </div>
 
@@ -615,6 +619,7 @@ export function TournamentMultiForm() {
                   value={formData.teamsPerGroup}
                   onChange={handleInputChange}
                   placeholder="5"
+                  className="dark:bg-slate-800"
                 />
               </div>
               <div>

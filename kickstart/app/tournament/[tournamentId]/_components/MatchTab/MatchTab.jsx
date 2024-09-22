@@ -209,7 +209,7 @@ export default function MatchTab({ matchesDetails, tournamentDetails }) {
               groupMatches.map((match) => (
                 <Card
                   key={match?.id}
-                  className="flex flex-col justify-between dark:bg-slate-900 my-3 cardFull border-2 border-slate-200 dark:border-slate-800  hover:shadow-lg transition-shadow duration-300"
+                  className="flex flex-col justify-between dark:bg-slate-900 my-3 cardFull "
                 >
                   <CardHeader>
                     {match?.type === "group" ? (
@@ -276,7 +276,7 @@ export default function MatchTab({ matchesDetails, tournamentDetails }) {
                 </Card>
               ))
             ) : (
-              <Card className="dark:bg-slate-950 p-4 my-3 cardFull border-2 border-slate-200 dark:border-slate-800  hover:shadow-lg transition-shadow duration-300">
+              <Card className="dark:bg-slate-950 p-4 my-3 cardFull ">
                 <p className="text-center font-semibold">
                   No group matches available for this tournament.
                 </p>
@@ -291,7 +291,7 @@ export default function MatchTab({ matchesDetails, tournamentDetails }) {
               knockoutMatches.map((match) => (
                 <Card
                   key={match?.id}
-                  className="flex flex-col justify-between dark:bg-slate-900 my-3 cardFull border-2 border-slate-200 dark:border-slate-800  hover:shadow-lg transition-shadow duration-300"
+                  className="flex flex-col justify-between dark:bg-slate-900 my-3 cardFull "
                 >
                   <CardHeader>
                     {match?.type === "group" ? (
@@ -363,7 +363,7 @@ export default function MatchTab({ matchesDetails, tournamentDetails }) {
                 </Card>
               ))
             ) : (
-              <Card className="dark:bg-slate-950 p-4 my-3 cardFull border-2 border-slate-200 dark:border-slate-800  hover:shadow-lg transition-shadow duration-300">
+              <Card className="dark:bg-slate-950 p-4 my-3 cardFull ">
                 <p className="text-center font-semibold">
                   There are no matches available for this tournament.
                 </p>
@@ -400,7 +400,7 @@ export default function MatchTab({ matchesDetails, tournamentDetails }) {
               )}
             {tournamentDetails?.quarterMatch.length === 0 &&
               tournamentDetails?.semiMatch.length === 0 && (
-                <Card className="dark:bg-slate-950 p-4 my-3 cardFull border-2 border-slate-200 dark:border-slate-800  hover:shadow-lg transition-shadow duration-300">
+                <Card className="dark:bg-slate-950 p-4 my-3 cardFull ">
                   <p className="text-center font-semibold">
                     There are no brackets available for this tournament.
                   </p>

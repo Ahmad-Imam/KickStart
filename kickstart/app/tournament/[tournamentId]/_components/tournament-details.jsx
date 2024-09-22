@@ -225,7 +225,7 @@ export default function TournamentDetails({
     <div className="container mx-auto px-4 py-6">
       <h1 className="text-4xl font-bold mb-6">{tournamentDetails?.name}</h1>
       <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
-        <Card className="dark:bg-slate-900 my-8 cardFull border-2 border-slate-200 dark:border-slate-800  hover:shadow-lg transition-shadow duration-300">
+        <Card className="dark:bg-slate-900 my-8 cardFull ">
           <CardHeader>
             <CardTitle>Status</CardTitle>
           </CardHeader>
@@ -239,7 +239,7 @@ export default function TournamentDetails({
             </Badge>
           </CardContent>
         </Card>
-        <Card className=" dark:bg-slate-900 my-8 cardFull border-2 border-slate-200 dark:border-slate-800  hover:shadow-lg transition-shadow duration-300">
+        <Card className=" dark:bg-slate-900 my-8 cardFull ">
           <CardHeader>
             <CardTitle>Date</CardTitle>
           </CardHeader>
@@ -251,7 +251,7 @@ export default function TournamentDetails({
             </span>
           </CardContent>
         </Card>
-        <Card className=" dark:bg-slate-900 my-8 cardFull border-2 border-slate-200 dark:border-slate-800  hover:shadow-lg transition-shadow duration-300">
+        <Card className=" dark:bg-slate-900 my-8 cardFull ">
           <CardHeader>
             <CardTitle>Location</CardTitle>
           </CardHeader>

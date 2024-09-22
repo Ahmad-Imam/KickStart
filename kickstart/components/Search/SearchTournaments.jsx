@@ -53,7 +53,7 @@ const tournaments = [
   },
 ];
 
-export default function SearchTournament({ allTournaments }) {
+export default function SearchTournaments({ allTournaments }) {
   const [searchTerm, setSearchTerm] = useState("");
   const [statusFilter, setStatusFilter] = useState("all");
 
@@ -67,19 +67,19 @@ export default function SearchTournament({ allTournaments }) {
   });
 
   return (
-    <div className="container mx-auto p-4">
-      <div className="mb-6 bg-red-500">
+    <div className="container pt-6">
+      <div className="mb-6 ">
         <Input
           type="text"
           placeholder="Search names..."
           value={searchTerm}
           onChange={(e) => setSearchTerm(e.target.value)}
-          className="w-full "
+          className="w-full  dark:bg-slate-900 "
         />
       </div>
       <div className="grid grid-cols-1 md:grid-cols-4 gap-6">
         <div className="md:col-span-1">
-          <Card>
+          <Card className="cardFull dark:bg-slate-900">
             <CardHeader>
               <CardTitle>Tournament Status</CardTitle>
             </CardHeader>
@@ -109,7 +109,7 @@ export default function SearchTournament({ allTournaments }) {
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
             {filteredTournaments.map((tournament) => (
               <Link key={tournament.id} href={`/tournament/${tournament.id}`}>
-                <Card className="flex flex-col cardFull border-2 border-slate-200 dark:border-slate-800  hover:shadow-lg transition-shadow duration-300">
+                <Card className="flex flex-col cardFull  dark:bg-slate-900">
                   <CardHeader>
                     <CardTitle>{tournament.name}</CardTitle>
                   </CardHeader>

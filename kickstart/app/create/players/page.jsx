@@ -2,10 +2,8 @@ import { PlayersForm } from "./_components/create-players-form";
 
 const CreatePlayerPage = () => {
   return (
-    <div className="w-full flex-col flex items-center justify-center py-20">
-      <div className="container">
-        <PlayersForm />
-      </div>
+    <div className="dark:bg-slate-950 min-h-screen w-full flex-col flex items-center justify-center p-4">
+      <PlayersForm />
     </div>
   );
 };
