@@ -95,7 +95,7 @@
     dark:hover:shadow-slate-400 transition-shadow duration-300;
   }
   .custom-border-shadow {
-    @apply border-2 border-slate-300 dark:border-slate-500 hover:shadow-lg transition-shadow duration-300;
+    @apply border-2 border-slate-200 dark:border-slate-500 hover:shadow-lg transition-shadow duration-300;
   }
   .badgec {
     @apply bg-amber-500 dark:bg-amber-400;

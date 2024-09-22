@@ -1,5 +1,5 @@
 import MatchDetails from "@/app/tournament/[tournamentId]/match/[matchId]/_components/match-details";
-import TeamDetails from "@/app/tournament/[tournamentId]/team/[teamId]/_components/teamsT-details";
+import TeamDetails from "@/app/tournament/[tournamentId]/team/[teamId]/_components/TeamsTDetails";
 import TournamentDetails from "@/app/tournament/[tournamentId]/_components/tournament-details";
 import { getGroupsByTournamentId } from "@/queries/groups";
 import { getMatchById, getMatchesByTournamentId } from "@/queries/matches";
@@ -61,9 +61,9 @@ export default async function TeamsTPage({ params }) {
   const yellowCards = await getYellowScorers(teamsTournament?.yellow);
   const redCards = await getRedScorers(teamsTournament?.red);
   console.log("yellow");
-  console.log(teamsTournament?.yellow);
-  console.log(yellowCards);
-  console.log(redCards);
+  // console.log(teamsTournament?.yellow);
+  // console.log(yellowCards);
+  // console.log(redCards);
 
   return (
     <div className="dark:bg-zinc-950">

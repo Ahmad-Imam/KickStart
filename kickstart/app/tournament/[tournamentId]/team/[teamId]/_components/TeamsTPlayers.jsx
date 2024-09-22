@@ -7,7 +7,7 @@ import {
 } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
-import { TeamsTPlayersDrawer } from "./teamT-players-drawer";
+import { TeamsTPlayersDrawer } from "./TeamTPlayersDrawer";
 import { capitalizeFirstLetter } from "@/utils/data-util";
 import { MapPinIcon } from "lucide-react";
 

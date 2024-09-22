@@ -6,6 +6,7 @@ import {
   replaceMongoIdInArray,
   replaceMongoIdInObject,
 } from "@/utils/data-util";
+import { ObjectId } from "mongodb";
 
 export async function createTeamsTournamentList(data, tournamentId) {
   console.log("createsTeamsTournamentList");
@@ -266,6 +267,28 @@ export async function updateSemiEnd(tournament) {
     // console.log(sf2);
 
     // return replaceMongoIdInArray(teamsTournamentUpdatedList);
+  } catch (error) {
+    throw new Error(error);
+  }
+}
+
+export async function getTeamsTMatches(tournamentId, teamId) {
+  console.log(teamId);
+  console.log(tournamentId);
+  const teamObj = ObjectId.createFromHexString(teamId);
+  console.log(teamObj);
+  try {
+    const matches = await matchModel
+      .find({
+        tournamentId,
+        $or: [{ "team1.teamId": teamObj }, { "team2.teamId": teamObj }],
+      })
+      .lean();
+
+    console.log("matches");
+    console.log(matches.length);
+
+    return replaceMongoIdInArray(matches);
   } catch (error) {
     throw new Error(error);
   }

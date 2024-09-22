@@ -17,7 +17,7 @@ import {
 } from "@/components/ui/drawer";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import TeamsTPlayersForm from "./teamT-players-form";
+import TeamsTPlayersForm from "./TeamTPlayersForm";
 
 export function TeamsTPlayersDrawer({ playersInfo, teamsTournament }) {
   const [open, setOpen] = React.useState(false);

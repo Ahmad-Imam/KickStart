@@ -38,7 +38,7 @@ export default function OverViewTab({
           <CardDescription>{tournamentDetails?.bio}</CardDescription>
         </CardHeader>
         <CardContent>
-          <div className="dark:bg-slate-900  cardFull border-2 border-slate-200 dark:border-slate-800  p-6 rounded-lg shadow-sm hover:shadow-lg transition-shadow duration-300  ">
+          <div className="dark:bg-slate-950  cardFull border-2 border-slate-200 dark:border-slate-800  p-6 rounded-lg shadow-sm hover:shadow-lg transition-shadow duration-300  ">
             <p className="hover:bg-slate-800 rounded-sm cursor-pointer hover:text-white transition duration-300 ease-in-out p-2">
               <strong>Organizer:</strong> {tournamentDetails?.organizer}
             </p>

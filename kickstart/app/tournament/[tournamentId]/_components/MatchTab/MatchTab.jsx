@@ -318,7 +318,7 @@ export default function MatchTab({ matchesDetails, tournamentDetails }) {
                     <div className="pt-2">
                       <Badge
                         className={
-                          "bg-cyan-600 dark:bg-cyan-400 dark:text-gray-50 "
+                          "bg-cyan-600 dark:bg-cyan-500 dark:text-gray-50 "
                         }
                         style={{
                           paddingLeft: 10,
@@ -334,7 +334,7 @@ export default function MatchTab({ matchesDetails, tournamentDetails }) {
                         className={
                           match?.status === "live"
                             ? "bg-red-800 dark:bg-red-600 dark:text-gray-50"
-                            : "bg-slate-800 dark:bg-blue-400 text-white dark:text-gray-50"
+                            : "bg-slate-800 dark:bg-blue-500 text-white dark:text-gray-50"
                         }
                         style={{
                           paddingLeft: 10,
@@ -401,7 +401,7 @@ export default function MatchTab({ matchesDetails, tournamentDetails }) {
                       <Badge
                         className={
                           match?.type === "quarter"
-                            ? "bg-cyan-900 dark:bg-cyan-400 dark:text-gray-50"
+                            ? "bg-cyan-900 dark:bg-cyan-500 dark:text-gray-50"
                             : match?.type === "semi"
                             ? "bg-amber-500 dark:bg-amber-400 dark:text-gray-50"
                             : "bg-indigo-700 dark:bg-indigo-400 dark:text-gray-50"
@@ -420,7 +420,7 @@ export default function MatchTab({ matchesDetails, tournamentDetails }) {
                         className={
                           match?.status === "live"
                             ? "bg-red-800 dark:bg-red-600 hover:bg-black hover:text-white dark:text-gray-50"
-                            : "bg-slate-800 dark:bg-blue-400 text-white hover:bg-black hover:text-white dark:text-gray-50"
+                            : "bg-slate-800 dark:bg-blue-500 text-white hover:bg-black hover:text-white dark:text-gray-50"
                         }
                         style={{
                           paddingLeft: 10,
