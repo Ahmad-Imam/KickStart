@@ -16,6 +16,7 @@ import {
   updateTiebreaker,
   updateMatchData,
   updateMatchMOTM,
+  updateTournamentEvent,
 } from "@/queries/matches";
 import {
   createPlayers,
@@ -208,7 +209,7 @@ export async function editMatchStatus(matchDetails, status) {
     if (status === "finished") {
       console.log("inside finished");
       const newTeamsT = await updateMatchPlayedTeamsT(matchDetails, tournament);
-      console.log("newTeamsT");
+      console.log("newTeamsTTTTT");
       if (matchDetails?.type === "group") {
         const newGroups = await updateMatchPlayedGroups(
           matchDetails,
@@ -244,8 +245,50 @@ export async function editMatchStatus(matchDetails, status) {
           const newTeamsList = await updateSemiEnd(tournament);
           console.log("newTeamsList");
         }
+      } else if (matchDetails?.type === "third") {
+        const winner =
+          matchDetails?.result?.team1 > matchDetails?.result?.team2
+            ? matchDetails?.team1
+            : matchDetails?.team2;
+        const currentTime = new Date().toLocaleTimeString();
+        const currentDate = new Date().toLocaleDateString();
+
+        console.log("in thirddddddddddddd");
+
+        const tournamentEvent = {
+          type: "fulltime",
+          time: currentTime,
+          date: currentDate,
+          description: `${winner?.name} won the third place!!! 🥉`,
+          matchId: matchDetails?.id,
+        };
+
+        const updateTEvent = await updateTournamentEvent(
+          tournamentEvent,
+          matchDetails.tournamentId
+        );
+
+        console.log("updateTEvent thirdddddd");
       } else if (matchDetails?.type === "final") {
-        console.log("final");
+        const winner =
+          matchDetails?.result?.team1 > matchDetails?.result?.team2
+            ? matchDetails?.team1
+            : matchDetails?.team2;
+        const currentTime = new Date().toLocaleTimeString();
+        const currentDate = new Date().toLocaleDateString();
+
+        const tournamentEvent = {
+          type: "fulltime",
+          time: currentTime,
+          date: currentDate,
+          description: `${winner?.name} are the Champions!!! 🏆`,
+          matchId: matchDetails?.id,
+        };
+
+        const updateTEvent = await updateTournamentEvent(
+          tournamentEvent,
+          matchDetails.tournamentId
+        );
       }
     }
 

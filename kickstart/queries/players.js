@@ -44,6 +44,7 @@ export async function getPlayers() {
       .populate({
         path: "tournament",
         model: tournamentsModel,
+        //todo check here
         // match: { status: "live" }, // Only populate tournaments with status "live"
       })
       .lean();

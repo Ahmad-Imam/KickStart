@@ -71,7 +71,7 @@ export async function updateMatchPlayedTeamsT(matchDetails, tournament) {
     );
 
     console.log("teamsTournament");
-    console.log(teamsTournament);
+    // console.log(teamsTournament);
     // console.log(matchDetails);
 
     const teamsTournamentUpdated = teamsTournament

@@ -191,7 +191,7 @@ export default function TeamsTPlayersForm({
         </div>
       ) : (
         <div className="flex flex-col justify-center items-center gap-2">
-          <div className="animate-spin rounded-full h-20 w-20 border-t-2 border-b-2 border-gray-900"></div>
+          <div className="animate-spin rounded-full h-20 w-20 border-t-2 border-b-2 border-black dark:border-white"></div>
           <div>Loading Teams</div>
         </div>
       )}

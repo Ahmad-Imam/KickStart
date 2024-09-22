@@ -1,5 +1,3 @@
-"use client";
-
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import {
@@ -11,12 +9,11 @@ import {
 } from "@/components/ui/card";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import Link from "next/link";
-import React, { useState } from "react";
 
 import SingleElimination from "@/app/create/tournaments/_components/brackets/tournament-brackets";
+import MatchTabs from "./MatchTabs";
 
 export default function MatchTab({ matchesDetails, tournamentDetails }) {
-  const [activeTab, setActiveTab] = useState("group");
   const order = ["live", "upcoming", "finished"];
 
   const groupMatches = matchesDetails
@@ -204,85 +201,8 @@ export default function MatchTab({ matchesDetails, tournamentDetails }) {
   };
 
   return (
-    <div className="space-y-4 flex flex-row justify-center">
-      <Tabs
-        value={activeTab}
-        onValueChange={setActiveTab}
-        className="flex flex-col w-full"
-      >
-        <TabsList className=" flex flex-row justify-around gap-6 h-auto dark:bg-slate-900 cardFull custom-border-shadow border-1">
-          <TabsTrigger
-            value="group"
-            className="px-6 py-2 my-1 "
-            // style={{
-            //   "--tw-bg-opacity": 1,
-            //   backgroundColor:
-            //     activeTab === "group"
-            //       ? "rgb(30 41 59 / var(--tw-bg-opacity))"
-            //       : "white",
-            //   color: activeTab === "group" ? "white" : "black",
-            //   cursor: "pointer",
-            //   borderRadius: "5px",
-            //   transition: "background-color 0.3s",
-            // }}
-          >
-            Group
-          </TabsTrigger>
-          <TabsTrigger
-            className="px-6 py-2 my-1 "
-            // style={{
-            //   "--tw-bg-opacity": 1,
-            //   backgroundColor:
-            //     activeTab === "knockout"
-            //       ? "rgb(30 41 59 / var(--tw-bg-opacity))"
-            //       : "white",
-            //   color: activeTab === "knockout" ? "white" : "black",
-            //   cursor: "pointer",
-            //   borderRadius: "5px",
-            //   transition: "background-color 0.3s",
-            // }}
-            value="knockout"
-          >
-            Knockout
-          </TabsTrigger>
-
-          <TabsTrigger
-            className="px-6 py-2 my-1 "
-            // style={{
-            //   "--tw-bg-opacity": 1,
-            //   backgroundColor:
-            //     activeTab === "bracket"
-            //       ? "rgb(30 41 59 / var(--tw-bg-opacity))"
-            //       : "white",
-            //   color: activeTab === "bracket" ? "white" : "black",
-            //   cursor: "pointer",
-            //   borderRadius: "5px",
-            //   transition: "background-color 0.3s",
-            // }}
-            value="bracket"
-          >
-            Bracket
-          </TabsTrigger>
-
-          {/* <TabsTrigger
-            className="px-6 py-2 my-1 "
-            style={{
-              "--tw-bg-opacity": 1,
-              backgroundColor:
-                activeTab === "knockout"
-                  ? "rgb(30 41 59 / var(--tw-bg-opacity))"
-                  : "white",
-              color: activeTab === "knockout" ? "white" : "black",
-              cursor: "pointer",
-              borderRadius: "5px",
-              transition: "background-color 0.3s",
-            }}
-            value="knockout"
-          >
-            Knockout
-          </TabsTrigger> */}
-        </TabsList>
-
+    <div className="space-y-4 ">
+      <MatchTabs>
         <TabsContent value="group" className="py-4">
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
             {groupMatches?.length > 0 ? (
@@ -365,7 +285,7 @@ export default function MatchTab({ matchesDetails, tournamentDetails }) {
           </div>
         </TabsContent>
 
-        <TabsContent value="knockout" className="py-4">
+        <TabsContent value="knockout" className="py-4 ">
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
             {knockoutMatches?.length > 0 ? (
               knockoutMatches.map((match) => (
@@ -492,7 +412,8 @@ export default function MatchTab({ matchesDetails, tournamentDetails }) {
             Bracket for Knockout Stage
           </div>
         </TabsContent>
-      </Tabs>
+      </MatchTabs>
+
       {/* <div className="space-y-4">
         {matchesDetails?.length > 0 ? (
           matchesDetails.map((match) => (
