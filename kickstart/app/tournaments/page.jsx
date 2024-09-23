@@ -3,6 +3,13 @@ import { getAllTournaments } from "@/queries/tournaments";
 import { dbConnect } from "@/service/mongo";
 import React from "react";
 
+export async function generateMetadata() {
+  return {
+    title: `KickStart - Tournaments`,
+    description: `All tournaments`,
+  };
+}
+
 export default async function TournamentsPage() {
   await dbConnect();
   const allTournaments = await getAllTournaments();

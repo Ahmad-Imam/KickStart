@@ -40,7 +40,7 @@ export default async function MatchEditPage({ params }) {
 
   // console.log(tournamentId);
   return (
-    <div className="dark:bg-zinc-950 h-screen flex justify-center items-center">
+    <div className="dark:bg-slate-950 h-screen flex justify-center items-center">
       {/* <TournamentDetails
         tournamentDetails={tournament}
         matchesDetails={matches}

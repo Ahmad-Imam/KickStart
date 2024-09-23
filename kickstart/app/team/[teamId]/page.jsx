@@ -3,6 +3,15 @@ import { dbConnect } from "@/service/mongo";
 import React from "react";
 import TeamDetails from "./_components/TeamDetails";
 
+export async function generateMetadata({ params: { teamId } }) {
+  await dbConnect();
+  const teamDetails = await getTeamById(teamId);
+  return {
+    title: `KickStart - ${teamDetails?.name}`,
+    description: `${teamDetails?.name} details`,
+  };
+}
+
 export default async function TeamPage({ params }) {
   const { teamId } = params;
   await dbConnect();
