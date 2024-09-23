@@ -10,8 +10,6 @@ export default async function PlayersPage() {
   const allTournaments = await getAllTournaments();
   console.log("tournament");
 
-  // const allPlayersRes = await fetch("http://localhost:3000/api/players");
-
   const allPlayers = await getPlayers();
   // console.log(allPlayers[0]);
 

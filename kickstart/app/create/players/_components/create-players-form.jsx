@@ -88,7 +88,12 @@ export function PlayersForm() {
     try {
       setLoadingTeam(true);
 
-      const res = await fetch("/api/teams");
+      console.log("env");
+      // console.log(process.env.BASE_URL);
+      // console.log(String(process.env.MONGODB_CONNECTION_STRING));
+      // console.log(process.env.NEXT_PUBLIC_BASE_URL);
+
+      const res = await fetch(`/api/teams`);
       const data = await res.json();
       setTeamsList(data);
       setLoadingTeam(false);

@@ -13,26 +13,6 @@ import { MapPinIcon } from "lucide-react";
 import Link from "next/link";
 
 export default function TeamsTPlayers({ playersInfo, teamsTournament }) {
-  //   const [playersInfo, setPlayersInfo] = useState([]);
-
-  //   useEffect(() => {
-  //     console.log("fetching player info");
-  //     const fetchPlayerInfo = async () => {
-  //       if (team?.players) {
-  //         const playerPromises = team.players.map(async (playerId) => {
-  //           const response = await fetch(`/api/players/${playerId.toString()}`); // Adjust the API endpoint based on your project
-  //           const playerData = await response.json();
-  //           return playerData;
-  //         });
-
-  //         const playersData = await Promise.all(playerPromises);
-  //         setPlayersInfo(playersData);
-  //       }
-  //     };
-
-  //     fetchPlayerInfo();
-  //   }, [team]);
-
   return (
     <>
       <div className="flex items-center justify-between">

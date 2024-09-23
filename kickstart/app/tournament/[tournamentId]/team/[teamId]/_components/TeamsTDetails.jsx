@@ -130,7 +130,7 @@ export default async function TeamsTDetails({
                   </li>
                 ) : (
                   topScorers?.map((scorer, index) => (
-                    <div key={index}>
+                    <Link href={`/player/${scorer.id}`} key={index}>
                       <li className="flex items-center justify-between p-2 px-4 dark:bg-slate-800 dark:hover:bg-slate-700 border-1 rounded-md last:border-b-0 cursor-pointer hover:bg-slate-200 bg-slate-100 my-3">
                         <span>{scorer?.name}</span>
                         <Badge
@@ -142,7 +142,7 @@ export default async function TeamsTDetails({
                         </Badge>
                       </li>
                       {/* <Separator className="" /> */}
-                    </div>
+                    </Link>
                   ))
                 )}
               </ul>
@@ -191,22 +191,24 @@ export default async function TeamsTDetails({
                 <ul className="space-y-2">
                   {yellowCards.length > 0 ? (
                     yellowCards.map((player) => (
-                      <li
-                        key={player.id}
-                        className="flex items-center justify-between p-2 px-4 dark:bg-slate-800 dark:hover:bg-slate-700 border-1 rounded-md last:border-b-0 cursor-pointer hover:bg-slate-200 bg-slate-100 my-3"
-                      >
-                        <span>{player.name}</span>
-                        <Badge
-                          variant="secondary"
-                          className="flex items-center"
+                      <Link href={`/player/${player.id}`} key={player.id}>
+                        <li
+                          key={player.id}
+                          className="flex items-center justify-between p-2 px-4 dark:bg-slate-800 dark:hover:bg-slate-700 border-1 rounded-md last:border-b-0 cursor-pointer hover:bg-slate-200 bg-slate-100 my-3"
                         >
-                          <AlertTriangleIcon
-                            size={22}
-                            className="mr-1 h-4 w-4"
-                          />
-                          <div className="md:text-lg">{player.yellow}</div>
-                        </Badge>
-                      </li>
+                          <span>{player.name}</span>
+                          <Badge
+                            variant="secondary"
+                            className="flex items-center"
+                          >
+                            <AlertTriangleIcon
+                              size={22}
+                              className="mr-1 h-4 w-4"
+                            />
+                            <div className="md:text-lg">{player.yellow}</div>
+                          </Badge>
+                        </li>
+                      </Link>
                     ))
                   ) : (
                     <p>No yellow cards</p>
@@ -222,23 +224,25 @@ export default async function TeamsTDetails({
                 <ul className="space-y-2">
                   {redCards.length > 0 ? (
                     redCards.map((player) => (
-                      <li
-                        key={player.id}
-                        className="flex items-center justify-between p-2 px-4 dark:bg-slate-800 dark:hover:bg-slate-700 border-1 rounded-md last:border-b-0 cursor-pointer hover:bg-slate-200 bg-slate-100 my-3"
-                      >
-                        <span>{player.name}</span>
-                        <Badge
-                          variant="secondary"
-                          className="flex items-center"
+                      <Link href={`/player/${player.id}`} key={player.id}>
+                        <li
+                          key={player.id}
+                          className="flex items-center justify-between p-2 px-4 dark:bg-slate-800 dark:hover:bg-slate-700 border-1 rounded-md last:border-b-0 cursor-pointer hover:bg-slate-200 bg-slate-100 my-3"
                         >
-                          <AlertTriangleIcon
-                            size={22}
-                            className="mr-1 h-4 w-4"
-                          />
+                          <span>{player.name}</span>
+                          <Badge
+                            variant="secondary"
+                            className="flex items-center"
+                          >
+                            <AlertTriangleIcon
+                              size={22}
+                              className="mr-1 h-4 w-4"
+                            />
 
-                          <div className="md:text-lg">{player.red}</div>
-                        </Badge>
-                      </li>
+                            <div className="md:text-lg">{player.red}</div>
+                          </Badge>
+                        </li>
+                      </Link>
                     ))
                   ) : (
                     <p>No red cards</p>
