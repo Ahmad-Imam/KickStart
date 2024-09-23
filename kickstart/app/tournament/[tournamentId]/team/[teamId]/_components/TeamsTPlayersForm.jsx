@@ -192,9 +192,10 @@ export default function TeamsTPlayersForm({
           <div>Loading Teams</div>
         </div>
       )}
-      {playersInfo?.length > 0 && (
-        <div className="mt-4 w-full  rounded-md border-2">
-          <h3 className="font-semibold mb-2 p-2">Current Squad:</h3>
+
+      <div className="mt-4 w-full  rounded-md border-2">
+        <h3 className="font-semibold mb-2 p-2">Current Squad:</h3>
+        {playersInfo?.length > 0 ? (
           <ul className="flex flex-wrap gap-2 w-full p-2">
             {playersInfo?.map((item, index) => (
               <li
@@ -205,8 +206,12 @@ export default function TeamsTPlayersForm({
               </li>
             ))}
           </ul>
-        </div>
-      )}
+        ) : (
+          <p className="p-4 text-center text-muted-foreground">
+            No players in the squad
+          </p>
+        )}
+      </div>
 
       {savedItems?.length > 0 && (
         <div className="mt-4 w-full  rounded-md border-2">

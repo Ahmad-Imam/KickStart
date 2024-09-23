@@ -38,7 +38,10 @@ export default function TeamPlayers({ playersInfo, team }) {
                 <CardContent className="flex items-center justify-between p-4">
                   <div className="flex items-center space-x-4">
                     <div className="w-10 h-10 text-secondary-foreground rounded-full flex items-center justify-center font-semibold bg-slate-200 dark:bg-slate-900">
-                      {player.name.slice(0, 2).toUpperCase()}
+                      {player.name.split(" ")[0]?.slice(0, 1).toUpperCase() +
+                        (player.name.split(" ")[1]
+                          ? player.name.split(" ")[1].slice(0, 1).toUpperCase()
+                          : "")}
                     </div>
                     <div>
                       <h4 className="font-semibold">{player.name}</h4>

@@ -20,6 +20,7 @@ import { toast } from "sonner";
 import { capitalizeFirstLetter } from "@/utils/data-util";
 import { Badge } from "@/components/ui/badge";
 import { ca } from "date-fns/locale";
+import { useRouter } from "next/navigation";
 
 export function TeamsForm() {
   const [playersList, setPlayersList] = useState([]);
@@ -28,6 +29,9 @@ export function TeamsForm() {
   const [savedItems, setSavedItems] = useState([]);
 
   const [loadingPlayer, setLoadingPlayer] = useState(false);
+
+  const [loading, setLoading] = useState(false);
+  const router = useRouter();
 
   console.log("saved");
   console.log(Array.isArray(savedItems));
@@ -63,10 +67,11 @@ export function TeamsForm() {
   };
   async function handleSubmit(e) {
     e.preventDefault();
+    setLoading(true);
     const formData = new FormData(e.target);
-    const name = formData.get("name");
-    const bio = formData.get("bio");
-    const location = formData.get("location");
+    const name = capitalizeFirstLetter(formData.get("name"));
+    const bio = capitalizeFirstLetter(formData.get("bio"));
+    const location = capitalizeFirstLetter(formData.get("location"));
     const playersInTeam = savedItems.map((item) => item.id);
 
     const teamData = {
@@ -87,6 +92,10 @@ export function TeamsForm() {
       console.log("playersUpdated");
       console.log(playersUpdated);
     }
+    setLoading(false);
+
+    router.push(`/team/${teams.id}`);
+
     // Call the API to create the team
   }
 
@@ -233,8 +242,12 @@ export function TeamsForm() {
               </div>
             )}
 
-            <button type="submit" className="w-full customButton ">
-              Submit
+            <button
+              type="submit"
+              className="w-full customButton"
+              disabled={loading}
+            >
+              {loading ? "Creating Team..." : "Submit"}
             </button>
           </div>
         </form>

@@ -20,6 +20,8 @@ import { MapPinIcon, X } from "lucide-react";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { set } from "mongoose";
 import { capitalizeFirstLetter } from "@/utils/data-util";
+import { useRouter } from "next/navigation";
+import { ca } from "date-fns/locale";
 
 export function PlayersForm() {
   const [query, setQuery] = useState("");
@@ -35,6 +37,10 @@ export function PlayersForm() {
 
   const [selectedPosition, setSelectedPosition] = useState(positions[2]);
   console.log(selectedPosition);
+
+  const [loading, setLoading] = useState(false);
+
+  const router = useRouter();
 
   useEffect(() => {
     if (query.trim() === "") {
@@ -64,11 +70,12 @@ export function PlayersForm() {
 
   async function handleSubmit(e) {
     e.preventDefault();
+    setLoading(true);
     const formData = new FormData(e.target);
-    const name = formData.get("name");
-    const nickName = formData.get("nickName");
-    const country = formData.get("country");
-    const jersey = formData.get("jersey");
+    const name = capitalizeFirstLetter(formData.get("name"));
+    const nickName = capitalizeFirstLetter(formData.get("nickName"));
+    const country = capitalizeFirstLetter(formData.get("country"));
+    const jersey = capitalizeFirstLetter(formData.get("jersey"));
     const team = savedItems[0]?.id;
     const playerData = {
       name,
@@ -80,8 +87,11 @@ export function PlayersForm() {
     };
 
     console.log(playerData);
-    const teams = await addPlayers(playerData);
+    const player = await addPlayers(playerData);
+    console.log(player);
     // Call the API to create the team
+    setLoading(false);
+    router.push(`/player/${player.id}`);
   }
 
   const fetchTeams = async () => {
@@ -111,7 +121,10 @@ export function PlayersForm() {
     <Card className="dark:bg-slate-900 mx-auto max-w-xl w-full cardFull border-2 border-slate-200 dark:border-slate-800  hover:shadow-lg transition-shadow duration-300 ">
       <CardHeader>
         <CardTitle className="text-2xl">Create Your player</CardTitle>
-        <CardDescription>Enter your player information</CardDescription>
+        <CardDescription>
+          Enter your player information. This will not affect ongoing
+          tournaments
+        </CardDescription>
       </CardHeader>
       <CardContent>
         <form onSubmit={handleSubmit}>
@@ -254,8 +267,12 @@ export function PlayersForm() {
               </div>
             )}
 
-            <button type="submit" className="w-full customButton">
-              Submit
+            <button
+              disabled={loading}
+              type="submit"
+              className="w-full customButton"
+            >
+              {loading ? "Creating..." : "Submit"}
             </button>
           </div>
         </form>

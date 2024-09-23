@@ -56,7 +56,10 @@ export default async function TeamDetails({ team }) {
               </CardDescription>
             </div>
             <div className="w-16 h-16 bg-primary text-primary-foreground rounded-full flex items-center justify-center text-2xl font-bold bg-slate-200 dark:bg-slate-950">
-              {team.name.slice(0, 2).toUpperCase()}
+              {team.name.split(" ")[0]?.slice(0, 1).toUpperCase() +
+                (team.name.split(" ")[1]
+                  ? team.name.split(" ")[1].slice(0, 1).toUpperCase()
+                  : "")}
             </div>
           </div>
         </CardHeader>

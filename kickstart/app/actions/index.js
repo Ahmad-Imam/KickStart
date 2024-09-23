@@ -72,7 +72,7 @@ export async function addPlayers(data) {
     console.log(data);
     const player = await createPlayers(data);
     // console.log(teams);
-    // return user;
+    return player;
   } catch (error) {
     throw new Error(error);
   }

@@ -37,6 +37,7 @@ import { DateTimePicker } from "./date-time-picker";
 import { Alert, AlertDescription } from "@/components/ui/alert";
 import { addTournaments } from "@/app/actions";
 import { useRouter } from "next/navigation";
+import { capitalizeFirstLetter } from "@/utils/data-util";
 
 export function TournamentMultiForm() {
   const [page, setPage] = useState(1);
@@ -257,6 +258,10 @@ export function TournamentMultiForm() {
       quarterMatch,
       semiMatch,
       thirdSwitch,
+      name: capitalizeFirstLetter(formData.name),
+      bio: capitalizeFirstLetter(formData.bio),
+      location: capitalizeFirstLetter(formData.location),
+      organizer: capitalizeFirstLetter(formData.organizer),
     };
 
     console.log(tournamentData);
