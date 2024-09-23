@@ -103,7 +103,7 @@ export function PlayersForm() {
       // console.log(String(process.env.MONGODB_CONNECTION_STRING));
       // console.log(process.env.NEXT_PUBLIC_BASE_URL);
 
-      const res = await fetch(`/api/teams`);
+      const res = await fetch(`/api/teams`, { cache: "no-store" });
       const data = await res.json();
       setTeamsList(data);
       setLoadingTeam(false);

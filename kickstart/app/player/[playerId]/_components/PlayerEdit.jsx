@@ -113,7 +113,7 @@ export default function PlayerEdit({ playerDetails }) {
     try {
       setLoadingTeam(true);
 
-      const res = await fetch("/api/teams");
+      const res = await fetch("/api/teams", { cache: "no-store" });
       const data = await res.json();
       setTeamsList(data);
       setLoadingTeam(false);

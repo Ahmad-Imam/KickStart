@@ -66,7 +66,7 @@ export default function CreateTeamsTournament({
   };
 
   const fetchPlayers = async () => {
-    const res = await fetch("/api/teams");
+    const res = await fetch("/api/teams", { cache: "no-store" });
     const data = await res.json();
     setTeamsTList(data);
     setLoading(false);

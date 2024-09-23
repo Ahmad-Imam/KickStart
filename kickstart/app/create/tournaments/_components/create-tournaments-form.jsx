@@ -93,7 +93,7 @@ export function TournamentForm() {
   }
 
   const fetchPlayers = async () => {
-    const res = await fetch("/api/players");
+    const res = await fetch("/api/players", { cache: "no-store" });
     const data = await res.json();
     setPlayersList(data);
     // console.log(data);

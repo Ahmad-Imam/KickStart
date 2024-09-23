@@ -88,7 +88,7 @@ export default function TeamsTPlayersForm({
   };
 
   const fetchPlayers = async () => {
-    const res = await fetch("/api/players");
+    const res = await fetch("/api/players", { cache: "no-store" });
     const data = await res.json();
     console.log("data");
     // console.log(data);

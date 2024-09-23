@@ -102,7 +102,7 @@ export function TeamsForm() {
   const fetchPlayers = async () => {
     try {
       setLoadingPlayer(true);
-      const res = await fetch("/api/players");
+      const res = await fetch("/api/players", { cache: "no-store" });
       const data = await res.json();
       setPlayersList(data);
       setLoadingPlayer(false);
