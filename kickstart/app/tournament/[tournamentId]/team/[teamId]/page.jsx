@@ -66,7 +66,7 @@ export default async function TeamsTPage({ params }) {
   // console.log(redCards);
 
   return (
-    <div className="dark:bg-slate-950">
+    <div className="dark:bg-slate-950 min-h-screen w-full">
       {/* <TournamentDetails
         tournamentDetails={tournament}
         matchesDetails={matches}

@@ -463,7 +463,7 @@ export function TournamentMultiForm() {
   // console.log("filler" + isAllGroupsFilled);
 
   return (
-    <Card className=" max-w-xl w-full cardFull dark:bg-slate-900">
+    <Card className=" max-w-3xl w-full cardFull dark:bg-slate-900">
       <form>
         <CardHeader>
           <CardTitle>

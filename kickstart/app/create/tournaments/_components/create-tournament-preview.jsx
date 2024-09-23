@@ -175,7 +175,7 @@ export default function TournamentPreview({
               <ul>
                 {group.teams.map((team, teamIndex) => (
                   <li
-                    className="py-2 pl-2 hover:bg-slate-800 rounded-sm cursor-pointer hover:text-white transition duration-300 ease-in-out"
+                    className="py-2 pl-2 hover:bg-slate-600 dark:hover:bg-slate-600 dark:bg-slate-800 bg-slate-200 my-2 rounded-sm cursor-pointer hover:text-white transition duration-300 ease-in-out"
                     key={teamIndex}
                   >
                     {team.name}

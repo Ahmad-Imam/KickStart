@@ -23,7 +23,7 @@ export default async function PlayersPage() {
   //   console.log(allTournaments);
 
   return (
-    <div className="dark:bg-gray-950">
+    <div className="dark:bg-slate-950">
       <SearchPlayers allPlayers={JSON.parse(JSON.stringify(allPlayers))} />
     </div>
   );

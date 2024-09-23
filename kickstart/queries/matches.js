@@ -1383,6 +1383,7 @@ export async function updateMatchMOTM(team, player, matchDetails) {
       time: currentTime,
       date: currentDate,
       description: `${player.name} from ${team.name} was awarded Man of the Match in (${matchDetails.team1.name} vs ${matchDetails.team2.name})`,
+      matchId,
     };
 
     const motmMatch = {

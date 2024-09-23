@@ -295,16 +295,17 @@ export default async function MatchDetails({ matchDetails, sortedEvents }) {
           />
 
           {/* <h2 className="text-2xl font-bold mt-8 mb-4">Match Events</h2> */}
-          {sortedEvents?.length > 0 && (
-            <div className="pb-6">
-              <Card className="dark:bg-slate-900 cardFull ">
-                <CardHeader>
-                  <CardTitle className="text-xl lg:text-2xl">
-                    Match Events
-                  </CardTitle>
-                </CardHeader>
 
-                <CardContent className="p-0 m-0">
+          <div className="pb-6">
+            <Card className="dark:bg-slate-900 cardFull ">
+              <CardHeader>
+                <CardTitle className="text-xl lg:text-2xl">
+                  Match Events
+                </CardTitle>
+              </CardHeader>
+
+              <CardContent className="p-0 m-0">
+                {sortedEvents?.length > 0 ? (
                   <ul className="p-0 m-0">
                     {sortedEvents?.map((event, index) => (
                       <div
@@ -363,10 +364,14 @@ export default async function MatchDetails({ matchDetails, sortedEvents }) {
                       </div>
                     ))}
                   </ul>
-                </CardContent>
-              </Card>
-            </div>
-          )}
+                ) : (
+                  <div className="text-center p-4">
+                    <p className="">No events recorded yet</p>
+                  </div>
+                )}
+              </CardContent>
+            </Card>
+          </div>
         </div>
       )}
     </div>

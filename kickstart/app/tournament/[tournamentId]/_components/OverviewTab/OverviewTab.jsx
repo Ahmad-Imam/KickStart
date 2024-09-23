@@ -86,12 +86,12 @@ export default function OverViewTab({
             </CardContent>
           </Card>
 
-          {sortedEvents?.length > 0 && (
-            <Card className="dark:bg-slate-950 my-8 cardFull ">
-              <CardHeader>
-                <CardTitle>Live Updates</CardTitle>
-              </CardHeader>
-              <CardContent className="p-0 m-0">
+          <Card className="dark:bg-slate-950 my-8 cardFull ">
+            <CardHeader>
+              <CardTitle>Live Updates</CardTitle>
+            </CardHeader>
+            <CardContent className="p-0 m-0">
+              {sortedEvents?.length > 0 ? (
                 <ul className="p-0 m-0">
                   {sortedEvents?.map((event, index) => (
                     <div
@@ -155,9 +155,13 @@ export default function OverViewTab({
                     </div>
                   ))}
                 </ul>
-              </CardContent>
-            </Card>
-          )}
+              ) : (
+                <div className="text-center p-4">
+                  <p className="">No events recorded yet</p>
+                </div>
+              )}
+            </CardContent>
+          </Card>
         </CardContent>
       </Card>
     </>

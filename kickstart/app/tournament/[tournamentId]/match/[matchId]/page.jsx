@@ -45,7 +45,7 @@ export default async function MatchPage({ params }) {
 
   // console.log(tournamentId);
   return (
-    <div className="dark:bg-slate-950">
+    <div className="dark:bg-slate-950 min-h-screen w-full">
       {/* <TournamentDetails
         tournamentDetails={tournament}
         matchesDetails={matches}

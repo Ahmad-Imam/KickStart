@@ -17,7 +17,7 @@ export default async function TournamentsPage() {
   //   console.log(allTournaments);
 
   return (
-    <div className="dark:bg-gray-950 w-full min-h-screen flex flex-row justify-center ">
+    <div className="dark:bg-slate-950 w-full min-h-screen flex flex-row justify-center ">
       <SearchTournaments
         allTournaments={JSON.parse(JSON.stringify(allTournaments))}
       />

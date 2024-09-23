@@ -152,7 +152,7 @@ export default function SearchTournaments({ allTournaments }) {
             ))}
           </div>
           {filteredTournaments.length === 0 && (
-            <p className="text-center text-gray-500 mt-4">No results found</p>
+            <p className="text-center mt-4">No tournaments found</p>
           )}
         </div>
       </div>

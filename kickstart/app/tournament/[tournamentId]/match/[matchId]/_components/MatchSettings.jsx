@@ -133,7 +133,8 @@ export default function MatchSettings({ team1, team2, matchDetails }) {
             : "Start Tiebreaker"}
         </button>
       </div>
-      {tiebreaker && <Tiebreaker matchDetails={matchDetails} />}
+
+      <Tiebreaker tiebreaker={tiebreaker} matchDetails={matchDetails} />
     </div>
   );
 }

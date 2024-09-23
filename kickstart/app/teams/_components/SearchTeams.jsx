@@ -41,7 +41,7 @@ export default function SearchTeams({ allTeams }) {
               <Link key={team.id} href={`/team/${team.id}`}>
                 <Card className="dark:bg-slate-900 flex flex-col cardFull ">
                   <CardHeader>
-                    <CardTitle>{truncateLongString(team.name, 10)}</CardTitle>
+                    <CardTitle>{truncateLongString(team.name, 20)}</CardTitle>
                   </CardHeader>
                   <CardContent className="flex-grow">
                     <div className="space-y-2">
@@ -56,7 +56,7 @@ export default function SearchTeams({ allTeams }) {
             ))}
           </div>
           {filteredTeams.length === 0 && (
-            <p className="text-center text-gray-500 mt-4">No results found</p>
+            <p className="text-center  mt-4">No teams found</p>
           )}
         </div>
       </div>

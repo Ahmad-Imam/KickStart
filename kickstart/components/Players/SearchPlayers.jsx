@@ -59,7 +59,7 @@ export default function SearchPlayers({ allPlayers }) {
             ))}
           </div>
           {filteredPlayers.length === 0 && (
-            <p className="text-center text-gray-500 mt-4">No results found</p>
+            <p className="text-center mt-4">No players found</p>
           )}
         </div>
       </div>
