@@ -35,7 +35,12 @@ import {
   updateQuarterEnd,
   updateSemiEnd,
 } from "@/queries/teamsTournament";
-import { createTournaments, getTournamentById } from "@/queries/tournaments";
+import {
+  createTournaments,
+  deleteTournament,
+  getTournamentById,
+  updateTournamentStatus,
+} from "@/queries/tournaments";
 import { dbConnect } from "@/service/mongo";
 import { replaceMongoIdInObject } from "@/utils/data-util";
 import { ca } from "date-fns/locale";
@@ -104,11 +109,11 @@ export async function editPlayerTeam(playersInTeam, teamsId) {
   }
 }
 
-export async function addTournaments(data) {
+export async function addTournaments(data, loggedUser) {
   try {
     await dbConnect();
     console.log(data);
-    const tournament = await createTournaments(data);
+    const tournament = await createTournaments(data, loggedUser);
     console.log("tournamentData action");
     console.log(tournament);
     const teamsTournament = await createTeamsTournamentList(
@@ -505,6 +510,34 @@ export async function addMOTMToMatch(team, player, matchDetails) {
     revalidatePath(
       `/tournament/${matchDetails.tournamentId}/match/${matchDetails.id}`
     );
+  } catch (error) {
+    throw new Error(error);
+  }
+}
+
+export async function removeTournament(tournamentId) {
+  try {
+    await dbConnect();
+    console.log(tournamentId);
+    const tournament = await deleteTournament(tournamentId);
+    // console.log(tournament);
+    console.log("deleted");
+    revalidatePath(`/tournaments`);
+    // console.log(teams);
+    // return tournament;
+  } catch (error) {
+    throw new Error(error);
+  }
+}
+
+export async function editTournamentStatus(tournamentDetails, status) {
+  try {
+    await dbConnect();
+    console.log(tournamentDetails);
+    const tournament = await updateTournamentStatus(tournamentDetails, status);
+    revalidatePath(`/tournament/${tournamentDetails.id}`);
+    // console.log(teams);
+    // return tournament;
   } catch (error) {
     throw new Error(error);
   }

@@ -63,6 +63,14 @@ const tournamentsSchema = new Schema({
     required: true,
     type: Number,
   },
+  admin: {
+    required: true,
+    type: String,
+  },
+  moderators: {
+    required: false,
+    type: [],
+  },
 });
 
 export const tournamentsModel =

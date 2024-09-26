@@ -5,53 +5,15 @@ import { Input } from "@/components/ui/input";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { Label } from "@/components/ui/label";
-import { CalendarRangeIcon, MapPinIcon, UserIcon } from "lucide-react";
+import {
+  CalendarRangeIcon,
+  MapPinIcon,
+  Trash2Icon,
+  UserIcon,
+} from "lucide-react";
 
 import Link from "next/link";
-
-// Sample data
-const tournaments = [
-  { id: 1, name: "John Doe", tournament: "Chess Masters", status: "upcoming" },
-  {
-    id: 2,
-    name: "Jane Smith",
-    tournament: "Poker Championship",
-    status: "live",
-  },
-  { id: 3, name: "Bob Johnson", tournament: "Tennis Open", status: "finished" },
-  {
-    id: 4,
-    name: "Alice Brown",
-    tournament: "Golf Classic",
-    status: "upcoming",
-  },
-  {
-    id: 5,
-    name: "Charlie Davis",
-    tournament: "Basketball Tournament",
-    status: "live",
-  },
-  {
-    id: 6,
-    name: "Eva Wilson",
-    tournament: "Swimming Championship",
-    status: "finished",
-  },
-  { id: 7, name: "Frank Miller", tournament: "Soccer Cup", status: "upcoming" },
-  { id: 8, name: "Grace Lee", tournament: "Badminton Masters", status: "live" },
-  {
-    id: 9,
-    name: "Henry Taylor",
-    tournament: "Table Tennis Open",
-    status: "finished",
-  },
-  {
-    id: 10,
-    name: "Ivy Clark",
-    tournament: "Volleyball League",
-    status: "upcoming",
-  },
-];
+import { removeTournament } from "@/app/actions";
 
 export default function SearchTournaments({ allTournaments }) {
   const [searchTerm, setSearchTerm] = useState("");
@@ -65,6 +27,15 @@ export default function SearchTournaments({ allTournaments }) {
       statusFilter === "all" || tournament.status === statusFilter;
     return nameMatch && statusMatch;
   });
+
+  async function handleDelete(e, tournamentId) {
+    e.preventDefault();
+    e.stopPropagation();
+    console.log("Delete button clicked");
+
+    await removeTournament(tournamentId);
+    console.log("removed");
+  }
 
   return (
     <div className="container pt-6">
@@ -111,7 +82,17 @@ export default function SearchTournaments({ allTournaments }) {
               <Link key={tournament.id} href={`/tournament/${tournament.id}`}>
                 <Card className="flex flex-col cardFull  dark:bg-slate-900">
                   <CardHeader>
-                    <CardTitle>{tournament.name}</CardTitle>
+                    <CardTitle className="flex justify-between">
+                      <div>{tournament.name}</div>
+                      <button
+                        onClick={(e) => {
+                          handleDelete(e, tournament.id);
+                        }}
+                        className="hover:bg-slate-400"
+                      >
+                        <Trash2Icon className="w-5 h-5" />
+                      </button>
+                    </CardTitle>
                   </CardHeader>
                   <CardContent className="flex-grow">
                     <div className="space-y-2">

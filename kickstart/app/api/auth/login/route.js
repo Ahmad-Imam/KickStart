@@ -9,11 +9,14 @@ export const POST = async (request) => {
   console.log("inside login post");
   console.log(name, email);
 
+  const superAdmin = false;
+
   await dbConnect();
 
   const newUser = {
     name,
     email,
+    superAdmin,
   };
 
   // console.log(newUser);

@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect, useRef } from "react";
+import { useState, useEffect, useRef, useContext } from "react";
 
 import { Button } from "@/components/ui/button";
 
@@ -38,6 +38,7 @@ import { Alert, AlertDescription } from "@/components/ui/alert";
 import { addTournaments } from "@/app/actions";
 import { useRouter } from "next/navigation";
 import { capitalizeFirstLetter } from "@/utils/data-util";
+import { AuthContext } from "@/app/contexts";
 
 export function TournamentMultiForm() {
   const [page, setPage] = useState(1);
@@ -61,6 +62,8 @@ export function TournamentMultiForm() {
   const [semiMatch, setSemiMatch] = useState([]);
   const [teamsTournament, setTeamsTournament] = useState([]);
   const [loading, setLoading] = useState(false);
+
+  const { loggedUser } = useContext(AuthContext);
 
   const [startDate, setStartDate] = useState(
     new Date(new Date().setHours(0, 0, 0, 0))
@@ -264,8 +267,8 @@ export function TournamentMultiForm() {
       organizer: capitalizeFirstLetter(formData.organizer),
     };
 
-    console.log(tournamentData);
-    const createdTournament = await addTournaments(tournamentData);
+    // console.log(tournamentData);
+    const createdTournament = await addTournaments(tournamentData, loggedUser);
     console.log("createdTournament");
     console.log(createdTournament);
     router.push(`/tournament/${createdTournament.id}`);
