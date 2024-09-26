@@ -10,39 +10,10 @@ const userSchema = new Schema(
       required: true,
       type: String,
     },
-    password: {
-      required: false,
-      type: String,
-    },
-    image: {
-      required: false,
-      type: String,
-    },
-    number: {
-      required: false,
-      type: String,
-    },
-    shipAddress: {
-      required: false,
-      type: {},
-    },
-    billAddress: {
-      required: false,
-      type: {},
-    },
-    wishlist: {
-      required: false,
-      type: Array, // Array of product IDs
-    },
-    cart: {
-      required: false,
-      type: [
-        {
-          product: String, // Product ID
-          quantity: Number, // Quantity of the product
-        },
-      ],
-    },
+
+    superAdmin: { type: Boolean },
+    admin: [],
+    moderator: [],
   },
   {
     versionKey: false,

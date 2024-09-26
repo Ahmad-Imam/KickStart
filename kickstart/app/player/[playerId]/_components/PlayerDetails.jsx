@@ -20,8 +20,6 @@ import { truncateLongString } from "@/utils/data-util";
 import Link from "next/link";
 
 export default function PlayerDetails({ playerDetails }) {
-  console.log("serversssssssssssssssssssssssssssssssss");
-
   function PlayerStat({ icon, label, value }) {
     return (
       <div className="flex items-start space-x-3">
