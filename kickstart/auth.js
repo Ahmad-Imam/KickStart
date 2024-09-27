@@ -31,7 +31,7 @@ export const {
     signIn: async (user) => {
       try {
         const { name, email, image } = user.user;
-        console.log("inside login post");
+        console.log("inside login auth");
         console.log(user?.user);
 
         await dbConnect();
@@ -41,7 +41,7 @@ export const {
           // http://localhost:3000/
 
           const res = await fetch(
-            "http://localhost:3000/api/auth/login",
+            "/api/auth/login",
             {
               method: "POST",
               headers: {

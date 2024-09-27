@@ -95,7 +95,7 @@ const faqs = [
     question: "How do I change Squad?",
     answer: [
       "You can change the squad by clicking on the 'Edit Squad' button in the team page.",
-      "You can find from all available players and add them to the squad. This also affects the general squad for the Team",
+      "You can find from all available players and add them to the squad. This does not affect the general team squad",
     ],
   },
 ];
