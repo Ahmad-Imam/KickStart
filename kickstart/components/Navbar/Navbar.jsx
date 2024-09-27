@@ -6,9 +6,11 @@ import MobileNavbar from "./MobileNavbar";
 import { auth } from "@/auth";
 import Logo from "./Logo";
 import { getUserByEmail } from "@/queries/users";
+import { dbConnect } from "@/service/mongo";
 
 export default async function Navbar() {
   const session = await auth();
+  await dbConnect();
   // console.log(session);
   let loggedUser = null;
 

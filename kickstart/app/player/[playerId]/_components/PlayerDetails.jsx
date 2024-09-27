@@ -18,8 +18,9 @@ import {
 import { Badge } from "@/components/ui/badge";
 import { truncateLongString } from "@/utils/data-util";
 import Link from "next/link";
+import { auth } from "@/auth";
 
-export default function PlayerDetails({ playerDetails }) {
+export default async function PlayerDetails({ playerDetails }) {
   function PlayerStat({ icon, label, value }) {
     return (
       <div className="flex items-start space-x-3">
@@ -46,15 +47,19 @@ export default function PlayerDetails({ playerDetails }) {
     );
   }
 
+  const session = await auth();
+
   return (
     <div className="min-h-screen  flex items-center justify-center p-4">
       <Card className="dark:bg-slate-900 w-full max-w-4xl cardFull">
         <CardHeader className="text-center">
           <CardTitle className="text-4xl font-bold flex items-center justify-center gap-2">
             {truncateLongString(playerDetails.name, 25)}
-            <Link href={`/player/${playerDetails.id}/edit`}>
-              <Edit2Icon className="w-6 h-6" />
-            </Link>
+            {session && (
+              <Link href={`/player/${playerDetails.id}/edit`}>
+                <Edit2Icon className="w-6 h-6" />
+              </Link>
+            )}
           </CardTitle>
           <div className="text-lg mt-2 text-center">
             {playerDetails.nickName.toUpperCase()}

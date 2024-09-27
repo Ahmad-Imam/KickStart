@@ -30,6 +30,7 @@ export default function WebNavbar({ user }) {
     { href: "/tournaments", label: "Tournaments" },
     { href: "/players", label: "Players" },
     { href: "/teams", label: "Teams" },
+    { href: "/faq", label: "FAQ" },
   ];
 
   const createItems = [

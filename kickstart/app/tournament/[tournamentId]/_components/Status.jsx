@@ -1,5 +1,5 @@
 "use client";
-import React, { useContext, useState } from "react";
+import React, { useState } from "react";
 import {
   Card,
   CardContent,
@@ -10,15 +10,15 @@ import {
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { editTournamentStatus } from "@/app/actions";
-import { set } from "mongoose";
-import { AuthContext } from "@/app/contexts";
+
+import { useAuth } from "@/app/hooks/useAuth";
 
 export default function Status({ tournamentDetails }) {
   const [tournamentStart, setTournamentStart] = useState(
     tournamentDetails?.status === "live" ? true : false
   );
 
-  const { loggedUser } = useContext(AuthContext);
+  const { loggedUser } = useAuth();
 
   const isAdmin = tournamentDetails?.admin === loggedUser?.id;
   console.log(isAdmin);

@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect, useRef, useContext } from "react";
+import { useState, useEffect } from "react";
 
 import { Button } from "@/components/ui/button";
 
@@ -38,7 +38,8 @@ import { Alert, AlertDescription } from "@/components/ui/alert";
 import { addTournaments } from "@/app/actions";
 import { useRouter } from "next/navigation";
 import { capitalizeFirstLetter } from "@/utils/data-util";
-import { AuthContext } from "@/app/contexts";
+
+import { useAuth } from "@/app/hooks/useAuth";
 
 export function TournamentMultiForm() {
   const [page, setPage] = useState(1);
@@ -63,7 +64,7 @@ export function TournamentMultiForm() {
   const [teamsTournament, setTeamsTournament] = useState([]);
   const [loading, setLoading] = useState(false);
 
-  const { loggedUser } = useContext(AuthContext);
+  const { loggedUser } = useAuth();
 
   const [startDate, setStartDate] = useState(
     new Date(new Date().setHours(0, 0, 0, 0))
