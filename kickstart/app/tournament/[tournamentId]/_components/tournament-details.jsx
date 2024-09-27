@@ -9,6 +9,9 @@ import {
 import { CalendarIcon, MapPinIcon } from "lucide-react";
 import TournamentTabsClient from "./TournamentTabsClient";
 import Status from "./Status";
+import TournamentModerators from "./TournamentModerators";
+import { auth } from "@/auth";
+import { getUserByEmail } from "@/queries/users";
 
 // import MatchTab from "@/app/tournament/[tournamentId]/_components/MatchTab/MatchTab";
 // import OverViewTab from "@/app/tournament/[tournamentId]/_components/OverviewTab/OverviewTab";
@@ -19,7 +22,7 @@ import Status from "./Status";
 //groupmatch - groups  table - teams -  info from teamsTournament table
 //matches - matches table
 
-export default function TournamentDetails({
+export default async function TournamentDetails({
   tournamentDetails,
   matchesDetails,
   groupsDetails,
@@ -29,6 +32,26 @@ export default function TournamentDetails({
   // console.log("group");
 
   // console.log(matchesDetails);
+
+  let moderatorsList = [];
+  let isAdmin = false;
+  const session = await auth();
+
+  if (session?.user) {
+    const currentUser = await getUserByEmail(session?.user?.email);
+
+    //check if tournament id is in the admin array
+
+    isAdmin = currentUser?.admin.includes(tournamentDetails?.id.toString());
+
+    console.log("isAdmin");
+    console.log(isAdmin);
+    moderatorsList = tournamentDetails?.moderators;
+    console.log("current user");
+    console.log(currentUser);
+  }
+
+  // console.log(session);
 
   return (
     <div className="container mx-auto px-4 py-6">
@@ -57,6 +80,8 @@ export default function TournamentDetails({
           </CardContent>
         </Card>
       </div>
+
+      <TournamentModerators isAdmin={isAdmin} moderatorsList={moderatorsList} />
 
       <TournamentTabsClient
         tournamentDetails={tournamentDetails}

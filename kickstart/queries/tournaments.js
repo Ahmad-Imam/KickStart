@@ -2,6 +2,7 @@ import { groupsModel } from "@/models/groups-model";
 import { matchModel } from "@/models/matches-model";
 import { teamsTournamentModel } from "@/models/teamsTournament-model";
 import { tournamentsModel } from "@/models/tournaments-model";
+import { userModel } from "@/models/user-model";
 import {
   replaceMongoIdInArray,
   replaceMongoIdInObject,
@@ -14,6 +15,15 @@ export async function createTournaments(data, loggedUser) {
       ...data,
       admin: loggedUser?.id,
     });
+
+    //add tournament id to user admin array
+
+    const user = await userModel.findByIdAndUpdate(
+      loggedUser?.id,
+      { $push: { admin: tournament._id.toString() } },
+      { new: true }
+    );
+
     const simpleTournamentData = await tournamentsModel
       .findById(tournament._id)
       .lean();
