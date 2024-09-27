@@ -14,6 +14,7 @@ import {
 
 import Link from "next/link";
 import { removeTournament } from "@/app/actions";
+import { useAuth } from "@/app/hooks/useAuth";
 
 export default function SearchTournaments({ allTournaments }) {
   const [searchTerm, setSearchTerm] = useState("");
@@ -36,6 +37,8 @@ export default function SearchTournaments({ allTournaments }) {
     await removeTournament(tournamentId);
     console.log("removed");
   }
+
+  const { loggedUser } = useAuth();
 
   return (
     <div className="container pt-6">
@@ -84,14 +87,16 @@ export default function SearchTournaments({ allTournaments }) {
                   <CardHeader>
                     <CardTitle className="flex justify-between">
                       <div>{tournament.name}</div>
-                      <button
-                        onClick={(e) => {
-                          handleDelete(e, tournament.id);
-                        }}
-                        className="hover:bg-slate-400"
-                      >
-                        <Trash2Icon className="w-5 h-5" />
-                      </button>
+                      {loggedUser?.superAdmin && (
+                        <button
+                          onClick={(e) => {
+                            handleDelete(e, tournament.id);
+                          }}
+                          className="hover:bg-slate-400"
+                        >
+                          <Trash2Icon className="w-5 h-5" />
+                        </button>
+                      )}
                     </CardTitle>
                   </CardHeader>
                   <CardContent className="flex-grow">

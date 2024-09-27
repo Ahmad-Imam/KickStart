@@ -28,44 +28,74 @@ const faqs = [
   {
     question: "Can I edit tournament details after creation?",
     answer: [
-      "Yes, you can edit most tournament details after creation. Go to the tournament page and click on the 'Edit' button. You can modify information such as tournament name, date, and format. However, some changes may be restricted once the tournament has started.",
+      "You can not edit most tournament details after creation. You can edit team squad and match details, but you can't change the tournament format or number of participants. If you need to make changes, you can cancel the tournament and create a new one with the updated details.",
     ],
   },
   {
-    question: "How do I invite participants to my tournament?",
+    question: "How do I add moderators to my tournament?",
     answer: [
-      "After creating your tournament, go to the tournament page and click on 'Invite Participants'. You can invite players by email or by sharing a unique tournament code. Participants can then use this code to join your tournament through the app.",
+      "After creating your tournament, go to the tournament page and click on 'Edit Moderators'. You can add users as moderators by searching their names. Moderators will have access to manage the matches and update scores.",
     ],
   },
   {
     question: "What tournament formats are supported?",
     answer: [
-      "Our app supports various tournament formats including single elimination, double elimination, round-robin, and Swiss system. You can select the format that best suits your needs when creating a new tournament.",
+      "Our app supports different tournament types. Only limitations are there are no 2nd round matches and no home-away systems.  You can select the format that best suits your needs when creating a new tournament.",
     ],
   },
   {
     question: "How can I track scores and update brackets?",
     answer: [
-      "As the tournament progresses, you can update scores on the tournament page. Click on a match and enter the scores. The app will automatically update the brackets based on the results you input.",
+      "As the tournament progresses, admin and moderators can update scores on the tournament page. Click on a match and enter the scores. The app will automatically update the brackets after all the matches have been completed in one category.",
     ],
   },
   {
     question: "Is there a limit to the number of participants?",
     answer: [
-      "The maximum number of participants depends on your account type. Free accounts can create tournaments with up to 32 participants, while premium accounts can host tournaments with up to 256 participants.",
+      "The maximum number of participants depends on your tournament type.",
+    ],
+  },
+  // {
+  //   question: "Can I generate a tournament report?",
+  //   answer: [
+  //     "Yes, you can generate a comprehensive tournament report once the event is completed. Go to the tournament page and click on 'Generate Report'. This will create a PDF with all match results, final standings, and statistics.",
+  //   ],
+  // },
+  {
+    question: "What user roles are in the application",
+    answer: [
+      "The user who creates the tournament is the admin by default. Admins can add moderators to help manage the tournament. Moderators have access to only update match scores",
+      "Admins can also remove moderators from the tournament page.",
+    ],
+  },
+
+  {
+    question: "What does Start Tournament do?",
+    answer: [
+      " Clicking on the 'Start Tournament' button will mark the tournament as active, the squad becomes final and can not be changed. You also can not change the match details after a tournament is started. Admins and moderators can update scores and manage the tournament.",
     ],
   },
   {
-    question: "Can I generate a tournament report?",
+    question: "How do I delete a tournament?",
     answer: [
-      "Yes, you can generate a comprehensive tournament report once the event is completed. Go to the tournament page and click on 'Generate Report'. This will create a PDF with all match results, final standings, and statistics.",
+      "To delete a tournament, go to the tournament page and click on 'Delete Tournament'.",
     ],
   },
+  // {
+  //   question: "How do I contact support?",
+  //   answer: [
+  //     "If you have any questions or need assistance, you can contact our support team by sending an email to",
+  //   ],
+  // },
   {
-    question: "How do I resolve disputes or correct mistakes in scores?",
+    question: "What can I change about a match?",
+    answer: ["You can change match location and date"],
+  },
+  {
+    question: "How do I change Squad?",
     answer: [
-      "If there's a dispute or a mistake in the scores, you can edit the match results as the tournament organizer. Go to the specific match, click on 'Edit Scores', and make the necessary corrections. The brackets will automatically update to reflect the changes.",
-      "If there's a dispute or a mistake in the scores, you can edit the match results as the tournament organizer. Go to the specific match, click on 'Edit Scores', and make the necessary corrections. The brackets will automatically update to reflect the changes.",
+      "You can change the squad by clicking on the 'Edit Squad' button in the team page.",
+      "You can find from all available players and add them to the squad. This also affects the general squad for the Team",
     ],
   },
 ];

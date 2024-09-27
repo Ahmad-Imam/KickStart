@@ -40,6 +40,7 @@ import MatchSheet from "@/app/tournament/[tournamentId]/match/[matchId]/_compone
 import { getTeamsTByTeamId } from "@/queries/teams";
 import MatchSettings from "@/app/tournament/[tournamentId]/match/[matchId]/_components/MatchSettings";
 import { replaceMongoIdInObject } from "@/utils/data-util";
+import { getTournamentById } from "@/queries/tournaments";
 
 const sampleMatch = {
   _id: { $oid: "66e03cfd8a3204743253932e" },
@@ -108,11 +109,8 @@ export default async function MatchDetails({
   console.log("team2");
 
   console.log(matchDetails?.tournamentId);
-  // console.log(matchDetails?.team1);
-  // console.log(matchDetails?.team2);
-  // console.log(matchDetails?.team1);
-  // console.log(team1);
-  // console.log(match?.status);
+
+  const tournament = getTournamentById(matchDetails?.tournamentId);
 
   return (
     <div className="container mx-auto px-4 py-8  h-full">
@@ -126,7 +124,7 @@ export default async function MatchDetails({
             <div className="customButton my-4 ">Back to Tournament</div>
           </Link>
         </div>
-        {isAdmin && (
+        {isAdmin && tournament?.status === "upcoming" && (
           <div>
             <Link
               href={`/tournament/${matchDetails?.tournamentId}/match/${matchDetails?.id}/edit`}
