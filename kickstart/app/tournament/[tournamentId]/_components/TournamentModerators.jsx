@@ -10,22 +10,26 @@ import {
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 
-import { capitalizeFirstLetter } from "@/utils/data-util";
-import { MapPinIcon } from "lucide-react";
+import { capitalizeFirstLetter, truncateLongString } from "@/utils/data-util";
+import { MailIcon, MapPinIcon } from "lucide-react";
 import Link from "next/link";
 import { TournamentModeratorsDrawer } from "./TournamentModeratorsDrawer";
+import Image from "next/image";
 
-export default function TournamentModerators({ isAdmin, moderatorsList }) {
+export default function TournamentModerators({
+  moderatorsList,
+  allUsersList,
+  tournamentDetails,
+}) {
   return (
     <div className="my-6">
-      <div
-        className="items-center justify-between"
-        style={{
-          display: isAdmin ? "flex" : "none",
-        }}
-      >
+      <div className="flex items-center justify-between">
         <h2 className="text-2xl font-bold mt-4 mb-4">Moderators</h2>
-        <TournamentModeratorsDrawer moderatorsList={moderatorsList} />
+        <TournamentModeratorsDrawer
+          moderatorsList={moderatorsList}
+          allUsersList={allUsersList}
+          tournamentDetails={tournamentDetails}
+        />
       </div>
       <Card className="dark:bg-slate-900 cardFull ">
         <CardContent className="py-2 px-2">
@@ -33,24 +37,31 @@ export default function TournamentModerators({ isAdmin, moderatorsList }) {
             {moderatorsList?.length === 0 ? (
               <div className="p-2">No moderators</div>
             ) : (
-              moderatorsList
-                ?.sort((a, b) => a.name.localeCompare(b.name))
-                .map((player) => (
-                  <Link key={player.id} href={`/player/${player.id}`}>
-                    <li className="flex flex-row gap-2 justify-between items-center dark:bg-slate-800 dark:hover:bg-slate-700 p-3 border-1 rounded-md my-4 mx-1 last:border-b-0 cursor-pointer hover:bg-gray-200 ">
-                      <div>{`${capitalizeFirstLetter(player?.name)} #${
-                        player?.jersey
-                      }`}</div>
+              moderatorsList.map((user) => (
+                <li
+                  key={user?.id}
+                  type="button"
+                  className=" dark:bg-slate-800 dark:hover:bg-slate-600 p-2 border-1 rounded-md last:border-b-0 cursor-pointer hover:bg-slate-200 bg-slate-100 my-3"
+                >
+                  <div className="flex flex-row justify-between text-start items-center gap-2 text-sm">
+                    <div>{`${truncateLongString(user?.name, 15)}`}</div>
+                    <div className="flex">
+                      <MailIcon className="mr-2" />
+                      {`${truncateLongString(user?.email, 15)}`}
+                    </div>
 
-                      <div className="flex justify-center items-center gap-2">
-                        <MapPinIcon /> {capitalizeFirstLetter(player?.country)}
-                      </div>
-                      <Badge>{capitalizeFirstLetter(player?.position)}</Badge>
+                    <Image
+                      className="rounded-full "
+                      src={user?.image}
+                      width={35}
+                      height={35}
+                      alt="user"
+                    />
 
-                      {/* <Badge>{player.position}</Badge> */}
-                    </li>
-                  </Link>
-                ))
+                    {/* <Badge>{capitalizeFirstLetter(player?.position)}</Badge> */}
+                  </div>
+                </li>
+              ))
             )}
           </ul>
         </CardContent>

@@ -11,7 +11,7 @@ import TournamentTabsClient from "./TournamentTabsClient";
 import Status from "./Status";
 import TournamentModerators from "./TournamentModerators";
 import { auth } from "@/auth";
-import { getUserByEmail } from "@/queries/users";
+import { getAllUsers, getUserByEmail, getUserByIds } from "@/queries/users";
 
 // import MatchTab from "@/app/tournament/[tournamentId]/_components/MatchTab/MatchTab";
 // import OverViewTab from "@/app/tournament/[tournamentId]/_components/OverviewTab/OverviewTab";
@@ -35,20 +35,29 @@ export default async function TournamentDetails({
 
   let moderatorsList = [];
   let isAdmin = false;
+  let allUsersList = [];
   const session = await auth();
+  console.log(session);
 
   if (session?.user) {
     const currentUser = await getUserByEmail(session?.user?.email);
 
-    //check if tournament id is in the admin array
-
     isAdmin = currentUser?.admin.includes(tournamentDetails?.id.toString());
+
+    const allUsers = await getAllUsers();
+
+    if (isAdmin) {
+      allUsersList = allUsers.filter((user) => user?.id !== currentUser?.id);
+    } else {
+      allUsersList = allUsers;
+    }
 
     console.log("isAdmin");
     console.log(isAdmin);
-    moderatorsList = tournamentDetails?.moderators;
+    // console.log(allUsersList[0]);
+    moderatorsList = await getUserByIds(tournamentDetails?.moderators);
     console.log("current user");
-    console.log(currentUser);
+    // console.log(currentUser);
   }
 
   // console.log(session);
@@ -81,7 +90,13 @@ export default async function TournamentDetails({
         </Card>
       </div>
 
-      <TournamentModerators isAdmin={isAdmin} moderatorsList={moderatorsList} />
+      {isAdmin && (
+        <TournamentModerators
+          moderatorsList={moderatorsList}
+          allUsersList={allUsersList}
+          tournamentDetails={tournamentDetails}
+        />
+      )}
 
       <TournamentTabsClient
         tournamentDetails={tournamentDetails}

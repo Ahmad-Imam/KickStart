@@ -10,7 +10,10 @@ const userSchema = new Schema(
       required: true,
       type: String,
     },
-
+    image: {
+      required: true,
+      type: String,
+    },
     superAdmin: { type: Boolean },
     admin: [],
     moderator: [],

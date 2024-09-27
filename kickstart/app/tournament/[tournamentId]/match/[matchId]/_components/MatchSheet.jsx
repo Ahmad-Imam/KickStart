@@ -92,6 +92,7 @@ export default function MatchSheet({ team1, team2, matchDetails, type }) {
           <button
             variant="outline"
             className=" disabled:opacity-50 customButton"
+            disabled={matchDetails?.motm.length !== 0}
           >
             {type === "score"
               ? "Add Goal"

@@ -49,6 +49,8 @@ export default async function TeamsTDetails({
   topScorers,
   yellowCards,
   redCards,
+  isAdmin,
+  tournamentDetails,
 }) {
   // In a real app, you'd fetch this based on params.i
   await dbConnect();
@@ -114,6 +116,8 @@ export default async function TeamsTDetails({
       <TeamsTPlayers
         playersInfo={JSON.parse(JSON.stringify(playersInfo))}
         teamsTournament={teamsTournament}
+        isAdmin={isAdmin}
+        tournamentDetails={tournamentDetails}
       />
 
       <TeamsTTabs>

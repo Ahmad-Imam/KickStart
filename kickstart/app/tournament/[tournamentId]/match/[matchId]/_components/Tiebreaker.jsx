@@ -20,7 +20,11 @@ import { ScrollArea } from "@/components/ui/scroll-area";
 import { PlusCircle, Trophy, CheckCircle2, XCircle } from "lucide-react";
 import { editTiebreaker } from "@/app/actions";
 
-export default function Tiebreaker({ matchDetails, tiebreaker }) {
+export default function Tiebreaker({
+  matchDetails,
+  tiebreaker,
+  isMatchConfig,
+}) {
   const [tieDrawer, setTieDrawer] = useState(false);
 
   const renderTiebreakerAttempts = (attempts) => {
@@ -53,7 +57,7 @@ export default function Tiebreaker({ matchDetails, tiebreaker }) {
   return (
     <div className="container mx-auto w-auto flex flex-col items-center justify-center my-4">
       <div className="flex justify-center space-x-4">
-        {tiebreaker && (
+        {isMatchConfig && tiebreaker && (
           <Dialog open={tieDrawer} onOpenChange={setTieDrawer}>
             <DialogTrigger asChild>
               <Button variant="outline" className="dark:bg-slate-800">
@@ -162,86 +166,28 @@ export default function Tiebreaker({ matchDetails, tiebreaker }) {
           </div>
         )} */}
 
-          <div className="mt-4">
-            <div className="mb-4">
-              <h3 className="font-semibold mb-2">
-                {matchDetails?.team1?.name}
-              </h3>
-              <div className="flex space-x-2">
-                {renderTiebreakerAttempts(matchDetails?.tiebreaker?.teamA)}
+          {matchDetails?.tiebreaker && (
+            <div className="mt-4">
+              <div className="mb-4">
+                <h3 className="font-semibold mb-2">
+                  {matchDetails?.team1?.name}
+                </h3>
+                <div className="flex space-x-2">
+                  {renderTiebreakerAttempts(matchDetails?.tiebreaker?.teamA)}
+                </div>
+                <div className="flex space-x-2 mt-2"></div>
               </div>
-              <div className="flex space-x-2 mt-2">
-                {/* <Button
-                  size="sm"
-                  onClick={() =>
-                    handleClick(
-                      "A",
-                      matchDetails?.tiebreaker?.teamA.findIndex(
-                        (a) => a === "pending"
-                      ),
-                      "scored"
-                    )
-                  }
-                >
-                  Score
-                </Button>
-                <Button
-                  size="sm"
-                  variant="outline"
-                  onClick={() =>
-                    handleClick(
-                      "A",
-                      matchDetails?.tiebreaker?.teamA.findIndex(
-                        (a) => a === "pending"
-                      ),
-                      "missed"
-                    )
-                  }
-                >
-                  Miss
-                </Button> */}
+              <div>
+                <h3 className="font-semibold mb-2">
+                  {matchDetails?.team2?.name}
+                </h3>
+                <div className="flex space-x-2">
+                  {renderTiebreakerAttempts(matchDetails?.tiebreaker?.teamB)}
+                </div>
+                <div className="flex space-x-2 mt-2"></div>
               </div>
             </div>
-            <div>
-              <h3 className="font-semibold mb-2">
-                {matchDetails?.team2?.name}
-              </h3>
-              <div className="flex space-x-2">
-                {renderTiebreakerAttempts(matchDetails?.tiebreaker?.teamB)}
-              </div>
-              <div className="flex space-x-2 mt-2">
-                {/* <Button
-                  size="sm"
-                  onClick={() =>
-                    handleClick(
-                      "B",
-                      matchDetails?.tiebreaker?.teamB.findIndex(
-                        (a) => a === "pending"
-                      ),
-                      "scored"
-                    )
-                  }
-                >
-                  Score
-                </Button>
-                <Button
-                  size="sm"
-                  variant="outline"
-                  onClick={() =>
-                    handleClick(
-                      "B",
-                      matchDetails?.tiebreaker?.teamB.findIndex(
-                        (a) => a === "pending"
-                      ),
-                      "missed"
-                    )
-                  }
-                >
-                  Miss
-                </Button> */}
-              </div>
-            </div>
-          </div>
+          )}
         </div>
       )}
     </div>

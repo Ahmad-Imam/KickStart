@@ -83,7 +83,12 @@ const sampleMatch = {
   ],
 };
 
-export default async function MatchDetails({ matchDetails, sortedEvents }) {
+export default async function MatchDetails({
+  matchDetails,
+  sortedEvents,
+  isMatchConfig,
+  isAdmin,
+}) {
   const match = sampleMatch; // In a real app, you'd fetch this based on params.id
 
   let team1;
@@ -121,15 +126,17 @@ export default async function MatchDetails({ matchDetails, sortedEvents }) {
             <div className="customButton my-4 ">Back to Tournament</div>
           </Link>
         </div>
-        <div>
-          <Link
-            href={`/tournament/${matchDetails?.tournamentId}/match/${matchDetails?.id}/edit`}
-            className=""
-            passHref
-          >
-            <div className="customButton my-4 ">Edit Match</div>
-          </Link>
-        </div>
+        {isAdmin && (
+          <div>
+            <Link
+              href={`/tournament/${matchDetails?.tournamentId}/match/${matchDetails?.id}/edit`}
+              className=""
+              passHref
+            >
+              <div className="customButton my-4 ">Edit Match</div>
+            </Link>
+          </div>
+        )}
       </div>
       <h1 className="text-2xl lg:text-4xl font-bold my-6">
         {matchDetails?.team1?.name || matchDetails?.qName?.team1} vs{" "}
@@ -254,7 +261,7 @@ export default async function MatchDetails({ matchDetails, sortedEvents }) {
           </div>
 
           <h2 className="text-2xl font-bold mt-8 mb-4">Score</h2>
-          <Card className="dark:bg-slate-900 cardFull ">
+          <Card className="dark:bg-slate-900 cardFull my-4 ">
             <CardContent className="text-center py-6">
               <p className="text-xl lg:text-2xl font-bold">
                 {matchDetails?.team1?.name} {matchDetails?.result?.team1} -{" "}
@@ -263,35 +270,11 @@ export default async function MatchDetails({ matchDetails, sortedEvents }) {
             </CardContent>
           </Card>
 
-          {/* <div className="grid grid-cols-2 gap-2">
-        <Sheet open={isOpen} onOpenChange={setIsOpen}>
-          <SheetTrigger asChild>
-            <Button variant="outline">Open Bottom Sheet</Button>
-          </SheetTrigger>
-          <SheetContent className="bg-white" side="bottom">
-            <SheetHeader>
-              <SheetTitle>Bottom Sheet</SheetTitle>
-              <SheetDescription>
-                Click the button to close after a delay.
-              </SheetDescription>
-            </SheetHeader>
-            <div className="p-4 pb-8">
-              <Button
-                onClick={handleButtonClick}
-                disabled={isLoading}
-                className="w-full"
-              >
-                {isLoading ? "Closing..." : "Close After Delay"}
-              </Button>
-            </div>
-          </SheetContent>
-        </Sheet>
-      </div> */}
-
           <MatchSettings
             team1={JSON.parse(JSON.stringify(team1))}
             team2={JSON.parse(JSON.stringify(team2))}
             matchDetails={matchDetails}
+            isMatchConfig={isMatchConfig}
           />
 
           {/* <h2 className="text-2xl font-bold mt-8 mb-4">Match Events</h2> */}

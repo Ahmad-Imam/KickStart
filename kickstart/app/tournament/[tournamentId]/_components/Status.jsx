@@ -49,13 +49,11 @@ export default function Status({ tournamentDetails }) {
             {tournamentDetails?.status}
           </Badge>
 
-          <button
-            onClick={handleClick}
-            className="customButton"
-            style={{ display: isAdmin ? "block" : "none" }}
-          >
-            {tournamentStart ? "End Tournament" : "Start Tournament"}
-          </button>
+          {isAdmin && (
+            <button onClick={handleClick} className="customButton">
+              {tournamentStart ? "End Tournament" : "Start Tournament"}
+            </button>
+          )}
         </div>
       </CardContent>
     </Card>

@@ -6,6 +6,9 @@ import { getTournamentById } from "@/queries/tournaments";
 import { dbConnect } from "@/service/mongo";
 import React from "react";
 import MatchEdit from "../_components/MatchEdit";
+import { auth } from "@/auth";
+import { getUserByEmail } from "@/queries/users";
+import { redirect } from "next/navigation";
 
 export async function generateMetadata({ params: { matchId } }) {
   await dbConnect();
@@ -18,27 +21,25 @@ export async function generateMetadata({ params: { matchId } }) {
 }
 
 export default async function MatchEditPage({ params }) {
-  // const { tournamentId } = params;
-  // console.log(params);
-
   await dbConnect();
-  // const tournament = await getTournamentById(tournamentId);
-  // const matches = await getMatchesByTournamentId(tournamentId);
-  // const groups = await getGroupsByTournamentId(tournamentId);
-
-  // if (tournament) {
-  //   console.log("Tournament found");
-  //   // console.log(tournament);
-  //   console.log(typeof groups);
-  //   console.log(groups);
-  // }
 
   const match = await getMatchById(params.matchId);
   console.log("match");
 
-  // console.log(match);
+  let isAdmin = false;
+  const session = await auth();
+  console.log(session);
 
-  // console.log(tournamentId);
+  if (session?.user) {
+    const currentUser = await getUserByEmail(session?.user?.email);
+
+    isAdmin = currentUser?.admin.includes(params.tournamentId.toString());
+
+    if (!isAdmin) {
+      redirect(`/tournament/${params.tournamentId}/match/${params.matchId}`);
+    }
+  }
+
   return (
     <div className="dark:bg-slate-950 min-h-screen flex justify-center items-center">
       {/* <TournamentDetails

@@ -4,10 +4,10 @@ import { dbConnect } from "@/service/mongo";
 import { NextRequest, NextResponse } from "next/server";
 
 export const POST = async (request) => {
-  const { name, email } = await request.json();
+  const { name, email, image } = await request.json();
 
   console.log("inside login post");
-  console.log(name, email);
+  console.log(name, email, image);
 
   const superAdmin = false;
 
@@ -16,6 +16,7 @@ export const POST = async (request) => {
   const newUser = {
     name,
     email,
+    image,
     superAdmin,
   };
 

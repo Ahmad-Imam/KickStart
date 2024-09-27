@@ -11,23 +11,25 @@ import React, { useEffect, useState } from "react";
 import { toast } from "sonner";
 import { cn } from "@/lib/utils";
 import {
+  addNewModeratorsToCurrentTournament,
   deleteFromPrevAddPlayersToCurrentTeamTeamsT,
   deletePlayersFromCurrentTeamTeamsT,
+  deletePrevModeratorsFromCurrentTournament,
 } from "@/app/actions";
 import { Badge } from "@/components/ui/badge";
 import { capitalizeFirstLetter, truncateLongString } from "@/utils/data-util";
+import Image from "next/image";
 
 export default function TournamentModeratorsForm({
-  playersInfo,
+  moderatorsList,
   setOpen,
-  teamsTournament,
+  allUsersList,
+  tournamentDetails,
 }) {
-  const [playerList, setPlayerList] = useState([]);
+  const [playerList, setPlayerList] = useState(allUsersList ?? []);
   const [query, setQuery] = useState("");
   const [results, setResults] = useState([]);
-  const [savedItems, setSavedItems] = useState(playersInfo ?? []);
-
-  const [loading, setLoading] = useState(false);
+  const [savedItems, setSavedItems] = useState(moderatorsList ?? []);
 
   const [squadChangeLoading, setSquadChangeLoading] = useState(false);
 
@@ -66,167 +68,132 @@ export default function TournamentModeratorsForm({
     }
   };
 
-  // console.log("saved");
-  // console.log(savedItems);
   const removeSavedItem = (item) => {
     console.log(item);
-
-    //filter saved items by the item object to remove
-    // setSavedItems((prev) =>
-    //   prev.filter((item) =>
-    //     item?.name.toLowerCase().includes(query.toLowerCase())
-    //   )
-    // );
-
     setSavedItems((prev) => prev.filter((i) => i.id !== item.id));
-
-    // setSavedItems([]);
-
-    // setSavedItems((prev) => prev.filter((i) => i !== item));
-
     setResults((prevResults) => [...prevResults, item]);
   };
-
-  const fetchPlayers = async () => {
-    const res = await fetch("/api/players", { cache: "no-store" });
-    const data = await res.json();
-    console.log("data");
-    // console.log(data);
-    setPlayerList(data);
-    setLoading(false);
-    // console.log(data);
-  };
-
-  useEffect(() => {
-    setLoading(true);
-    // setTeamsTournament(savedItems);
-    fetchPlayers();
-  }, []);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     console.log("submitted");
     setSquadChangeLoading(true);
     const newPlayers = savedItems.filter(
-      (item) => !playersInfo.some((player) => player.id === item.id)
+      (item) => !moderatorsList.some((player) => player.id === item.id)
     );
-    const removedPlayers = playersInfo.filter(
+    const removedPlayers = moderatorsList.filter(
       (player) => !savedItems.some((item) => item.id === player.id)
     );
 
     console.log(newPlayers);
     console.log(removedPlayers);
+    console.log(tournamentDetails?.id);
 
     if (newPlayers.length > 0) {
-      const test = await deleteFromPrevAddPlayersToCurrentTeamTeamsT(
-        newPlayers,
-        teamsTournament
-      );
+      await addNewModeratorsToCurrentTournament(newPlayers, tournamentDetails);
       console.log("test");
-      console.log(test);
+      // console.log(test);
     }
     if (removedPlayers.length > 0) {
-      const test = await deletePlayersFromCurrentTeamTeamsT(
+      await deletePrevModeratorsFromCurrentTournament(
         removedPlayers,
-        teamsTournament
+        tournamentDetails
       );
-      console.log("test");
-      console.log(test);
+      console.log("test R");
+      // console.log(test);
     }
 
     setSquadChangeLoading(false);
 
-    toast.success("New Squad is saved successfully");
+    toast.success("Moderators List is saved successfully");
 
     setOpen(false);
   };
 
   return (
     <div className="mx-4 flex flex-col items-center ">
-      {!loading ? (
-        <div className="w-full max-w-lg mx-auto space-y-4 py-4">
-          <div className="text-md font-semibold p-0 m-0">Find Players:</div>
-          <Input
-            type="search"
-            placeholder="Search..."
-            value={query}
-            onChange={(e) => setQuery(e.target.value)}
-            className="w-full dark:bg-slate-900"
-            // disabled={savedItems.length === groupsNum * teamsPerGroup}
-          />
-          {query.trim() !== "" && (
-            <ScrollArea className="h-[200px] w-full rounded-md border">
-              {results?.length > 0 ? (
-                <ul className="p-4">
-                  {results?.map((player, index) => (
-                    <li
-                      key={index}
-                      type="button"
-                      className=" dark:bg-slate-800 dark:hover:bg-slate-600 p-2 border-1 rounded-md last:border-b-0 cursor-pointer hover:bg-slate-200 bg-slate-100 my-3"
-                      onClick={() => handleResultClick(player)}
-                    >
-                      <div className="flex flex-row justify-between text-start items-center gap-2 text-sm">
-                        <div>{`${truncateLongString(player?.name, 10)}
-                             
-                            #${player?.jersey}`}</div>
-                        <div>{`(${player?.team?.name})`}</div>
-                        <div className="flex flex-row items-center gap-1">
-                          <MapPin className="ml-8" /> {player?.country}
-                        </div>
-                        <Badge>{capitalizeFirstLetter(player?.position)}</Badge>
-                      </div>
-                    </li>
-                  ))}
-                </ul>
-              ) : (
-                <p className="p-4 text-center text-muted-foreground">
-                  No results found
-                </p>
-              )}
-            </ScrollArea>
-          )}
-        </div>
-      ) : (
-        <div className="flex flex-col justify-center items-center gap-2">
-          <div className="animate-spin rounded-full h-20 w-20 border-t-2 border-b-2 border-black dark:border-white"></div>
-          <div>Loading Teams</div>
-        </div>
-      )}
+      <div className="w-full max-w-lg mx-auto space-y-4 py-4">
+        <div className="text-md font-semibold p-0 m-0">Find Users:</div>
+        <Input
+          type="search"
+          placeholder="Search..."
+          value={query}
+          onChange={(e) => setQuery(e.target.value)}
+          className="w-full dark:bg-slate-900"
+          // disabled={savedItems.length === groupsNum * teamsPerGroup}
+        />
+        {query.trim() !== "" && (
+          <ScrollArea className="h-[200px] w-full rounded-md border">
+            {results?.length > 0 ? (
+              <ul className="p-4">
+                {results?.map((user, index) => (
+                  <li
+                    key={index}
+                    type="button"
+                    className=" dark:bg-slate-800 dark:hover:bg-slate-600 p-2 border-1 rounded-md last:border-b-0 cursor-pointer hover:bg-slate-200 bg-slate-100 my-3"
+                    onClick={() => handleResultClick(user)}
+                  >
+                    <div className="flex flex-row justify-between text-start items-center gap-2 text-sm">
+                      <div>{`${truncateLongString(user?.name, 15)}`}</div>
+                      <div>{`(${truncateLongString(user?.email, 15)})`}</div>
+
+                      <Image
+                        className="rounded-full "
+                        src={user?.image}
+                        width={35}
+                        height={35}
+                        alt="user"
+                      />
+
+                      {/* <Badge>{capitalizeFirstLetter(player?.position)}</Badge> */}
+                    </div>
+                  </li>
+                ))}
+              </ul>
+            ) : (
+              <p className="p-4 text-center text-muted-foreground">
+                No results found
+              </p>
+            )}
+          </ScrollArea>
+        )}
+      </div>
 
       <div className="mt-4 w-full  rounded-md border-2">
-        <h3 className="font-semibold mb-2 p-2">Current Squad:</h3>
-        {playersInfo?.length > 0 ? (
+        <h3 className="font-semibold mb-2 p-2">Current Moderators:</h3>
+        {moderatorsList?.length > 0 ? (
           <ul className="flex flex-wrap gap-2 w-full p-2">
-            {playersInfo?.map((item, index) => (
+            {moderatorsList?.map((item, index) => (
               <li
                 key={index}
                 className="flex justify-between items-center  dark:bg-slate-800 dark:hover:bg-slate-600 p-2 rounded text-[13px] md:text-sm hover:bg-slate-200 bg-slate-100 "
               >
-                {`${item?.name} # ${item?.jersey}`}
+                {`${item?.name}`}
               </li>
             ))}
           </ul>
         ) : (
           <p className="p-4 text-center text-muted-foreground">
-            No players in the squad
+            No moderators in the tournament
           </p>
         )}
       </div>
 
-      {savedItems?.length > 0 && (
-        <div className="mt-4 w-full  rounded-md border-2">
-          <h3 className="font-semibold mb-2 p-2">New Squad:</h3>
+      <div className="mt-4 w-full  rounded-md border-2">
+        <h3 className="font-semibold mb-2 p-2">New Moderator List:</h3>
+        {savedItems?.length > 0 ? (
           <ul className="flex flex-wrap gap-2 w-full p-2">
             {savedItems?.map((item, index) => (
               <li
                 key={index}
                 className="flex justify-between items-center hover:bg-slate-200 bg-slate-100 p-2 dark:bg-slate-800 dark:hover:bg-slate-600 rounded text-[13px] md:text-sm"
               >
-                {`${item?.name} # ${item?.jersey}`}
+                {`${item?.name}`}
                 <Button
                   variant="ghost"
                   size="icon"
                   type="button"
+                  className="ml-2"
                   onClick={() => removeSavedItem(item)}
                 >
                   <X className="h-4 w-4" />
@@ -234,12 +201,16 @@ export default function TournamentModeratorsForm({
               </li>
             ))}
           </ul>
-        </div>
-      )}
+        ) : (
+          <p className="p-4 text-center text-muted-foreground">
+            No moderators for the tournament
+          </p>
+        )}
+      </div>
 
       {squadChangeLoading ? (
         <div className="flex flex-col justify-center items-center gap-2">
-          <div className="animate-spin rounded-full h-10 w-10 border-t-2 border-b-2 border-gray-900"></div>
+          <div className="animate-spin rounded-full h-10 w-10 border-t-2 border-b-2 border-gray-700"></div>
           <div>Saving Squad</div>
         </div>
       ) : (

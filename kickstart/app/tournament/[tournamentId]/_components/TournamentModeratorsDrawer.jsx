@@ -19,7 +19,11 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import TournamentModeratorsForm from "./TournamentModeratorsForm";
 
-export function TournamentModeratorsDrawer({ moderatorsList }) {
+export function TournamentModeratorsDrawer({
+  moderatorsList,
+  allUsersList,
+  tournamentDetails,
+}) {
   const [open, setOpen] = React.useState(false);
 
   return (
@@ -31,18 +35,21 @@ export function TournamentModeratorsDrawer({ moderatorsList }) {
       </DrawerTrigger>
       <DrawerContent className="dark:bg-slate-900">
         <DrawerHeader className="text-left">
-          <DrawerTitle>Edit Moderators</DrawerTitle>
+          <DrawerTitle>
+            Edit Moderators for Tournament: {tournamentDetails?.name}
+          </DrawerTitle>
           <DrawerDescription>
             Make changes to the moderators of this tournament. Save when you're
             done.
           </DrawerDescription>
         </DrawerHeader>
         {/* <ProfileForm className="px-4" /> */}
-        {/* <TournamentModeratorsForm
-          playersInfo={playersInfo}
+        <TournamentModeratorsForm
+          moderatorsList={moderatorsList}
           setOpen={setOpen}
-          teamsTournament={teamsTournament}
-        /> */}
+          allUsersList={allUsersList}
+          tournamentDetails={tournamentDetails}
+        />
         <DrawerFooter className="pt-2 flex flex-row justify-center">
           <DrawerClose asChild className="">
             <button variant="outline" className="w-1/2 customButton">

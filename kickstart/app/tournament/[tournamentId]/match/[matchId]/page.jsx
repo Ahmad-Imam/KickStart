@@ -5,6 +5,8 @@ import { getMatchById, getMatchesByTournamentId } from "@/queries/matches";
 import { getTournamentById } from "@/queries/tournaments";
 import { dbConnect } from "@/service/mongo";
 import React from "react";
+import { auth } from "@/auth";
+import { getUserByEmail } from "@/queries/users";
 
 export async function generateMetadata({ params: { matchId } }) {
   await dbConnect();
@@ -17,20 +19,7 @@ export async function generateMetadata({ params: { matchId } }) {
 }
 
 export default async function MatchPage({ params }) {
-  // const { tournamentId } = params;
-  // console.log(params);
-
   await dbConnect();
-  // const tournament = await getTournamentById(tournamentId);
-  // const matches = await getMatchesByTournamentId(tournamentId);
-  // const groups = await getGroupsByTournamentId(tournamentId);
-
-  // if (tournament) {
-  //   console.log("Tournament found");
-  //   // console.log(tournament);
-  //   console.log(typeof groups);
-  //   console.log(groups);
-  // }
 
   const match = await getMatchById(params.matchId);
   console.log("match");
@@ -40,21 +29,33 @@ export default async function MatchPage({ params }) {
     const dateTimeB = new Date(`${b.date} ${b.time}`);
     return dateTimeB - dateTimeA;
   });
+  const tournament = await getTournamentById(match.tournamentId);
 
-  // console.log(match);
+  let isAdmin = false;
+  let isModerator = false;
+  const session = await auth();
+  // console.log(session);
 
-  // console.log(tournamentId);
+  if (session?.user) {
+    const currentUser = await getUserByEmail(session?.user?.email);
+
+    isAdmin = currentUser?.admin.includes(params.tournamentId.toString());
+    isModerator = tournament?.moderators.includes(currentUser?.id);
+  }
+  console.log("isAdmin");
+  console.log(isAdmin);
+  console.log(isModerator);
+
+  const isMatchConfig = isAdmin || isModerator;
+  console.log(isMatchConfig);
+
   return (
     <div className="dark:bg-slate-950 min-h-screen w-full">
-      {/* <TournamentDetails
-        tournamentDetails={tournament}
-        matchesDetails={matches}
-        groupsDetails={JSON.parse(JSON.stringify(groups))}
-      /> */}
-
       <MatchDetails
         matchDetails={JSON.parse(JSON.stringify(match))}
         sortedEvents={sortedEvents}
+        isAdmin={isAdmin}
+        isMatchConfig={isMatchConfig}
       />
     </div>
   );

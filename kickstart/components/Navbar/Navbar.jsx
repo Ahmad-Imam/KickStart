@@ -9,12 +9,12 @@ import { getUserByEmail } from "@/queries/users";
 
 export default async function Navbar() {
   const session = await auth();
-  console.log(session);
+  // console.log(session);
   let loggedUser = null;
 
   if (session) {
     loggedUser = await getUserByEmail(session?.user?.email);
-    console.log(loggedUser);
+    // console.log(loggedUser);
   }
 
   return (

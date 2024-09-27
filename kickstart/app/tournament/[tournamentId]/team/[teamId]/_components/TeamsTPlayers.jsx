@@ -12,15 +12,24 @@ import { capitalizeFirstLetter } from "@/utils/data-util";
 import { MapPinIcon } from "lucide-react";
 import Link from "next/link";
 
-export default function TeamsTPlayers({ playersInfo, teamsTournament }) {
+export default function TeamsTPlayers({
+  playersInfo,
+  teamsTournament,
+  isAdmin,
+  tournamentDetails,
+}) {
   return (
     <>
       <div className="flex items-center justify-between">
         <h2 className="text-2xl font-bold mt-4 mb-4">Players</h2>
-        <TeamsTPlayersDrawer
-          playersInfo={playersInfo}
-          teamsTournament={teamsTournament}
-        />
+        {isAdmin && tournamentDetails?.status === "upcoming" && (
+          <div>
+            <TeamsTPlayersDrawer
+              playersInfo={playersInfo}
+              teamsTournament={teamsTournament}
+            />
+          </div>
+        )}
       </div>
       <Card className="dark:bg-slate-900 cardFull ">
         <CardContent className="py-2 px-2">

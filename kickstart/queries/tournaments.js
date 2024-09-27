@@ -97,3 +97,65 @@ export async function updateTournamentStatus(tournamentDetails, status) {
     throw new Error(error);
   }
 }
+
+export async function removePrevModeratorsFromCurrentTournament(
+  moderatorList,
+  tournamentDetails
+) {
+  //remove moderators from tournamnet moderators array
+  try {
+    const newTournament = await Promise.all(
+      moderatorList.map(async (user) => {
+        // Remove player from team table
+        const updatedTournament = await tournamentsModel.updateOne(
+          { _id: tournamentDetails?.id },
+          { $pull: { moderators: user.id } }
+        );
+        // console.log(updatedTeam);
+
+        //remove team,tournament from player table
+        const updatedUsers = await userModel.findByIdAndUpdate(user.id, {
+          $pull: { moderator: tournamentDetails.id },
+        });
+
+        return user;
+      })
+    );
+    console.log("newTournament");
+    console.log(newTournament);
+    // return replaceMongoIdInObject(newTournament);
+  } catch (error) {
+    throw new Error(error);
+  }
+}
+
+export async function addModeratorsToCurrentTournament(
+  moderatorList,
+  tournamentDetails
+) {
+  //remove moderators from tournamnet moderators array
+  try {
+    const newTournament = await Promise.all(
+      moderatorList.map(async (user) => {
+        // Remove player from team table
+        const updatedTournament = await tournamentsModel.updateOne(
+          { _id: tournamentDetails?.id },
+          { $push: { moderators: user.id } }
+        );
+        // console.log(updatedTeam);
+
+        //remove team,tournament from player table
+        const updatedUsers = await userModel.findByIdAndUpdate(user.id, {
+          $push: { moderator: tournamentDetails.id },
+        });
+
+        return user;
+      })
+    );
+    console.log("newTournament");
+    console.log(newTournament);
+    // return replaceMongoIdInObject(newTournament);
+  } catch (error) {
+    throw new Error(error);
+  }
+}

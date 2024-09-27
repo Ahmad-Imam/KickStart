@@ -36,9 +36,11 @@ import {
   updateSemiEnd,
 } from "@/queries/teamsTournament";
 import {
+  addModeratorsToCurrentTournament,
   createTournaments,
   deleteTournament,
   getTournamentById,
+  removePrevModeratorsFromCurrentTournament,
   updateTournamentStatus,
 } from "@/queries/tournaments";
 import { dbConnect } from "@/service/mongo";
@@ -535,6 +537,45 @@ export async function editTournamentStatus(tournamentDetails, status) {
     await dbConnect();
     console.log(tournamentDetails);
     const tournament = await updateTournamentStatus(tournamentDetails, status);
+    revalidatePath(`/tournament/${tournamentDetails.id}`);
+    // console.log(teams);
+    // return tournament;
+  } catch (error) {
+    throw new Error(error);
+  }
+}
+
+export async function deletePrevModeratorsFromCurrentTournament(
+  moderatorList,
+  tournamentDetails
+) {
+  try {
+    await dbConnect();
+    console.log("deletePrevModeratorsFromCurrentTournament");
+    const tournament = await removePrevModeratorsFromCurrentTournament(
+      moderatorList,
+      tournamentDetails
+    );
+    console.log("removed moderators");
+    revalidatePath(`/tournament/${tournamentDetails.id}`);
+    // console.log(teams);
+    // return tournament;
+  } catch (error) {
+    throw new Error(error);
+  }
+}
+
+export async function addNewModeratorsToCurrentTournament(
+  moderatorList,
+  tournamentDetails
+) {
+  try {
+    await dbConnect();
+    console.log("addNewModeratorsToCurrentTournament");
+    const tournament = await addModeratorsToCurrentTournament(
+      moderatorList,
+      tournamentDetails
+    );
     revalidatePath(`/tournament/${tournamentDetails.id}`);
     // console.log(teams);
     // return tournament;

@@ -30,7 +30,9 @@ export const {
   callbacks: {
     signIn: async (user) => {
       try {
-        const { name, email } = user.user;
+        const { name, email, image } = user.user;
+        console.log("inside login post");
+        console.log(user?.user);
 
         await dbConnect();
 
@@ -38,16 +40,21 @@ export const {
         if (!userExists) {
           // http://localhost:3000/
 
-          const res = await fetch("http://localhost:3000/api/auth/login", {
-            method: "POST",
-            headers: {
-              "Content-Type": "application/json",
+          const res = await fetch(
+            "http://localhost:3000/api/auth/login",
+            {
+              method: "POST",
+              headers: {
+                "Content-Type": "application/json",
+              },
+              body: JSON.stringify({
+                name,
+                email,
+                image,
+              }),
             },
-            body: JSON.stringify({
-              name,
-              email,
-            }),
-          });
+            { cache: "no-store" }
+          );
         }
       } catch (error) {
         console.log(error);

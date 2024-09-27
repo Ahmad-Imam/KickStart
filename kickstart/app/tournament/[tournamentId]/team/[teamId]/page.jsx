@@ -12,6 +12,8 @@ import {
   getTopScorers,
   getYellowScorers,
 } from "@/queries/players";
+import { auth } from "@/auth";
+import { getUserByEmail } from "@/queries/users";
 
 export async function generateMetadata({ params }) {
   await dbConnect();
@@ -55,29 +57,34 @@ export default async function TeamsTPage({ params }) {
   console.log(params.teamId);
   console.log(params.tournamentId);
 
+  const tournament = await getTournamentById(teamsTournament?.tournamentId);
+
   const topScorers = await getTopScorers(teamsTournament.scorers);
   // console.log(topScorers);
   // console.log(teamsTournament);
   const yellowCards = await getYellowScorers(teamsTournament?.yellow);
   const redCards = await getRedScorers(teamsTournament?.red);
   console.log("yellow");
-  // console.log(teamsTournament?.yellow);
-  // console.log(yellowCards);
-  // console.log(redCards);
+
+  let isAdmin = false;
+  const session = await auth();
+  console.log(session);
+
+  if (session?.user) {
+    const currentUser = await getUserByEmail(session?.user?.email);
+
+    isAdmin = currentUser?.admin.includes(params.tournamentId.toString());
+  }
 
   return (
     <div className="dark:bg-slate-950 min-h-screen w-full">
-      {/* <TournamentDetails
-        tournamentDetails={tournament}
-        matchesDetails={matches}
-        groupsDetails={JSON.parse(JSON.stringify(groups))}
-      /> */}
-
       <TeamsTDetails
         teamsTournament={JSON.parse(JSON.stringify(teamsTournament))}
         topScorers={JSON.parse(JSON.stringify(topScorers))}
         yellowCards={JSON.parse(JSON.stringify(yellowCards))}
         redCards={JSON.parse(JSON.stringify(redCards))}
+        isAdmin={isAdmin}
+        tournamentDetails={tournament}
       />
     </div>
   );
