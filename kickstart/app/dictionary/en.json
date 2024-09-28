@@ -82,6 +82,7 @@
     "cancel": "Cancel",
     "noResults": "No results found",
     "noPlayers": "No players found",
+    "noPlayersSquad": "No players in squad",
 
 
     "status": "Status",
@@ -97,6 +98,13 @@
     "currentModerators": "Current Moderators",
     "newModeratorsList": "New Moderators List",
     "noModeratorsTournament": "No moderators for this tournament",
+
+    "overview": "Overview",
+    "matches": "Matches",
+    "groups": "Groups",
+    "bracket": "Bracket",
+    "knockout": "Knockout",
+    
 
     "tournamentOverview": "Tournament Overview",
     "tournamentTopScorers": "Tournament Top Scorers",
@@ -144,9 +152,11 @@
     "submit": "Submit",
     "teamTopScorers": "Team Top Scorers",
     "teamTopPerformances": "Team Top Performances",
-    "noScorers": "No scorers",
 
-
+    "organizer": "Organizer",
+    "numberOfGroups": "Number of Groups",
+    "teamsPerGroup": "Teams per Group",
+    "teamsQualifyingPerGroup": "Teams Qualifying per Group",
 
 
 

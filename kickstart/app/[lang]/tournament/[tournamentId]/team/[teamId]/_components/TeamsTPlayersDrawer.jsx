@@ -19,34 +19,32 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import TeamsTPlayersForm from "./TeamsTPlayersForm";
 
-export function TeamsTPlayersDrawer({ playersInfo, teamsTournament }) {
+export function TeamsTPlayersDrawer({ playersInfo, teamsTournament, wordDb }) {
   const [open, setOpen] = React.useState(false);
 
   return (
     <Drawer open={open} onOpenChange={setOpen}>
       <DrawerTrigger asChild>
         <div className="w-40 customButton" variant="outline">
-          Edit Team
+          {wordDb.editTeam}
         </div>
       </DrawerTrigger>
       <DrawerContent className="dark:bg-slate-900">
         <DrawerHeader className="text-left">
-          <DrawerTitle>Edit Squad</DrawerTitle>
-          <DrawerDescription>
-            Make changes to your team squad in the tournament here. Save when
-            you're done.
-          </DrawerDescription>
+          <DrawerTitle>{wordDb.editSquad}</DrawerTitle>
+          <DrawerDescription>{wordDb.editSquad1}</DrawerDescription>
         </DrawerHeader>
         {/* <ProfileForm className="px-4" /> */}
         <TeamsTPlayersForm
           playersInfo={playersInfo}
           setOpen={setOpen}
           teamsTournament={teamsTournament}
+          wordDb={wordDb}
         />
         <DrawerFooter className="pt-2 flex flex-row justify-center">
           <DrawerClose asChild className="">
             <button variant="outline" className="w-1/2 customButton">
-              Cancel
+              {wordDb.cancel}
             </button>
           </DrawerClose>
         </DrawerFooter>

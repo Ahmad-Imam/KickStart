@@ -16,7 +16,7 @@ export default function TournamentTabsClient({
   wordDb,
 }) {
   return (
-    <TournamentTabs>
+    <TournamentTabs wordDb={wordDb}>
       <TabsContent value="overview" className="py-4">
         <OverViewTab
           tournamentDetails={tournamentDetails}

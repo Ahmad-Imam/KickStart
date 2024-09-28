@@ -10,7 +10,7 @@ import {
 } from "@/components/ui/card";
 import Link from "next/link";
 
-export default function TeamsTMatches({ teamsTMatches }) {
+export default function TeamsTMatches({ teamsTMatches, wordDb }) {
   return (
     <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
       {teamsTMatches?.length > 0 ? (
@@ -72,16 +72,16 @@ export default function TeamsTMatches({ teamsTMatches }) {
               <Link
                 href={`/tournament/${match?.tournamentId}/match/${match?.id}`}
               >
-                <div className="mt-4 w-40 customButton">View Match Details</div>
+                <div className="mt-4 w-40 customButton">
+                  {wordDb.viewMatchDetails}
+                </div>
               </Link>
             </CardContent>
           </Card>
         ))
       ) : (
         <Card className="dark:bg-slate-950 p-4 my-3 cardFull ">
-          <p className="text-center font-semibold">
-            No group matches available for this tournament.
-          </p>
+          <p className="text-center font-semibold">{wordDb.noMatches}</p>
         </Card>
       )}
     </div>

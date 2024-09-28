@@ -266,7 +266,7 @@ export default async function MatchDetails({
             </Link>
           </div>
 
-          <h2 className="text-2xl font-bold mt-8 mb-4">Score</h2>
+          <h2 className="text-2xl font-bold mt-8 mb-4">{wordDb.score}</h2>
           <Card className="dark:bg-slate-900 cardFull my-4 ">
             <CardContent className="text-center py-6">
               <p className="text-xl lg:text-2xl font-bold">

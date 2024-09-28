@@ -41,17 +41,19 @@ export default function OverViewTab({
         <CardContent>
           <div className="dark:bg-slate-950  cardFull p-6 rounded-lg  ">
             <p className="hover:bg-slate-800 rounded-sm cursor-pointer hover:text-white transition duration-300 ease-in-out p-2">
-              <strong>Organizer:</strong> {tournamentDetails?.organizer}
+              <strong>{wordDb.organizer}:</strong>{" "}
+              {tournamentDetails?.organizer}
             </p>
             <p className="hover:bg-slate-800 rounded-sm cursor-pointer hover:text-white transition duration-300 ease-in-out p-2">
-              <strong>Number of Groups:</strong> {tournamentDetails?.groupsNum}
+              <strong>{wordDb.numberOfGroups}:</strong>{" "}
+              {tournamentDetails?.groupsNum}
             </p>
             <p className="hover:bg-slate-800 rounded-sm cursor-pointer hover:text-white transition duration-300 ease-in-out p-2">
-              <strong>Teams per Group:</strong>{" "}
+              <strong>{wordDb.teamsPerGroup}:</strong>{" "}
               {tournamentDetails?.teamsPerGroup}
             </p>
             <p className="hover:bg-slate-800 rounded-sm cursor-pointer hover:text-white transition duration-300 ease-in-out p-2">
-              <strong>Teams Qualifying per Group:</strong>{" "}
+              <strong>{wordDb.teamsQualifyingPerGroup}:</strong>{" "}
               {tournamentDetails?.teamsQPerGroup}
             </p>
           </div>

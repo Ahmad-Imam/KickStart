@@ -145,9 +145,9 @@ export default function MatchSettings({
           >
             {loadingTie
               ? `${wordDb.updatingMatch} ...`
-              : tiebreaker
-              ? `${wordDb.endTiebreaker}`
-              : `${wordDb.startTiebreaker}`}
+              : `${wordDb.tieBreaker}`
+              ? `${wordDb.endTieBreaker}`
+              : `${wordDb.startTieBreaker}`}
           </button>
         </div>
       )}

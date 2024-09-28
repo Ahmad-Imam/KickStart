@@ -17,16 +17,18 @@ export default function TeamsTPlayers({
   teamsTournament,
   isAdmin,
   tournamentDetails,
+  wordDb,
 }) {
   return (
     <>
       <div className="flex items-center justify-between">
-        <h2 className="text-2xl font-bold mt-4 mb-4">Players</h2>
+        <h2 className="text-2xl font-bold mt-4 mb-4">{wordDb.players}</h2>
         {isAdmin && tournamentDetails?.status === "upcoming" && (
           <div>
             <TeamsTPlayersDrawer
               playersInfo={playersInfo}
               teamsTournament={teamsTournament}
+              wordDb={wordDb}
             />
           </div>
         )}
@@ -35,7 +37,7 @@ export default function TeamsTPlayers({
         <CardContent className="py-2 px-2">
           <ul className="">
             {playersInfo?.length === 0 ? (
-              <div>No players found</div>
+              <div>{wordDb.noPlayers}</div>
             ) : (
               playersInfo
                 ?.sort((a, b) => a.name.localeCompare(b.name))

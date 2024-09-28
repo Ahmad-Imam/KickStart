@@ -21,6 +21,7 @@ export default function TeamsTPlayersForm({
   playersInfo,
   setOpen,
   teamsTournament,
+  wordDb,
 }) {
   const [playerList, setPlayerList] = useState([]);
   const [query, setQuery] = useState("");
@@ -145,7 +146,9 @@ export default function TeamsTPlayersForm({
     <div className="mx-4 flex flex-col items-center ">
       {!loading ? (
         <div className="w-full max-w-lg mx-auto space-y-4 py-4">
-          <div className="text-md font-semibold p-0 m-0">Find Players:</div>
+          <div className="text-md font-semibold p-0 m-0">
+            {wordDb.findPlayers}:
+          </div>
           <Input
             type="search"
             placeholder="Search..."
@@ -180,7 +183,7 @@ export default function TeamsTPlayersForm({
                 </ul>
               ) : (
                 <p className="p-4 text-center text-muted-foreground">
-                  No results found
+                  {wordDb.noResults}
                 </p>
               )}
             </ScrollArea>
@@ -189,12 +192,12 @@ export default function TeamsTPlayersForm({
       ) : (
         <div className="flex flex-col justify-center items-center gap-2">
           <div className="animate-spin rounded-full h-20 w-20 border-t-2 border-b-2 border-black dark:border-white"></div>
-          <div>Loading Teams</div>
+          <div>{wordDb.loadingTeams}</div>
         </div>
       )}
 
       <div className="mt-4 w-full  rounded-md border-2">
-        <h3 className="font-semibold mb-2 p-2">Current Squad:</h3>
+        <h3 className="font-semibold mb-2 p-2">{wordDb.currentSquad}:</h3>
         {playersInfo?.length > 0 ? (
           <ul className="flex flex-wrap gap-2 w-full p-2">
             {playersInfo?.map((item, index) => (
@@ -208,14 +211,14 @@ export default function TeamsTPlayersForm({
           </ul>
         ) : (
           <p className="p-4 text-center text-muted-foreground">
-            No players in the squad
+            {wordDb.noPlayersSquad}
           </p>
         )}
       </div>
 
       {savedItems?.length > 0 && (
         <div className="mt-4 w-full  rounded-md border-2">
-          <h3 className="font-semibold mb-2 p-2">New Squad:</h3>
+          <h3 className="font-semibold mb-2 p-2">{wordDb.newSquad}:</h3>
           <ul className="flex flex-wrap gap-2 w-full p-2">
             {savedItems?.map((item, index) => (
               <li
@@ -240,7 +243,7 @@ export default function TeamsTPlayersForm({
       {squadChangeLoading ? (
         <div className="flex flex-col justify-center items-center gap-2">
           <div className="animate-spin rounded-full h-10 w-10 border-t-2 border-b-2 border-gray-900"></div>
-          <div>Saving Squad</div>
+          <div>{wordDb.saving}</div>
         </div>
       ) : (
         <button
@@ -248,7 +251,7 @@ export default function TeamsTPlayersForm({
           className="w-1/2 my-4 customButton"
           onClick={handleSubmit}
         >
-          Save Squad
+          {wordDb.saveSquad}
         </button>
       )}
     </div>

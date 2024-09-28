@@ -4,7 +4,7 @@ import { useState } from "react";
 
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 
-export default function TournamentTabs({ children }) {
+export default function TournamentTabs({ wordDb, children }) {
   const [activeTab, setActiveTab] = useState("overview");
   return (
     <>
@@ -24,7 +24,7 @@ export default function TournamentTabs({ children }) {
             //   transition: "background-color 0.3s",
             // }}
           >
-            Overview
+            {wordDb.overview}
           </TabsTrigger>
           <TabsTrigger
             // style={{
@@ -40,7 +40,7 @@ export default function TournamentTabs({ children }) {
             // }}
             value="teams"
           >
-            Teams
+            {wordDb.teams}
           </TabsTrigger>
           <TabsTrigger
             // style={{
@@ -56,7 +56,7 @@ export default function TournamentTabs({ children }) {
             // }}
             value="matches"
           >
-            Matches
+            {wordDb.matches}
           </TabsTrigger>
           <TabsTrigger
             // style={{
@@ -72,7 +72,7 @@ export default function TournamentTabs({ children }) {
             // }}
             value="groups"
           >
-            Groups
+            {wordDb.groups}
           </TabsTrigger>
         </TabsList>
         {children}

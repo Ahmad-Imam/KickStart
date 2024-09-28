@@ -122,7 +122,7 @@ export default async function TeamsTDetails({
         wordDb={wordDb}
       />
 
-      <TeamsTTabs>
+      <TeamsTTabs wordDb={wordDb}>
         <TabsContent value="overview" className="py-4">
           <Card className="dark:bg-slate-900 mb-6 cardFull ">
             <CardHeader>
@@ -260,7 +260,7 @@ export default async function TeamsTDetails({
         </TabsContent>
 
         <TabsContent value="matches" className="py-4">
-          <TeamsTMatches teamsTMatches={teamsTMatches} />
+          <TeamsTMatches teamsTMatches={teamsTMatches} wordDb={wordDb} />
         </TabsContent>
       </TeamsTTabs>
     </div>

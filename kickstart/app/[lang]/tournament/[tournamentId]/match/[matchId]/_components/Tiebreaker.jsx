@@ -63,12 +63,12 @@ export default function Tiebreaker({
             <DialogTrigger asChild>
               <Button variant="outline" className="dark:bg-slate-800">
                 <Trophy className="mr-2 h-4 w-4" />
-                {wordDb?.tiebreaker}
+                {wordDb?.tieBreaker}
               </Button>
             </DialogTrigger>
             <DialogContent className="sm:max-w-[425px]">
               <DialogHeader>
-                <DialogTitle> {wordDb?.tiebreaker}</DialogTitle>
+                <DialogTitle> {wordDb?.tieBreaker}</DialogTitle>
               </DialogHeader>
               {matchDetails.tiebreaker && (
                 <div className="mt-4">

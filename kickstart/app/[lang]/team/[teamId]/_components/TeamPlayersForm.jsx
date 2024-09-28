@@ -211,7 +211,7 @@ export default function TeamPlayersForm({
           </ul>
         ) : (
           <p className="p-4 text-center text-muted-foreground">
-            {wordDb.noPlayers}
+            {wordDb.noPlayersSquad}
           </p>
         )}
       </div>
