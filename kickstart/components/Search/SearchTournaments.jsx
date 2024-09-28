@@ -14,9 +14,9 @@ import {
 
 import Link from "next/link";
 import { removeTournament } from "@/app/actions";
-import { useAuth } from "@/app/hooks/useAuth";
+import { useAuth } from "@/app/[lang]/hooks/useAuth";
 
-export default function SearchTournaments({ allTournaments }) {
+export default function SearchTournaments({ allTournaments, wordDb }) {
   const [searchTerm, setSearchTerm] = useState("");
   const [statusFilter, setStatusFilter] = useState("all");
 
@@ -45,7 +45,7 @@ export default function SearchTournaments({ allTournaments }) {
       <div className="mb-6 ">
         <Input
           type="text"
-          placeholder="Search names..."
+          placeholder={`${wordDb.searchTournaments}...`}
           value={searchTerm}
           onChange={(e) => setSearchTerm(e.target.value)}
           className="w-full  dark:bg-slate-900 "
@@ -55,25 +55,25 @@ export default function SearchTournaments({ allTournaments }) {
         <div className="md:col-span-1">
           <Card className="cardFull dark:bg-slate-900">
             <CardHeader>
-              <CardTitle>Tournament Status</CardTitle>
+              <CardTitle>{wordDb.tournamentStatus}</CardTitle>
             </CardHeader>
             <CardContent>
               <RadioGroup value={statusFilter} onValueChange={setStatusFilter}>
                 <div className="flex items-center space-x-2">
                   <RadioGroupItem value="all" id="all" />
-                  <Label htmlFor="all">All</Label>
+                  <Label htmlFor="all">{wordDb.all}</Label>
                 </div>
                 <div className="flex items-center space-x-2">
                   <RadioGroupItem value="upcoming" id="upcoming" />
-                  <Label htmlFor="upcoming">Upcoming</Label>
+                  <Label htmlFor="upcoming">{wordDb.upcoming}</Label>
                 </div>
                 <div className="flex items-center space-x-2">
                   <RadioGroupItem value="live" id="live" />
-                  <Label htmlFor="live">Live</Label>
+                  <Label htmlFor="live">{wordDb.live}</Label>
                 </div>
                 <div className="flex items-center space-x-2">
                   <RadioGroupItem value="finished" id="finished" />
-                  <Label htmlFor="finished">Finished</Label>
+                  <Label htmlFor="finished">{wordDb.finished}</Label>
                 </div>
               </RadioGroup>
             </CardContent>

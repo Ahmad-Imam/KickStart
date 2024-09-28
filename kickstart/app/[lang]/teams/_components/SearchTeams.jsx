@@ -11,12 +11,12 @@ import { Badge } from "@/components/ui/badge";
 import Link from "next/link";
 import { truncateLongString } from "@/utils/data-util";
 
-export default function SearchPlayers({ allPlayers, wordDb }) {
+export default function SearchTeams({ allTeams, wordDb }) {
   const [searchTerm, setSearchTerm] = useState("");
   const [statusFilter, setStatusFilter] = useState("all");
 
-  const filteredPlayers = allPlayers.filter((player) => {
-    const nameMatch = player.name
+  const filteredTeams = allTeams.filter((team) => {
+    const nameMatch = team.name
       .toLowerCase()
       .includes(searchTerm.toLowerCase());
 
@@ -28,7 +28,7 @@ export default function SearchPlayers({ allPlayers, wordDb }) {
       <div className="mb-6 ">
         <Input
           type="text"
-          placeholder={`${wordDb.searchPlayers}...`}
+          placeholder={`${wordDb.searchTeams}...`}
           value={searchTerm}
           onChange={(e) => setSearchTerm(e.target.value)}
           className="w-full  dark:bg-slate-900"
@@ -37,29 +37,26 @@ export default function SearchPlayers({ allPlayers, wordDb }) {
       <div className="grid grid-cols-1 md:grid-cols-4 gap-6">
         <div className="md:col-span-4">
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-            {filteredPlayers.map((player) => (
-              <Link key={player.id} href={`/player/${player.id}`}>
+            {filteredTeams.map((team) => (
+              <Link key={team.id} href={`/team/${team.id}`}>
                 <Card className="dark:bg-slate-900 flex flex-col cardFull ">
                   <CardHeader>
-                    <CardTitle>{truncateLongString(player.name, 10)}</CardTitle>
+                    <CardTitle>{truncateLongString(team.name, 20)}</CardTitle>
                   </CardHeader>
                   <CardContent className="flex-grow">
                     <div className="space-y-2">
                       <div className="flex items-center  ">
                         <MapPinIcon className="w-4 h-4 mr-2" />
-                        {player.country}
+                        {team.location}
                       </div>
-                    </div>
-                    <div className="mt-4">
-                      <Badge variant="secondary">{player.position}</Badge>
                     </div>
                   </CardContent>
                 </Card>
               </Link>
             ))}
           </div>
-          {filteredPlayers.length === 0 && (
-            <p className="text-center mt-4">No players found</p>
+          {filteredTeams.length === 0 && (
+            <p className="text-center  mt-4">No teams found</p>
           )}
         </div>
       </div>

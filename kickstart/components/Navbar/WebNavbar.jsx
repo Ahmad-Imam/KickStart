@@ -23,21 +23,21 @@ import { Button } from "../ui/button";
 import { signOut } from "next-auth/react";
 import { truncateLongString } from "@/utils/data-util";
 
-export default function WebNavbar({ user }) {
+export default function WebNavbar({ user, wordDb }) {
   const pathname = usePathname();
 
   const navItems = [
-    { href: "/", label: "Home" },
-    { href: "/tournaments", label: "Tournaments" },
-    { href: "/players", label: "Players" },
-    { href: "/teams", label: "Teams" },
-    { href: "/faq", label: "FAQ" },
+    { href: "/", label: `${wordDb.home}` },
+    { href: "/tournaments", label: `${wordDb.tournaments}` },
+    { href: "/players", label: `${wordDb.players}` },
+    { href: "/teams", label: `${wordDb.teams}` },
+    { href: "/faq", label: `${wordDb.faq}` },
   ];
 
   const createItems = [
-    { href: "/create/teams", label: "Create Team" },
-    { href: "/create/players", label: "Create Player" },
-    { href: "/create/tournaments", label: "Create Tournament" },
+    { href: "/create/teams", label: `${wordDb.createTeams}` },
+    { href: "/create/players", label: `${wordDb.createPlayers}` },
+    { href: "/create/tournaments", label: `${wordDb.createTournaments}` },
   ];
 
   const isActive = (path) => pathname === path;
@@ -69,7 +69,7 @@ export default function WebNavbar({ user }) {
         <DropdownMenuTrigger asChild>
           <div className="flex flex-row justify-between items-center cursor-pointer hover:underline">
             <button variant="link" className="text-sm font-semibold md:text-lg">
-              Create
+              {wordDb.create}
             </button>
             <ChevronDownIcon className="ml-1 h-4 w-4" />
           </div>
@@ -115,7 +115,7 @@ export default function WebNavbar({ user }) {
                 prefetch={false}
                 onClick={handleSignOut}
               >
-                Logout
+                {wordDb.signOut}
               </button>
             </DropdownMenuItem>
           </DropdownMenuContent>
@@ -130,7 +130,7 @@ export default function WebNavbar({ user }) {
           // className={`text-sm font-medium text-muted-foreground hover:text-foreground hover:underline`}
           prefetch={false}
         >
-          Login
+          {wordDb.login}
         </Link>
       )}
 

@@ -2,8 +2,8 @@
 import React, { useEffect } from "react";
 import { DribbbleIcon } from "lucide-react";
 import Link from "next/link";
-import { AuthContext } from "@/app/contexts";
-import { useAuth } from "@/app/hooks/useAuth";
+import { AuthContext } from "@/app/[lang]/contexts";
+import { useAuth } from "@/app/[lang]/hooks/useAuth";
 
 export default function Logo({ user }) {
   const { loggedUser, setLoggedUser } = useAuth();

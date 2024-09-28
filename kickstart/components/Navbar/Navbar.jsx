@@ -8,7 +8,7 @@ import Logo from "./Logo";
 import { getUserByEmail } from "@/queries/users";
 import { dbConnect } from "@/service/mongo";
 
-export default async function Navbar() {
+export default async function Navbar({ wordDb }) {
   const session = await auth();
   await dbConnect();
   // console.log(session);
@@ -25,9 +25,9 @@ export default async function Navbar() {
       <div className="container flex items-center justify-between h-14 px-10 bg-slate-200  dark:bg-slate-900 min-w-full">
         <Logo user={loggedUser} />
 
-        <WebNavbar user={session?.user} />
+        <WebNavbar user={session?.user} wordDb={wordDb} />
 
-        <MobileNavbar user={session?.user} />
+        <MobileNavbar user={session?.user} wordDb={wordDb} />
       </div>
     </header>
   );

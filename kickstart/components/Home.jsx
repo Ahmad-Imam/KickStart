@@ -10,7 +10,7 @@ import {
 } from "lucide-react";
 import Link from "next/link";
 
-export default function Home() {
+export default function Home({ wordDb }) {
   return (
     <div className="flex flex-col min-h-screen w-full items-center ">
       <main className="w-full flex flex-col items-center">
@@ -19,11 +19,10 @@ export default function Home() {
             <div className="flex flex-col items-center space-y-4 text-center ">
               <div className="space-y-2 text-white">
                 <h1 className="text-3xl font-bold tracking-tighter sm:text-4xl md:text-5xl lg:text-6xl/none">
-                  Create Your Football Tournament with Ease
+                  {wordDb.homeTitle}
                 </h1>
                 <p className="mx-auto max-w-[700px] md:text-xl ">
-                  Organize players, teams, and tournaments effortlessly. Start
-                  your football journey today!
+                  {wordDb.homeSubtitle}
                 </p>
               </div>
               {/* <div className="space-x-4">
@@ -36,22 +35,22 @@ export default function Home() {
         <section className="w-full py-12 md:py-20 lg:py-24 bg-white dark:bg-slate-950 flex flex-row justify-center">
           <div className="container px-4 md:px-6">
             <h2 className="text-3xl font-bold tracking-tighter sm:text-5xl text-center mb-12">
-              KickStart
+              {wordDb.kickStart}
             </h2>
             <div className="grid grid-cols-1 md:grid-cols-3 gap-8 ">
               <Card className="cardFull dark:bg-slate-900">
                 <CardHeader>
                   <CardTitle className="flex items-center space-x-2">
                     <UserPlus className="w-6 h-6" />
-                    <span>Create Players</span>
+                    <span>{wordDb.createPlayers}</span>
                   </CardTitle>
                 </CardHeader>
                 <CardContent>
                   <ul className="list-disc list-inside space-y-2">
-                    <li>Add player details</li>
-                    <li>Assign positions</li>
-                    <li>Add to team</li>
-                    <li>Track performance stats</li>
+                    <li>{wordDb.createPlayersCard1}</li>
+                    <li>{wordDb.createPlayersCard2}</li>
+                    <li>{wordDb.createPlayersCard3}</li>
+                    <li>{wordDb.createPlayersCard4}</li>
                   </ul>
                 </CardContent>
               </Card>
@@ -59,15 +58,15 @@ export default function Home() {
                 <CardHeader>
                   <CardTitle className="flex items-center space-x-2">
                     <Users className="w-6 h-6" />
-                    <span>Create Teams</span>
+                    <span>{wordDb.createTeams}</span>
                   </CardTitle>
                 </CardHeader>
                 <CardContent>
                   <ul className="list-disc list-inside space-y-2">
-                    <li>Set up team profiles</li>
-                    <li>Assign players to teams</li>
-                    <li>Add teams to tournament</li>
-                    <li>Manage team rosters</li>
+                    <li>{wordDb.createTeamsCard1}</li>
+                    <li>{wordDb.createTeamsCard2}</li>
+                    <li>{wordDb.createTeamsCard3}</li>
+                    <li>{wordDb.createTeamsCard4}</li>
                   </ul>
                 </CardContent>
               </Card>
@@ -75,15 +74,15 @@ export default function Home() {
                 <CardHeader className="pr-0">
                   <CardTitle className="flex items-center gap-1">
                     <TrophyIcon className="w-6 h-6" />
-                    <div>Create Tournaments</div>
+                    <div>{wordDb.createTournaments}</div>
                   </CardTitle>
                 </CardHeader>
                 <CardContent>
                   <ul className="list-disc list-inside space-y-2">
-                    <li>Define tournament structure</li>
-                    <li>Set up match schedules</li>
-                    <li>Update live score</li>
-                    <li>Generate fixtures automatically</li>
+                    <li>{wordDb.createTournamentsCard1}</li>
+                    <li>{wordDb.createTournamentsCard2}</li>
+                    <li>{wordDb.createTournamentsCard3}</li>
+                    <li>{wordDb.createTournamentsCard4}</li>
                   </ul>
                 </CardContent>
               </Card>
@@ -93,42 +92,42 @@ export default function Home() {
         <section className="w-full py-12 md:py-24 lg:py-32 bg-emerald-950 flex flex-row justify-center  text-white ">
           <div className="container px-4 md:px-6">
             <h2 className="text-3xl font-bold tracking-tighter sm:text-5xl text-center mb-12">
-              How It Works
+              {wordDb.howItWorks}
             </h2>
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
               <div className="flex flex-col items-center text-center">
                 <div className="w-12 h-12 rounded-full bg-green-500 flex items-center justify-center text-white text-xl font-bold mb-4">
                   1
                 </div>
-                <h3 className="text-xl font-semibold mb-2">Sign Up</h3>
-                <p className="">Create your account and set up your profile</p>
+                <h3 className="text-xl font-semibold mb-2">{wordDb.signUp}</h3>
+                <p className="">{wordDb.signUp1}</p>
               </div>
               <div className="flex flex-col items-center text-center">
                 <div className="w-12 h-12 rounded-full bg-green-500 flex items-center justify-center text-white text-xl font-bold mb-4">
                   2
                 </div>
                 <h3 className="text-xl font-semibold mb-2">
-                  Create Players & Teams
+                  {wordDb.createPlayersTeams}
                 </h3>
-                <p className="">Add players and organize them into teams</p>
+                <p className="">{wordDb.createPlayersTeams1}</p>
               </div>
               <div className="flex flex-col items-center text-center">
                 <div className="w-12 h-12 rounded-full bg-green-500 flex items-center justify-center text-white text-xl font-bold mb-4">
                   3
                 </div>
                 <h3 className="text-xl font-semibold mb-2">
-                  Set Up Tournament
+                  {wordDb.setUpTournaments}
                 </h3>
-                <p className="">Define your tournament structure and rules</p>
+                <p className="">{wordDb.setUpTournaments1}</p>
               </div>
               <div className="flex flex-col items-center text-center">
                 <div className="w-12 h-12 rounded-full bg-green-500 flex items-center justify-center text-white text-xl font-bold mb-4">
                   4
                 </div>
-                <h3 className="text-xl font-semibold mb-2">Manage & Enjoy</h3>
-                <p className="">
-                  Run your tournament and track results in real-time
-                </p>
+                <h3 className="text-xl font-semibold mb-2">
+                  {wordDb.manageEnjoy}
+                </h3>
+                <p className="">{wordDb.manageEnjoy1}</p>
               </div>
             </div>
           </div>
@@ -174,17 +173,16 @@ export default function Home() {
             <div className="flex flex-col items-center space-y-4 text-center">
               <div className="space-y-2">
                 <h2 className="text-3xl font-bold tracking-tighter sm:text-4xl md:text-5xl">
-                  Ready to Kick Off Your Tournament?
+                  {wordDb.readyToKickStart}
                 </h2>
                 <p className="mx-auto max-w-[600px]  md:text-xl ">
-                  Join thousands of football enthusiasts and start organizing
-                  your tournament today.
+                  {wordDb.joinThousands}
                 </p>
               </div>
               <div className="space-x-4">
                 <Link href="/create/tournaments">
                   <Button size="lg">
-                    Get Started Now
+                    {wordDb.getStarted}
                     <ChevronRight className="ml-2 h-4 w-4" />
                   </Button>
                 </Link>

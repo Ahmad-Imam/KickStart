@@ -17,21 +17,21 @@ import { cn } from "@/lib/utils";
 import { signOut } from "next-auth/react";
 import { truncateLongString } from "@/utils/data-util";
 
-export default function MobileNavbar({ user }) {
+export default function MobileNavbar({ user, wordDb }) {
   const [isOpen, setIsOpen] = useState(false);
 
   const navItems = [
-    { href: "/", label: "Home" },
-    { href: "/tournaments", label: "Tournaments" },
-    { href: "/players", label: "Players" },
-    { href: "/teams", label: "Teams" },
-    { href: "/faq", label: "FAQ" },
+    { href: "/", label: `${wordDb.home}` },
+    { href: "/tournaments", label: `${wordDb.tournaments}` },
+    { href: "/players", label: `${wordDb.players}` },
+    { href: "/teams", label: `${wordDb.teams}` },
+    { href: "/faq", label: `${wordDb.faq}` },
   ];
 
   const createItems = [
-    { href: "/create/teams", label: "Create Team" },
-    { href: "/create/players", label: "Create Player" },
-    { href: "/create/tournaments", label: "Create Tournament" },
+    { href: "/create/teams", label: `${wordDb.createTeams}` },
+    { href: "/create/players", label: `${wordDb.createPlayers}` },
+    { href: "/create/tournaments", label: `${wordDb.createTournaments}` },
   ];
 
   function handleSignOut() {
@@ -65,7 +65,7 @@ export default function MobileNavbar({ user }) {
           ))}
 
           <div className="text-sm font-medium text-muted-foreground hover:underline p-2 hover:bg-slate-200 dark:hover:bg-slate-800 rounded-md px-2">
-            Create
+            {wordDb.create}
           </div>
           {createItems.map((item) => (
             <Link
@@ -93,7 +93,7 @@ export default function MobileNavbar({ user }) {
                 // className={`text-sm font-medium text-muted-foreground hover:text-foreground hover:underline`}
                 prefetch={false}
               >
-                Logout
+                {wordDb.signOut}
               </button>
             </div>
           ) : (
@@ -106,7 +106,7 @@ export default function MobileNavbar({ user }) {
               // className={`text-sm font-medium text-muted-foreground hover:text-foreground hover:underline`}
               prefetch={false}
             >
-              Login
+              {wordDb.login}
             </Link>
           )}
 
