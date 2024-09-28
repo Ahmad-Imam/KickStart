@@ -15,6 +15,7 @@ import {
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { signOut } from "next-auth/react";
+import { truncateLongString } from "@/utils/data-util";
 
 export default function MobileNavbar({ user }) {
   const [isOpen, setIsOpen] = useState(false);
@@ -81,7 +82,7 @@ export default function MobileNavbar({ user }) {
           {user?.name ? (
             <div className="">
               <div className="text-sm font-medium text-muted-foreground hover:underline p-2 hover:bg-slate-200 dark:hover:bg-slate-800 rounded-md px-2">
-                {user?.name}
+                {truncateLongString(user?.name, 10)}
               </div>
               <button
                 onClick={handleSignOut}

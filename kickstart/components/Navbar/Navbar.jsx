@@ -14,7 +14,8 @@ export default async function Navbar() {
   // console.log(session);
   let loggedUser = null;
 
-  if (session) {
+  if (session?.user) {
+    console.log("session user", session?.user);
     loggedUser = await getUserByEmail(session?.user?.email);
     // console.log(loggedUser);
   }

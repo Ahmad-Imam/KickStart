@@ -21,6 +21,7 @@ import { usePathname } from "next/navigation";
 import { cn } from "@/lib/utils";
 import { Button } from "../ui/button";
 import { signOut } from "next-auth/react";
+import { truncateLongString } from "@/utils/data-util";
 
 export default function WebNavbar({ user }) {
   const pathname = usePathname();
@@ -99,7 +100,7 @@ export default function WebNavbar({ user }) {
                 variant="link"
                 className="text-sm font-semibold md:text-lg"
               >
-                {user?.name}
+                {truncateLongString(user?.name, 10)}
               </button>
               <ChevronDownIcon className="ml-1 h-4 w-4" />
             </div>

@@ -41,7 +41,7 @@ export const {
           // http://localhost:3000/
 
           const res = await fetch(
-            "/api/auth/login",
+            `${process.env.BASE_URL}/api/auth/login`,
             {
               method: "POST",
               headers: {
