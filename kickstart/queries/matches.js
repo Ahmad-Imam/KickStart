@@ -834,7 +834,7 @@ export async function updateMatchGoal(gfTeam, gaTeam, player, matchDetails) {
     console.log("teamsT scorers for updated");
 
     const updatedTeamTournament = await teamsTournamentModel
-      .findById(gfTeam.id)
+      .findOne({ _id: gfTeam.id, tournamentId: matchDetails.tournamentId })
       .lean();
 
     // Check if the player is not in the scorers array
@@ -982,7 +982,7 @@ export async function updateMatchCard(team, player, matchDetails, type) {
 
     // Fetch the updated team tournament document
     const updatedTeamTournament = await teamsTournamentModel
-      .findById(team.id)
+      .findOne({ _id: team.id, tournamentId: matchDetails.tournamentId })
       .lean();
 
     // console.log("Updated team tournament:", updatedTeamTournament);

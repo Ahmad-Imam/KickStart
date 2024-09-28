@@ -89,6 +89,7 @@ export default async function MatchDetails({
   sortedEvents,
   isMatchConfig,
   isAdmin,
+  tournamentStatus,
 }) {
   const match = sampleMatch; // In a real app, you'd fetch this based on params.id
 
@@ -273,6 +274,7 @@ export default async function MatchDetails({
             team2={JSON.parse(JSON.stringify(team2))}
             matchDetails={matchDetails}
             isMatchConfig={isMatchConfig}
+            tournamentStatus={tournamentStatus}
           />
 
           {/* <h2 className="text-2xl font-bold mt-8 mb-4">Match Events</h2> */}

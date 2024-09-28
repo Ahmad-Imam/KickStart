@@ -33,7 +33,7 @@ export default async function MatchEditPage({ params }) {
   if (session?.user) {
     const currentUser = await getUserByEmail(session?.user?.email);
 
-    isAdmin = currentUser?.admin.includes(params.tournamentId.toString());
+    isAdmin = currentUser?.admin?.includes(params.tournamentId.toString());
 
     if (!isAdmin) {
       redirect(`/tournament/${params.tournamentId}/match/${params.matchId}`);

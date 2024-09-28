@@ -39,8 +39,8 @@ export default async function MatchPage({ params }) {
   if (session?.user) {
     const currentUser = await getUserByEmail(session?.user?.email);
 
-    isAdmin = currentUser?.admin.includes(params.tournamentId.toString());
-    isModerator = tournament?.moderators.includes(currentUser?.id);
+    isAdmin = currentUser?.admin?.includes(params.tournamentId.toString());
+    isModerator = tournament?.moderators?.includes(currentUser?.id);
   }
   console.log("isAdmin");
   console.log(isAdmin);
@@ -56,6 +56,7 @@ export default async function MatchPage({ params }) {
         sortedEvents={sortedEvents}
         isAdmin={isAdmin}
         isMatchConfig={isMatchConfig}
+        tournamentStatus={tournament?.status}
       />
     </div>
   );

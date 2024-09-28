@@ -630,6 +630,7 @@ export async function removePlayersFromCurrentTeamTeamsT(
         const prevTeamsT = await teamsTournamentModel.findOneAndUpdate(
           {
             teamId: prevTeamId,
+            tournamentId: teamsTournament.tournamentId,
           },
           {
             players: prevTeamsTournament.players,

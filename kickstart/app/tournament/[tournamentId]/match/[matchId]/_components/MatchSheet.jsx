@@ -20,6 +20,7 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { addGoalToMatch, addCardToMatch, addMOTMToMatch } from "@/app/actions";
+import { RectangleVerticalIcon } from "lucide-react";
 
 export default function MatchSheet({ team1, team2, matchDetails, type }) {
   const [isOpen, setIsOpen] = useState(false);
@@ -27,7 +28,7 @@ export default function MatchSheet({ team1, team2, matchDetails, type }) {
   const [selectedPlayer, setSelectedPlayer] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
   const teams = [team1, team2];
-  console.log(teams);
+  // console.log(teams);
 
   const handleSubmit = async () => {
     if (selectedTeam && selectedPlayer) {
@@ -54,12 +55,26 @@ export default function MatchSheet({ team1, team2, matchDetails, type }) {
         );
       } else if (type === "yellow") {
         console.log("inside yellow card");
+        console.log();
         await addCardToMatch(
           selectedTeam,
           selectedPlayerObject,
           matchDetails,
           type
         );
+
+        if (
+          selectedTeam.yellow.some(
+            (yellow) => yellow.playerId === selectedPlayerObject.id
+          )
+        ) {
+          await addCardToMatch(
+            selectedTeam,
+            selectedPlayerObject,
+            matchDetails,
+            "red"
+          );
+        }
       } else if (type === "red") {
         await addCardToMatch(
           selectedTeam,
@@ -185,14 +200,36 @@ export default function MatchSheet({ team1, team2, matchDetails, type }) {
                   >
                     <SelectValue placeholder="Choose a player" className="" />
                   </SelectTrigger>
-                  <SelectContent>
+                  <SelectContent className="dark:bg-slate-950">
                     {selectedTeam.players.map((player) => (
                       <SelectItem
                         key={player?.name}
                         value={player.name}
-                        className="text-lg  dark:bg-slate-900"
+                        disabled={
+                          type !== "motm" &&
+                          selectedTeam.red.some(
+                            (red) => red.playerId === player.id
+                          )
+                        }
+                        className="text-lg  dark:bg-slate-900 my-1"
                       >
-                        {player.name}
+                        <div className="flex">
+                          <div>{player.name}</div>
+                          {selectedTeam.yellow.some(
+                            (yellow) => yellow.playerId === player.id
+                          ) && (
+                            <div className=" text-amber-600">
+                              <RectangleVerticalIcon />
+                            </div>
+                          )}
+                          {selectedTeam.red.some(
+                            (red) => red.playerId === player.id
+                          ) && (
+                            <div className=" text-red-600">
+                              <RectangleVerticalIcon />
+                            </div>
+                          )}
+                        </div>
                       </SelectItem>
                     ))}
                   </SelectContent>

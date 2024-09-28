@@ -13,9 +13,14 @@ export default function MatchSettings({
   team2,
   matchDetails,
   isMatchConfig,
+  tournamentStatus,
 }) {
+  console.log(tournamentStatus);
+
   const [matchStarted, setMatchStarted] = useState(
-    matchDetails?.status === "live" ? true : false
+    tournamentStatus === "live" && matchDetails?.status === "live"
+      ? true
+      : false
   );
 
   const [matchFinished, setMatchFinished] = useState(
@@ -75,7 +80,7 @@ export default function MatchSettings({
                 matchDetails?.type !== "group" &&
                 matchDetails?.result?.team1 === matchDetails?.result?.team2) ||
               matchFinished ||
-              matchDetails?.motm.length === 0
+              (matchStarted && matchDetails?.motm.length === 0)
             }
             className=" customButton m-2 disabled:opacity-50 disabled:cursor-not-allowed"
             onClick={handleClick}

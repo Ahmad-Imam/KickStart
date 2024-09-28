@@ -28,7 +28,7 @@ const faqs = [
   {
     question: "Can I edit tournament details after creation?",
     answer: [
-      "You can not edit most tournament details after creation. You can edit team squad and match details, but you can't change the tournament format or number of participants. If you need to make changes, you can cancel the tournament and create a new one with the updated details.",
+      "You can not edit most tournament details after creation. You can edit team squad and match details, but you can't change the tournament format or number of participants.",
     ],
   },
   {
@@ -40,13 +40,13 @@ const faqs = [
   {
     question: "What tournament formats are supported?",
     answer: [
-      "Our app supports different tournament types. Only limitations are there are no 2nd round matches and no home-away systems.  You can select the format that best suits your needs when creating a new tournament.",
+      "The application supports different tournament types. Only limitations are there are no 2nd round matches and no home-away systems.  You can select the format that best suits your needs when creating a new tournament.",
     ],
   },
   {
     question: "How can I track scores and update brackets?",
     answer: [
-      "As the tournament progresses, admin and moderators can update scores on the tournament page. Click on a match and enter the scores. The app will automatically update the brackets after all the matches have been completed in one category.",
+      "As the tournament progresses, admin and moderators can update scores on the match page. Click on a match and enter the scores. The app will automatically update the brackets after all the matches have been completed in one category.",
     ],
   },
   {
@@ -66,6 +66,7 @@ const faqs = [
     answer: [
       "The user who creates the tournament is the admin by default. Admins can add moderators to help manage the tournament. Moderators have access to only update match scores",
       "Admins can also remove moderators from the tournament page.",
+      "Normal Users can view any tournaments without login. They can not modify any tournament details or match scores.",
     ],
   },
 
@@ -75,12 +76,12 @@ const faqs = [
       " Clicking on the 'Start Tournament' button will mark the tournament as active, the squad becomes final and can not be changed. You also can not change the match details after a tournament is started. Admins and moderators can update scores and manage the tournament.",
     ],
   },
-  {
-    question: "How do I delete a tournament?",
-    answer: [
-      "To delete a tournament, go to the tournament page and click on 'Delete Tournament'.",
-    ],
-  },
+  // {
+  //   question: "How do I delete a tournament?",
+  //   answer: [
+  //     "To delete a tournament, go to the tournament page and click on 'Delete Tournament'.",
+  //   ],
+  // },
   // {
   //   question: "How do I contact support?",
   //   answer: [
@@ -90,6 +91,15 @@ const faqs = [
   {
     question: "What can I change about a match?",
     answer: ["You can change match location and date"],
+  },
+  {
+    question: "How to add match scores?",
+    answer: [
+      "You need to be a moderator or admin to add match scores.",
+      "At first start the match. Then you can add scores or cards.",
+      "Finally you need to add a man of the match. Then you can end the match",
+      "For non group stage matches, you can add tie breakers if the match is a draw",
+    ],
   },
   {
     question: "How do I change Squad?",
