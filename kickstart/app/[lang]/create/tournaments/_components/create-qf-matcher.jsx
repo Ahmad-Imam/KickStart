@@ -12,7 +12,7 @@ import {
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { X } from "lucide-react";
 
-export default function SFMatcher({ teamsQ, setQuarterMatch }) {
+export default function SFMatcher({ teamsQ, setQuarterMatch, wordDb }) {
   const [teams] = useState(teamsQ);
 
   const [matches, setMatches] = useState(() => {
@@ -97,7 +97,9 @@ export default function SFMatcher({ teamsQ, setQuarterMatch }) {
 
   return (
     <div className="">
-      <h1 className="text-xl font-bold text-center py-2">Quarter Final</h1>
+      <h1 className="text-xl font-bold text-center py-2">
+        {wordDb.quarterFinals}
+      </h1>
       <div className="grid grid-cols-1 md:grid-cols-2  gap-4">
         {matches.map((match, index) => (
           <Card
@@ -179,7 +181,7 @@ export default function SFMatcher({ teamsQ, setQuarterMatch }) {
       </div>
       {isAllTeamsSelected && (
         <p className="text-center text-sm text-muted-foreground">
-          All teams have been selected. Clear a selection or proceed.
+          {wordDb.allTeamsSelected}
         </p>
       )}
     </div>

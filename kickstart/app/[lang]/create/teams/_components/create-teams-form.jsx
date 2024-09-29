@@ -22,7 +22,7 @@ import { Badge } from "@/components/ui/badge";
 import { ca } from "date-fns/locale";
 import { useRouter } from "next/navigation";
 
-export function TeamsForm() {
+export function CreateTeamsForm({ wordDb }) {
   const [playersList, setPlayersList] = useState([]);
   const [query, setQuery] = useState("");
   const [results, setResults] = useState([]);
@@ -120,14 +120,14 @@ export function TeamsForm() {
   return (
     <Card className="dark:bg-slate-900 mx-auto max-w-xl w-full cardFull ">
       <CardHeader>
-        <CardTitle className="text-2xl">Create Your team</CardTitle>
-        <CardDescription>Enter your team information</CardDescription>
+        <CardTitle className="text-2xl">{wordDb.createYourTeams}</CardTitle>
+        <CardDescription>{wordDb.createYourTeams1}</CardDescription>
       </CardHeader>
       <CardContent>
         <form onSubmit={handleSubmit}>
           <div className="grid gap-4">
             <div className="grid gap-2">
-              <Label htmlFor="name">Name</Label>
+              <Label htmlFor="name">{wordDb.name}</Label>
               <Input
                 id="name"
                 name="name"
@@ -139,7 +139,7 @@ export function TeamsForm() {
             </div>
 
             <div className="grid gap-2">
-              <Label htmlFor="bio">Bio</Label>
+              <Label htmlFor="bio">{wordDb.bio}</Label>
               <Input
                 id="bio"
                 name="bio"
@@ -150,7 +150,7 @@ export function TeamsForm() {
               />
             </div>
             <div className="grid gap-2">
-              <Label htmlFor="location">Location</Label>
+              <Label htmlFor="location">{wordDb.location}</Label>
               <Input
                 id="location"
                 name="location"
@@ -161,17 +161,17 @@ export function TeamsForm() {
               />
             </div>
 
-            <Label htmlFor="players">Players</Label>
+            <Label htmlFor="players">{wordDb.players}</Label>
 
             {loadingPlayer ? (
               <div className="flex flex-col justify-center items-center h-32 gap-2">
                 <div className="animate-spin rounded-full h-20 w-20 border-t-2 border-b-2 border-gray-900 dark:border-white"></div>
-                <div>Loading Players</div>
+                <div>{wordDb.loadingPlayers}</div>
               </div>
             ) : (
               <div className="w-full mx-auto space-y-4">
                 <Input
-                  type="search"
+                  type={`${wordDb.searchPlayers}`}
                   placeholder="Search..."
                   value={query}
                   onChange={(e) => setQuery(e.target.value)}
@@ -208,7 +208,7 @@ export function TeamsForm() {
                       </ul>
                     ) : (
                       <p className="p-4 text-center text-muted-foreground">
-                        No results found
+                        {wordDb.noPlayers}
                       </p>
                     )}
                   </ScrollArea>
@@ -218,7 +218,7 @@ export function TeamsForm() {
 
             {savedItems?.length > 0 && (
               <div className="mt-4 ">
-                <h3 className="font-semibold mb-2">Squad:</h3>
+                <h3 className="font-semibold mb-2">{wordDb.squad}:</h3>
                 <ul className="flex flex-wrap gap-3 w-full max-w-lg">
                   {savedItems?.map((player, index) => (
                     <li
@@ -247,7 +247,7 @@ export function TeamsForm() {
               className="w-full customButton"
               disabled={loading}
             >
-              {loading ? "Creating Team..." : "Submit"}
+              {loading ? `${wordDb.saving}` : `${wordDb.submit}`}
             </button>
           </div>
         </form>

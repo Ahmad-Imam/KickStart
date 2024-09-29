@@ -12,7 +12,7 @@ import {
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { X } from "lucide-react";
 
-export default function SFMatcher({ teamsQ, setSemiMatch }) {
+export default function SFMatcher({ teamsQ, setSemiMatch, wordDb }) {
   console.log("sf");
   console.log(teamsQ);
   const [teams] = useState(teamsQ);
@@ -99,7 +99,9 @@ export default function SFMatcher({ teamsQ, setSemiMatch }) {
 
   return (
     <div className="">
-      <h1 className="text-xl font-bold text-center py-2">Semi Final</h1>
+      <h1 className="text-xl font-bold text-center py-2">
+        {wordDb.semiFinals}
+      </h1>
       <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
         {matches.map((match, index) => (
           <Card
@@ -181,7 +183,7 @@ export default function SFMatcher({ teamsQ, setSemiMatch }) {
       </div>
       {isAllTeamsSelected && (
         <p className="text-center text-sm text-muted-foreground">
-          All teams have been selected. Clear a selection or proceed.
+          {wordDb.allTeamsSelected}
         </p>
       )}
     </div>

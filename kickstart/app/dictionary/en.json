@@ -159,6 +159,36 @@
     "teamsQualifyingPerGroup": "Teams Qualifying per Group",
 
 
+    "createYourPlayers": "Create Your Players",
+    "createYourTeams": "Create Your Teams",
+    "createYourTeams1": "Enter your team information",
+    "createYourTournaments": "Create Your Tournaments",
+    "createYourPlayers1": "Create Your Players",
+    "bio": "Bio",
+    "loadingPlayers": "Loading Players",
+    "squad": "Squad",
+    "page": "Page",
+    "description": "Description",
+    "startDate": "Start Date",
+    "endDate": "End Date",
+    "rememberToFill": " Remember to fill all information before proceeding",
+    "quarterFinals": "Quarter Finals",
+    "semiFinals": "Semi Finals",
+    "final": "Final",
+    "thirdPlace": "Third Place",
+    "findTeams": "Find Teams",
+    "inTheTournament": "In the Tournament",
+    "createGroup": "Create Group",
+    "incompleteGroups": "Incomplete Groups",
+    "qualifiedTeams": "Qualified Teams",
+    "allTeamsSelected": "All teams have been selected. Clear a selection or proceed.",
+    "tournamentPreview": "Tournament Preview",
+    "tournamentSettings": "Tournament Settings",
+    "sampleBracket": " Sample bracket for Knockout Stage",
+    "next": "Next",
+    "previous": "Previous",
+
+
 
 
 

@@ -15,6 +15,7 @@ export default function CreateTeamsTournament({
   teamsPerGroup,
   setTeamsTournament,
   teamsTournament,
+  wordDb,
 }) {
   const [teamsTList, setTeamsTList] = useState([]);
   const [query, setQuery] = useState("");
@@ -81,15 +82,17 @@ export default function CreateTeamsTournament({
 
   return (
     <>
-      <div>{`Groups: ${groupsNum}`}</div>
-      <div>{`Teams in a group: ${teamsPerGroup}`}</div>
+      <div>{`${wordDb.groups}: ${groupsNum}`}</div>
+      <div>{`${wordDb.teamsPerGroup}: ${teamsPerGroup}`}</div>
 
       {!loading ? (
         <div className="w-full max-w-lg mx-auto space-y-4 py-4">
-          <div className="text-md font-semibold p-0 m-0">Find Teams:</div>
+          <div className="text-md font-semibold p-0 m-0">
+            {wordDb.findTeams}:
+          </div>
           <Input
             type="search"
-            placeholder="Search..."
+            placeholder={`${wordDb.searchTeams}...`}
             value={savedItems.length === groupsNum * teamsPerGroup ? "" : query}
             onChange={(e) => setQuery(e.target.value)}
             className="w-full dark:bg-slate-800"
@@ -116,7 +119,7 @@ export default function CreateTeamsTournament({
                   </ul>
                 ) : (
                   <p className="p-4 text-center text-muted-foreground">
-                    No results found
+                    {wordDb.noResults}
                   </p>
                 )}
               </ScrollArea>
@@ -125,12 +128,12 @@ export default function CreateTeamsTournament({
       ) : (
         <div className="flex flex-col justify-center items-center h-32 gap-2">
           <div className="animate-spin rounded-full h-24 w-24 border-t-2 border-b-2 border-gray-900 dark:border-white"></div>
-          <div>Loading Teams</div>
+          <div>{wordDb.loadingTeams}</div>
         </div>
       )}
       {savedItems?.length > 0 && (
         <div className="mt-4 w-full  rounded-md border-2">
-          <h3 className="font-semibold mb-2 p-2">In the tournament:</h3>
+          <h3 className="font-semibold mb-2 p-2">{wordDb.inTheTournament}:</h3>
           <ul className="flex flex-wrap gap-2 w-full p-2">
             {savedItems?.map((item, index) => (
               <li

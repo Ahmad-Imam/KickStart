@@ -1,6 +1,7 @@
 import { auth } from "@/auth";
-import { PlayersForm } from "./_components/create-players-form";
+import { CreatePlayersForm } from "./_components/create-players-form";
 import { redirect } from "next/navigation";
+import { getDictionary } from "@/app/dictionary/dictionaries";
 
 export async function generateMetadata() {
   return {
@@ -9,16 +10,18 @@ export async function generateMetadata() {
   };
 }
 
-const CreatePlayerPage = async () => {
+const CreatePlayerPage = async ({ params: { lang } }) => {
   const session = await auth();
   if (!session) {
     redirect("/login");
   }
+  const wordDb = await getDictionary(lang);
+
   // console.log(session);
 
   return (
     <div className="dark:bg-slate-950 min-h-screen w-full flex-col flex items-center justify-center p-4">
-      <PlayersForm />
+      <CreatePlayersForm wordDb={wordDb} />
     </div>
   );
 };

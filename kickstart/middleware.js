@@ -3,14 +3,15 @@ import { match } from "@formatjs/intl-localematcher";
 import Negotiator from "negotiator";
 
 let defaultLocale = "en";
-let locales = ["bn", "en"];
+let locales = ["bn", "en", "fi"];
 
 // Get the preferred locale, similar to above or using a library
 function getLocale(request) {
   const acceptedLanguage = request.headers.get("accept-language") ?? undefined;
   let headers = { "accept-language": acceptedLanguage };
   let languages = new Negotiator({ headers }).languages();
-
+  console.log("middle");
+  console.log(languages);
   return match(languages, locales, defaultLocale); // -> 'en-US'
 }
 

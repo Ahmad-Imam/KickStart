@@ -23,7 +23,7 @@ import { capitalizeFirstLetter } from "@/utils/data-util";
 import { useRouter } from "next/navigation";
 import { ca } from "date-fns/locale";
 
-export function PlayersForm() {
+export function CreatePlayersForm({ wordDb }) {
   const [query, setQuery] = useState("");
   const [results, setResults] = useState([]);
   const [savedItems, setSavedItems] = useState([]);
@@ -120,17 +120,14 @@ export function PlayersForm() {
   return (
     <Card className="dark:bg-slate-900 mx-auto max-w-xl w-full cardFull border-2 border-slate-200 dark:border-slate-800  hover:shadow-lg transition-shadow duration-300 ">
       <CardHeader>
-        <CardTitle className="text-2xl">Create Your player</CardTitle>
-        <CardDescription>
-          Enter your player information. This will not affect ongoing
-          tournaments
-        </CardDescription>
+        <CardTitle className="text-2xl">{wordDb.createYourPlayers}</CardTitle>
+        <CardDescription>{wordDb.createYourPlayers1}</CardDescription>
       </CardHeader>
       <CardContent>
         <form onSubmit={handleSubmit}>
           <div className="grid gap-4">
             <div className="grid gap-2">
-              <Label htmlFor="name">Name</Label>
+              <Label htmlFor="name">{wordDb.name}</Label>
               <Input
                 id="name"
                 name="name"
@@ -142,7 +139,7 @@ export function PlayersForm() {
             </div>
 
             <div className="grid gap-2">
-              <Label htmlFor="nickName">NickName</Label>
+              <Label htmlFor="nickName">{wordDb.nickname}</Label>
               <Input
                 id="nickName"
                 name="nickName"
@@ -153,7 +150,7 @@ export function PlayersForm() {
               />
             </div>
             <div className="grid gap-2">
-              <Label htmlFor="country">Country</Label>
+              <Label htmlFor="country">{wordDb.country}</Label>
               <Input
                 id="country"
                 name="country"
@@ -165,7 +162,7 @@ export function PlayersForm() {
             </div>
 
             <div className="grid gap-2">
-              <Label htmlFor="jersey">Jersey Number</Label>
+              <Label htmlFor="jersey">{wordDb.jersey}</Label>
               <Input
                 id="jersey"
                 name="jersey"
@@ -177,7 +174,7 @@ export function PlayersForm() {
             </div>
 
             <div className="grid gap-2">
-              <Label htmlFor="position">Position</Label>
+              <Label htmlFor="position">{wordDb.position}</Label>
               <RadioGroup
                 defaultValue={selectedPosition}
                 onValueChange={(value) => {
@@ -198,7 +195,7 @@ export function PlayersForm() {
               </RadioGroup>
             </div>
 
-            <Label htmlFor="players">Team</Label>
+            <Label htmlFor="players">{wordDb.team}</Label>
 
             {loadingTeam ? (
               <div className="flex flex-col justify-center items-center h-32 gap-2">
@@ -209,7 +206,7 @@ export function PlayersForm() {
               <div className="w-full max-w-lg mx-auto space-y-4">
                 <Input
                   type="search"
-                  placeholder="Search..."
+                  placeholder={`${wordDb.searchTeams}...`}
                   value={query}
                   onChange={(e) => setQuery(e.target.value)}
                   className="dark:bg-slate-800"
@@ -234,7 +231,7 @@ export function PlayersForm() {
                       </ul>
                     ) : (
                       <p className="p-4 text-center text-muted-foreground">
-                        No results found
+                        {wordDb.noResults}
                       </p>
                     )}
                   </ScrollArea>
@@ -272,7 +269,7 @@ export function PlayersForm() {
               type="submit"
               className="w-full customButton"
             >
-              {loading ? "Creating..." : "Submit"}
+              {loading ? `${wordDb.saving}` : `${wordDb.submit}`}
             </button>
           </div>
         </form>

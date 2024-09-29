@@ -12,6 +12,7 @@ export default function TournamentPreview({
   formData,
   startDate,
   endDate,
+  wordDb,
 }) {
   const transformData = (data) => {
     const rounds = [];
@@ -108,7 +109,7 @@ export default function TournamentPreview({
 
   return (
     <div className="p-4">
-      <h1 className="text-2xl font-bold mb-4">Tournament Preview</h1>
+      <h1 className="text-2xl font-bold mb-4">{wordDb.tournamentPreview}</h1>
 
       <section
         className="mb-8 mt-10 p-6 bg-white rounded-lg cardFull dark:bg-slate-950"
@@ -118,32 +119,32 @@ export default function TournamentPreview({
         }}
       >
         <h2 className="text-xl font-semibold py-2 mb-4 ">
-          Tournament Settings
+          {wordDb.tournamentSettings}
         </h2>
         <div className="bg-gray-100 p-6 rounded-lg shadow-md dark:bg-slate-900">
           <p className="mb-2 dark:hover:bg-slate-500 hover:bg-slate-800 rounded-sm cursor-pointer hover:text-white transition duration-300 ease-in-out p-2">
-            <strong className="">Name:</strong>{" "}
+            <strong className="">{wordDb.name}:</strong>{" "}
             <span className="">{formData.name}</span>
           </p>
 
           <p className="mb-2 dark:hover:bg-slate-500 hover:bg-slate-800 rounded-sm cursor-pointer hover:text-white transition duration-300 ease-in-out p-2">
-            <strong className="">Description:</strong>{" "}
+            <strong className="">{wordDb.description}:</strong>{" "}
             <span className="">{formData.bio}</span>
           </p>
           <p className="mb-2 dark:hover:bg-slate-500 hover:bg-slate-800 rounded-sm cursor-pointer hover:text-white transition duration-300 ease-in-out p-2">
-            <strong className="">Location:</strong>{" "}
+            <strong className="">{wordDb.location}:</strong>{" "}
             <span className="">{formData.location}</span>
           </p>
           <p className="mb-2 dark:hover:bg-slate-500 hover:bg-slate-800 rounded-sm cursor-pointer hover:text-white transition duration-300 ease-in-out p-2">
-            <strong className="">Organized By:</strong>{" "}
+            <strong className="">{wordDb.organizer}:</strong>{" "}
             <span className="">{formData.organizer}</span>
           </p>
           <p className="mb-2 dark:hover:bg-slate-500 hover:bg-slate-800 rounded-sm cursor-pointer hover:text-white transition duration-300 ease-in-out p-2">
-            <strong className="">Start Date:</strong>{" "}
+            <strong className="">{wordDb.startDate}:</strong>{" "}
             <span className="">{formatDate(startDate)}</span>
           </p>
           <p className="mb-2 dark:hover:bg-slate-500 hover:bg-slate-800 rounded-sm cursor-pointer hover:text-white transition duration-300 ease-in-out p-2">
-            <strong className="">End Date:</strong>{" "}
+            <strong className="">{wordDb.endDate}:</strong>{" "}
             <span className="">{formatDate(endDate)}</span>
           </p>
 
@@ -151,7 +152,7 @@ export default function TournamentPreview({
         </div>
       </section>
       <section className="mb-8">
-        <h2 className="text-xl font-semibold mb-2">Teams</h2>
+        <h2 className="text-xl font-semibold mb-2">{wordDb.teams}</h2>
         <ul className="bg-gray-100 p-4 rounded flex flex-row flex-wrap gap-2 justify-around dark:bg-slate-900 ">
           {teamsTournament.map((team, index) => (
             <li
@@ -164,7 +165,7 @@ export default function TournamentPreview({
         </ul>
       </section>
       <section className="mb-8">
-        <h2 className="text-xl font-semibold mb-2">Groups</h2>
+        <h2 className="text-xl font-semibold mb-2">{wordDb.groups}</h2>
         <div className="flex flex-wrap gap-4 justify-around items-center">
           {groupMatch.map((group, index) => (
             <div
@@ -200,26 +201,24 @@ export default function TournamentPreview({
           </div>
         ))}
       </section> */}
-      <div className="text-xl font-semibold py-2 pb-10">Knockout Stage: </div>
+      <div className="text-xl font-semibold py-2 pb-10">
+        {wordDb.knockout}:{" "}
+      </div>
       {quarterMatch.length !== 0 && semiMatch.length === 0 && (
         <div className="py-6">
           <SingleElimination transformedRounds={transformData(quarterMatch)} />
-          <div className=" text-center font-medium">
-            Sample bracket for Knockout Stage
-          </div>
+          <div className=" text-center font-medium">{wordDb.sampleBracket}</div>
         </div>
       )}
       {quarterMatch.length === 0 && semiMatch.length > 0 && (
         <div className="py-6">
           <SingleElimination transformedRounds={transformData(semiMatch)} />
-          <div className=" text-center font-medium">
-            Sample bracket for Knockout Stage
-          </div>
+          <div className=" text-center font-medium">{wordDb.sampleBracket}</div>
         </div>
       )}
 
       <section className="mb-8 w-20 flex flex-row gap-10 items-center">
-        <h2 className="text-xl font-semibold mb-2">Third Place</h2>
+        <h2 className="text-xl font-semibold mb-2">{wordDb.thirdPlace}</h2>
         <Badge
           className="px-6 py-1 text-base border-2 border-black dark:hover:bg-slate-500 dark:bg-slate-800  hover:bg-slate-800 hover:text-white"
           variant="outline"

@@ -19,6 +19,7 @@ export default function GroupMatcher({
   setIsAllGroupsFilled,
   setGroupMatch,
   teamsTournament,
+  wordDb,
 }) {
   const teamsPerGroupI = parseInt(teamsPerGroup);
 
@@ -117,9 +118,9 @@ export default function GroupMatcher({
 
   return (
     <div className="container">
-      <div>{`Groups: ${numberOfGroups}`}</div>
-      <div>{`Teams in a group: ${teamsPerGroup}`}</div>
-      <h1 className="text-lg font-semibold mb-4">Create Group:</h1>
+      <div>{`${wordDb.groups}: ${numberOfGroups}`}</div>
+      <div>{`${wordDb.teamsPerGroup}: ${teamsPerGroup}`}</div>
+      <h1 className="text-lg font-semibold mb-4">{wordDb.createGroup}:</h1>
       <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
         {groups.map((group, groupIndex) => (
           <Card key={group.name} className="w-full cardFull dark:bg-slate-800">
@@ -174,7 +175,7 @@ export default function GroupMatcher({
           className="my-4 dark:bg-slate-800 font-semibold dark:text-red-500"
         >
           <AlertDescription>
-            Please fill all groups before proceeding. Incomplete groups:{" "}
+            {wordDb.rememberToFill}. {wordDb.incompleteGroups}:{" "}
             {getIncompleteGroups()}
           </AlertDescription>
         </Alert>

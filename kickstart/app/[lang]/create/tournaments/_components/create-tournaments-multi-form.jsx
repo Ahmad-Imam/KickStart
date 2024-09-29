@@ -41,7 +41,7 @@ import { capitalizeFirstLetter } from "@/utils/data-util";
 
 import { useAuth } from "@/app/[lang]/hooks/useAuth";
 
-export function TournamentMultiForm() {
+export function TournamentMultiForm({ wordDb }) {
   const [page, setPage] = useState(1);
   const [totalPages, setTotalPages] = useState(6);
   const [formData, setFormData] = useState({
@@ -471,14 +471,14 @@ export function TournamentMultiForm() {
       <form>
         <CardHeader>
           <CardTitle>
-            Create Tournament (Page {page}/{totalPages})
+            {wordDb.createYourTournaments} ({wordDb.page} {page}/{totalPages})
           </CardTitle>
         </CardHeader>
         <CardContent>
           {page === 1 && (
             <div className="grid w-full items-center gap-4">
               <div className="flex flex-col space-y-1.5">
-                <Label htmlFor="name">Name</Label>
+                <Label htmlFor="name">{wordDb.name}</Label>
                 <Input
                   id="name"
                   name="name"
@@ -490,7 +490,7 @@ export function TournamentMultiForm() {
                 />
               </div>
               <div className="flex flex-col space-y-1.5">
-                <Label htmlFor="bio">Description</Label>
+                <Label htmlFor="bio">{wordDb.description}</Label>
                 <Input
                   id="bio"
                   name="bio"
@@ -502,7 +502,7 @@ export function TournamentMultiForm() {
                 />
               </div>
               <div className="flex flex-col space-y-1.5">
-                <Label htmlFor="bio">Location</Label>
+                <Label htmlFor="bio">{wordDb.location}</Label>
                 <Input
                   id="location"
                   name="location"
@@ -514,7 +514,7 @@ export function TournamentMultiForm() {
                 />
               </div>
               <div className="flex flex-col space-y-1.5">
-                <Label htmlFor="bio">Start Date</Label>
+                <Label htmlFor="bio">{wordDb.startDate}</Label>
                 {/* <Input
                   id="startDate"
                   name="startDate"
@@ -549,7 +549,7 @@ export function TournamentMultiForm() {
                 <DateTimePicker value={startDate} onChange={setStartDate} />
               </div>
               <div className="flex flex-col space-y-1.5">
-                <Label htmlFor="bio">End Date</Label>
+                <Label htmlFor="bio">{wordDb.endDate}</Label>
                 {/* <Input
                   id="endDate"
                   name="endDate"
@@ -562,7 +562,7 @@ export function TournamentMultiForm() {
                 <DateTimePicker value={endDate} onChange={setEndDate} />
               </div>
               <div className="flex flex-col space-y-1.5">
-                <Label htmlFor="bio">Organizer</Label>
+                <Label htmlFor="bio">{wordDb.organizer}</Label>
                 <Input
                   id="organizer"
                   name="organizer"
@@ -584,9 +584,7 @@ export function TournamentMultiForm() {
                     variant="destructive"
                     className="my-4 dark:bg-slate-800 font-semibold dark:text-red-500"
                   >
-                    <AlertDescription>
-                      Remember to fill all information before proceeding
-                    </AlertDescription>
+                    <AlertDescription>{wordDb.rememberToFill}</AlertDescription>
                   </Alert>
                 )}
             </div>
@@ -595,7 +593,7 @@ export function TournamentMultiForm() {
           {page === 2 && (
             <div className="grid w-full items-center gap-4">
               <div>
-                <Label>Number of Groups</Label>
+                <Label>{wordDb.numberOfGroups}</Label>
                 <RadioGroup
                   value={formData.groupsNum.toString()}
                   onValueChange={handleRadioChangeGroup}
@@ -620,7 +618,7 @@ export function TournamentMultiForm() {
                 </RadioGroup>
               </div>
               <div className="flex flex-col space-y-1.5">
-                <Label htmlFor="age">Teams Per Group</Label>
+                <Label htmlFor="age">{wordDb.teamsPerGroup}</Label>
                 <Input
                   id="teamsPerGroup"
                   name="teamsPerGroup"
@@ -632,7 +630,7 @@ export function TournamentMultiForm() {
                 />
               </div>
               <div>
-                <Label>Teams Qualified Per Group</Label>
+                <Label>{wordDb.teamsQualifyingPerGroup}</Label>
                 <RadioGroup
                   value={formData.teamsQPerGroup.toString()}
                   onValueChange={handleRadioChangeGroupQ}
@@ -677,7 +675,7 @@ export function TournamentMultiForm() {
                   <TooltipProvider>
                     <Tooltip>
                       <TooltipTrigger asChild>
-                        <Label htmlFor="quarter">Quarter Final</Label>
+                        <Label htmlFor="quarter">{quarterFinals}</Label>
                       </TooltipTrigger>
                       <TooltipContent>
                         Number of Groups * Number of Teams Qualified must be 8
@@ -685,7 +683,7 @@ export function TournamentMultiForm() {
                     </Tooltip>
                   </TooltipProvider>
                   <Label htmlFor="airplane-mode" className="text-gray-300">
-                    8 teams
+                    8 {wordDb.teams}
                   </Label>
                 </div>
               </div>
@@ -716,7 +714,7 @@ export function TournamentMultiForm() {
                     <TooltipProvider>
                       <Tooltip>
                         <TooltipTrigger asChild>
-                          <Label htmlFor="quarter">Semi Final</Label>
+                          <Label htmlFor="quarter">{wordDb.semiFinals}</Label>
                         </TooltipTrigger>
                         <TooltipContent>
                           Number of Groups * Number of Teams Qualified must be 4
@@ -724,7 +722,7 @@ export function TournamentMultiForm() {
                       </Tooltip>
                     </TooltipProvider>
                     <Label htmlFor="airplane-mode" className="text-gray-300">
-                      4 teams
+                      4 {wordDb.teams}
                     </Label>
                   </div>
                 </div>
@@ -746,7 +744,7 @@ export function TournamentMultiForm() {
                     <TooltipProvider>
                       <Tooltip>
                         <TooltipTrigger asChild>
-                          <Label htmlFor="third">Third Place</Label>
+                          <Label htmlFor="third">{wordDb.thirdPlace}</Label>
                         </TooltipTrigger>
                         <TooltipContent>
                           Number of Groups * Number of Teams Qualified must be 4
@@ -766,6 +764,7 @@ export function TournamentMultiForm() {
               teamsPerGroup={formData.teamsPerGroup}
               setTeamsTournament={setTeamsTournament}
               teamsTournament={teamsTournament}
+              wordDb={wordDb}
             />
           )}
 
@@ -780,6 +779,7 @@ export function TournamentMultiForm() {
                 groupMatch={groupMatch}
                 setGroupMatch={setGroupMatch}
                 teamsTournament={teamsTournament}
+                wordDb={wordDb}
               />
             </div>
           )}
@@ -787,7 +787,7 @@ export function TournamentMultiForm() {
           {page === 5 && (
             <div className="grid w-full items-center gap-4">
               <div className="flex flex-col items-start">
-                <p>Groups:</p>
+                <p>{wordDb.groups}:</p>
                 <div className="flex flex-row flex-wrap gap-2 py-2">
                   {generateGroupLabels(formData.groupsNum).map((label) => (
                     <Badge
@@ -802,7 +802,7 @@ export function TournamentMultiForm() {
               </div>
 
               <div className="flex flex-col items-start">
-                <p>Qualified Teams:</p>
+                <p>{wordDb.qualifiedTeams}:</p>
                 <div className="flex flex-row flex-wrap gap-2 py-2">
                   {generateTeamLabels(
                     formData.groupsNum,
@@ -823,12 +823,14 @@ export function TournamentMultiForm() {
                 <QFMatcher
                   teamsQ={teamsQualifiedList}
                   setQuarterMatch={setQuarterMatch}
+                  wordDb={wordDb}
                 />
               )}
               {semiSwitch && (
                 <SFMatcher
                   teamsQ={teamsQualifiedList}
                   setSemiMatch={setSemiMatch}
+                  wordDb={wordDb}
                 />
               )}
             </div>
@@ -844,6 +846,7 @@ export function TournamentMultiForm() {
               formData={formData}
               startDate={startDate}
               endDate={endDate}
+              wordDb={wordDb}
             />
             // <div>pp</div>
           )}
@@ -856,7 +859,7 @@ export function TournamentMultiForm() {
               onClick={handlePrevious}
               type="button"
             >
-              Previous
+              {wordDb.previous}
             </div>
           )}
           {page < totalPages ? (
@@ -876,7 +879,7 @@ export function TournamentMultiForm() {
               onClick={handleNext}
               className="customButton w-28"
             >
-              Next
+              {wordDb.next}
             </div>
           ) : (
             <button
@@ -885,7 +888,7 @@ export function TournamentMultiForm() {
               type="button"
               onClick={(e) => handleSubmit(e)}
             >
-              {loading ? "Creating..." : "Submit"}
+              {loading ? `${wordDb.saving}...` : `${wordDb.submit}`}
             </button>
           )}
         </CardFooter>

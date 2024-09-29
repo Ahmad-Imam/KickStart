@@ -1,6 +1,7 @@
 import { auth } from "@/auth";
-import { TeamsForm } from "./_components/create-teams-form";
+import { CreateTeamsForm } from "./_components/create-teams-form";
 import { redirect } from "next/navigation";
+import { getDictionary } from "@/app/dictionary/dictionaries";
 
 export async function generateMetadata() {
   return {
@@ -9,15 +10,15 @@ export async function generateMetadata() {
   };
 }
 
-const CreateTeamsPage = async () => {
+const CreateTeamsPage = async ({ params: { lang } }) => {
   const session = await auth();
   if (!session) {
     redirect("/login");
   }
-
+  const wordDb = await getDictionary(lang);
   return (
     <div className="dark:bg-slate-950 w-full min-h-screen flex-col flex items-center justify-center p-4">
-      <TeamsForm />
+      <CreateTeamsForm wordDb={wordDb} />
     </div>
   );
 };
