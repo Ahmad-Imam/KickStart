@@ -40,9 +40,6 @@ export function TournamentForm() {
   const [query, setQuery] = useState("");
   const [results, setResults] = useState([]);
   const [savedItems, setSavedItems] = useState([]);
-  console.log("saved");
-  console.log(Array.isArray(savedItems));
-  console.log(savedItems);
 
   useEffect(() => {
     if (query.trim() === "") {
@@ -61,10 +58,7 @@ export function TournamentForm() {
   }, [query]);
 
   const handleResultClick = (item) => {
-    console.log(item);
-    console.log(savedItems.some((savedItem) => savedItem.id === item.id));
     if (!savedItems.some((savedItem) => savedItem.id === item.id)) {
-      console.log("added");
       setSavedItems((prevSavedItems) => [...prevSavedItems, item]);
     }
   };
@@ -83,20 +77,15 @@ export function TournamentForm() {
       name,
       bio,
       location,
-      // players: savedItems.map((item) => item.id),
     };
 
-    console.log(teamData);
     const teams = await addTeamsN(teamData, 3);
-    // Call the API to create the team
-    // console.log(teamData);
   }
 
   const fetchPlayers = async () => {
     const res = await fetch("/api/players", { cache: "no-store" });
     const data = await res.json();
     setPlayersList(data);
-    // console.log(data);
   };
 
   useEffect(() => {

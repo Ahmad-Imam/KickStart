@@ -1,7 +1,5 @@
 import NextAuth from "next-auth";
 import GoogleProvider from "next-auth/providers/google";
-import FacebookProvider from "next-auth/providers/facebook";
-import CredentialsProvider from "next-auth/providers/credentials";
 
 import { userModel } from "./models/user-model";
 
@@ -13,9 +11,6 @@ export const {
   signIn,
   signOut,
 } = NextAuth({
-  // adapter: MongoDBAdapter(mongoClientPromise, {
-  //   databaseName: process.env.ENVIRONMENT,
-  // }),
   trustHost: true,
   secret: "4d473af750a4b22c2c4ebbf92261f41a",
   session: {
@@ -31,9 +26,6 @@ export const {
     signIn: async (user) => {
       try {
         const { name, email, image } = user.user;
-        console.log("inside login auth");
-        console.log(user?.user);
-
         await dbConnect();
 
         const userExists = await userModel.findOne({ email });

@@ -21,17 +21,14 @@ export default function Status({ tournamentDetails, wordDb }) {
   const { loggedUser } = useAuth();
 
   const isAdmin = tournamentDetails?.admin === loggedUser?.id;
-  console.log(isAdmin);
 
   async function handleClick() {
-    console.log("Start Tournament");
     setTournamentStart(!tournamentStart);
     if (tournamentStart) {
       await editTournamentStatus(tournamentDetails, "finished");
     } else {
       await editTournamentStatus(tournamentDetails, "live");
     }
-    console.log("done");
   }
 
   return (

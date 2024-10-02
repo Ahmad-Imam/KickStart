@@ -44,9 +44,7 @@ export default function TeamPlayersForm({
       const filtered = playerList.filter((item) =>
         item?.name.toLowerCase().includes(query.toLowerCase())
       );
-      console.log("filtered");
-      console.log(filtered);
-      // console.log(playerList);
+
       setResults(filtered);
     }, 300); // Simulate a slight delay
 
@@ -54,11 +52,7 @@ export default function TeamPlayersForm({
   }, [query, playerList]);
 
   const handleResultClick = (item) => {
-    // console.log(item);
-    // console.log(savedItems.some((savedItem) => savedItem.id === item.id));
-
     if (!savedItems.some((savedItem) => savedItem.id === item.id)) {
-      console.log("added");
       setSavedItems((prevSavedItems) => [...prevSavedItems, item]);
 
       setResults((prevResults) =>
@@ -69,23 +63,8 @@ export default function TeamPlayersForm({
     }
   };
 
-  // console.log("saved");
-  // console.log(savedItems);
   const removeSavedItem = (item) => {
-    console.log(item);
-
-    //filter saved items by the item object to remove
-    // setSavedItems((prev) =>
-    //   prev.filter((item) =>
-    //     item?.name.toLowerCase().includes(query.toLowerCase())
-    //   )
-    // );
-
     setSavedItems((prev) => prev.filter((i) => i.id !== item.id));
-
-    // setSavedItems([]);
-
-    // setSavedItems((prev) => prev.filter((i) => i !== item));
 
     setResults((prevResults) => [...prevResults, item]);
   };
@@ -93,11 +72,8 @@ export default function TeamPlayersForm({
   const fetchPlayers = async () => {
     const res = await fetch("/api/players", { cache: "no-store" });
     const data = await res.json();
-    console.log("data");
-    // console.log(data);
     setPlayerList(data);
     setLoading(false);
-    // console.log(data);
   };
 
   useEffect(() => {
@@ -108,7 +84,6 @@ export default function TeamPlayersForm({
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    console.log("submitted");
     setSquadChangeLoading(true);
     const newPlayers = savedItems.filter(
       (item) => !playersInfo.some((player) => player.id === item.id)
@@ -117,22 +92,14 @@ export default function TeamPlayersForm({
       (player) => !savedItems.some((item) => item.id === player.id)
     );
 
-    console.log(newPlayers);
-    console.log(removedPlayers);
-    console.log(team);
-
     if (newPlayers.length > 0) {
       const test = await deleteFromPrevAddPlayersToCurrentTeam(
         newPlayers,
         team
       );
-      console.log("test");
-      console.log(test);
     }
     if (removedPlayers.length > 0) {
       const test = await deletePlayersFromCurrentTeam(removedPlayers, team);
-      console.log("test");
-      console.log(test);
     }
 
     setSquadChangeLoading(false);

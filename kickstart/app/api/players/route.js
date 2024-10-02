@@ -8,7 +8,6 @@ export const GET = async (req, res) => {
     await dbConnect();
 
     const players = await getPlayers();
-    // console.log(players);
     return NextResponse.json(players);
   } catch (error) {
     console.error(error);

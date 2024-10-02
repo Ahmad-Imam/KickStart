@@ -43,10 +43,6 @@ export default function Tiebreaker({
   };
 
   async function handleClick(teamId, index, result) {
-    console.log("clicked");
-    console.log(teamId);
-    console.log(index);
-    console.log(result);
     const newTiebreaker = await editTiebreaker(
       matchDetails,
       teamId,

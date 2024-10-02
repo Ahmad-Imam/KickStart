@@ -34,7 +34,6 @@ export default function MatchSheet({
   const [selectedPlayer, setSelectedPlayer] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
   const teams = [team1, team2];
-  // console.log(teams);
 
   const handleSubmit = async () => {
     if (selectedTeam && selectedPlayer) {
@@ -46,10 +45,6 @@ export default function MatchSheet({
         (team) => team.name !== selectedTeam.name
       );
 
-      console.log("Selected Team:", selectedTeam);
-      console.log("Selected Player:", selectedPlayerObject);
-      console.log("Not Selected Team:", notSelectedTeam);
-
       setIsLoading(true);
 
       if (type === "score") {
@@ -60,8 +55,6 @@ export default function MatchSheet({
           matchDetails
         );
       } else if (type === "yellow") {
-        console.log("inside yellow card");
-        console.log();
         await addCardToMatch(
           selectedTeam,
           selectedPlayerObject,
@@ -89,11 +82,8 @@ export default function MatchSheet({
           type
         );
       } else if (type === "motm") {
-        console.log("inside motm");
         await addMOTMToMatch(selectedTeam, selectedPlayerObject, matchDetails);
       }
-
-      console.log("Goal added successfully");
 
       setIsOpen(false);
       setSelectedTeam(null);

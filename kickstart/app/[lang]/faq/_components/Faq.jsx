@@ -82,12 +82,12 @@ const faqs = [
   //     "To delete a tournament, go to the tournament page and click on 'Delete Tournament'.",
   //   ],
   // },
-  // {
-  //   question: "How do I contact support?",
-  //   answer: [
-  //     "If you have any questions or need assistance, you can contact our support team by sending an email to",
-  //   ],
-  // },
+  {
+    question: "How do I contact support?",
+    answer: [
+      "If you have any questions or need assistance, you can contact send an email to ahmadimam71@gmail.com",
+    ],
+  },
   {
     question: "What can I change about a match?",
     answer: ["You can change match location and date"],
@@ -106,6 +106,14 @@ const faqs = [
     answer: [
       "You can change the squad by clicking on the 'Edit Squad' button in the team page.",
       "You can find from all available players and add them to the squad. This does not affect the general team squad",
+    ],
+  },
+  {
+    question: "Does the application support multiple languages?",
+    answer: [
+      "The application supports English, Finnish and Bangla",
+      "The application will automatically detect your browser language and set the language accordingly",
+      "If you want to change the language, you should set your preferred language on top in browser language settings",
     ],
   },
 ];

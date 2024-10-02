@@ -17,8 +17,6 @@ const CreatePlayerPage = async ({ params: { lang } }) => {
   }
   const wordDb = await getDictionary(lang);
 
-  // console.log(session);
-
   return (
     <div className="dark:bg-slate-950 min-h-screen w-full flex-col flex items-center justify-center p-4">
       <CreatePlayersForm wordDb={wordDb} />

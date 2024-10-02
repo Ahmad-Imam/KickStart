@@ -40,8 +40,6 @@ export default function CreateTeamsTournament({
   }, [query]);
 
   const handleResultClick = (item) => {
-    console.log(item);
-    console.log(savedItems.some((savedItem) => savedItem.id === item.id));
     if (savedItems.length === groupsNum * teamsPerGroup) {
       toast.error(
         "You have reached the maximum number of teams for the tournament"

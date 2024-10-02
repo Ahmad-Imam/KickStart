@@ -11,13 +11,11 @@ import { dbConnect } from "@/service/mongo";
 export default async function Navbar({ wordDb }) {
   const session = await auth();
   await dbConnect();
-  // console.log(session);
+
   let loggedUser = null;
 
   if (session?.user) {
-    console.log("session user", session?.user);
     loggedUser = await getUserByEmail(session?.user?.email);
-    // console.log(loggedUser);
   }
 
   return (

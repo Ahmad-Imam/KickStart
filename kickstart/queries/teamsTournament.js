@@ -9,9 +9,6 @@ import {
 import { ObjectId } from "mongodb";
 
 export async function createTeamsTournamentList(data, tournamentId) {
-  console.log("createsTeamsTournamentList");
-  console.log(tournamentId);
-
   try {
     const tournamentDataList = data?.map((team) => ({
       tournamentId: tournamentId,
@@ -29,8 +26,6 @@ export async function createTeamsTournamentList(data, tournamentId) {
     const teamsTournamentList = await teamsTournamentModel.insertMany(
       tournamentDataList
     );
-
-    console.log("teamsTournamentList created");
 
     const teamsTournament = await teamsTournamentModel
       .find({ tournamentId })
@@ -70,21 +65,13 @@ export async function updateMatchPlayedTeamsT(matchDetails, tournament) {
       tournament.id
     );
 
-    console.log("teamsTournament");
-    // console.log(teamsTournament);
-    // console.log(matchDetails);
-
     const teamsTournamentUpdated = teamsTournament
       .map((team) => {
         let updateFields = { matchPlayed: 1 };
 
-        console.log("in loop");
-        console.log(team);
-        console.log(matchDetails);
         if (
           team?.teamId?.toString() === matchDetails?.team1?.teamId?.toString()
         ) {
-          console.log("team1");
           if (matchDetails?.result?.team1 > matchDetails?.result?.team2) {
             updateFields.matchWon = 1;
           } else if (
@@ -103,7 +90,6 @@ export async function updateMatchPlayedTeamsT(matchDetails, tournament) {
         } else if (
           team?.teamId?.toString() === matchDetails?.team2?.teamId?.toString()
         ) {
-          console.log("team2");
           if (matchDetails.result.team2 > matchDetails.result.team1) {
             updateFields.matchWon = 1;
           } else if (matchDetails.result.team2 < matchDetails.result.team1) {
@@ -123,20 +109,13 @@ export async function updateMatchPlayedTeamsT(matchDetails, tournament) {
       })
       .filter(Boolean);
 
-    console.log("teasmtournament updated");
-    // console.log(teamsTournamentUpdated);
     if (teamsTournamentUpdated.length > 0) {
       const result = await teamsTournamentModel.bulkWrite(
         teamsTournamentUpdated
       );
-      console.log("match Played updated");
-      // return replaceMongoIdInArray(result);
     } else {
-      console.log("No teams to update");
       return [];
     }
-
-    // return replaceMongoIdInArray(teamsTournamentUpdatedList);
   } catch (error) {
     throw new Error(error);
   }
@@ -147,14 +126,10 @@ export async function updateQuarterEnd(tournament) {
     const quarterMatches = await matchModel
       .find({ tournamentId: tournament.id, type: "quarter" })
       .lean();
-    console.log("quarterMatches");
-    console.log(quarterMatches);
 
     const semiMatches = await matchModel
       .find({ tournamentId: tournament.id, type: "semi" })
       .lean();
-    console.log("semiMatches");
-    console.log(semiMatches);
 
     const qf1Winner =
       quarterMatches[0].result.team1 > quarterMatches[0].result.team2
@@ -197,13 +172,6 @@ export async function updateQuarterEnd(tournament) {
       },
       { new: true }
     );
-
-    console.log("sf1");
-    console.log(sf1);
-    console.log("sf2");
-    console.log(sf2);
-
-    // return replaceMongoIdInArray(teamsTournamentUpdatedList);
   } catch (error) {
     throw new Error(error);
   }
@@ -214,8 +182,6 @@ export async function updateSemiEnd(tournament) {
     const semiMatches = await matchModel
       .find({ tournamentId: tournament.id, type: "semi" })
       .lean();
-    console.log("semiMatches");
-    console.log(semiMatches);
 
     const sf1Winner =
       semiMatches[0].result.team1 > semiMatches[0].result.team2
@@ -260,23 +226,14 @@ export async function updateSemiEnd(tournament) {
         { new: true }
       );
     }
-
-    console.log("sf1");
-    // console.log(sf1);
-    console.log("sf2");
-    // console.log(sf2);
-
-    // return replaceMongoIdInArray(teamsTournamentUpdatedList);
   } catch (error) {
     throw new Error(error);
   }
 }
 
 export async function getTeamsTMatches(tournamentId, teamId) {
-  console.log(teamId);
-  console.log(tournamentId);
   const teamObj = ObjectId.createFromHexString(teamId);
-  console.log(teamObj);
+
   try {
     const matches = await matchModel
       .find({
@@ -284,9 +241,6 @@ export async function getTeamsTMatches(tournamentId, teamId) {
         $or: [{ "team1.teamId": teamObj }, { "team2.teamId": teamObj }],
       })
       .lean();
-
-    console.log("matches");
-    console.log(matches.length);
 
     return replaceMongoIdInArray(matches);
   } catch (error) {

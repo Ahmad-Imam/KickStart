@@ -19,8 +19,6 @@ export async function getAllUsers() {
 
 export async function getUserByIds(userIds) {
   const users = await userModel.find({ _id: { $in: userIds } }).lean();
-  console.log("users");
-  console.log(users);
-  // return users;
+
   return replaceMongoIdInArray(users);
 }

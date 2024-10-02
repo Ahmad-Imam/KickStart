@@ -13,8 +13,6 @@ export async function createPlayers(data) {
   try {
     const player = await playersModel.create(data);
     const simplePlayerData = await playersModel.findById(player._id).lean();
-    console.log("player created");
-    console.log(replaceMongoIdInObject(simplePlayerData));
 
     if (simplePlayerData.team) {
       const teamId = simplePlayerData.team;
@@ -22,9 +20,6 @@ export async function createPlayers(data) {
       //update team with new player in the db
       team.players.push(player._id.toString());
       await teamsModel.findByIdAndUpdate(teamId, { players: team.players });
-
-      console.log("team found");
-      console.log(replaceMongoIdInObject(team));
     }
 
     return replaceMongoIdInObject(simplePlayerData);
@@ -38,10 +33,6 @@ export async function updatePlayerData(playerData, playerId) {
     const player = await playersModel.findByIdAndUpdate(playerId, playerData, {
       new: true,
     });
-
-    console.log("player data editetttttttt");
-
-    // return replaceMongoIdInObject(player);
   } catch (error) {
     throw new Error(error);
   }
@@ -63,15 +54,11 @@ export async function getPlayers() {
       })
       .lean();
 
-    console.log("players query");
-    // console.log(replaceMongoIdInArray(players));
-
     //todo change upcoming to live later
     const filteredPlayers = players.filter(
       (player) => !player.tournament || player.tournament.status !== "live"
     );
 
-    // console.log(filteredPlayers);
     return replaceMongoIdInArray(filteredPlayers);
   } catch (error) {
     throw new Error(error);
@@ -118,7 +105,6 @@ export async function getAllPlayersByIds(ids) {
 }
 
 export async function getTopScorers(playerScores) {
-  console.log(playerScores.length);
   try {
     if (playerScores?.length === 0) {
       return [];
@@ -156,7 +142,6 @@ export async function getTopScorers(playerScores) {
 }
 
 export async function getYellowScorers(playerScores) {
-  console.log(playerScores.length);
   try {
     if (playerScores?.length === 0) {
       return [];
@@ -194,7 +179,6 @@ export async function getYellowScorers(playerScores) {
 }
 
 export async function getRedScorers(playerScores) {
-  console.log(playerScores.length);
   try {
     if (playerScores?.length === 0) {
       return [];
@@ -243,15 +227,11 @@ export async function updatePlayerTeam(playersInTeam, teamsId) {
 
         if (player?.team) {
           // Remove player from team table
-          console.log("player old team");
-          console.log(playerId);
-          console.log(player?.team.toString());
 
           const updatedTeam = await teamsModel.updateOne(
             { _id: player?.team.toString() },
             { $pull: { players: playerId.toString() } }
           );
-          console.log(updatedTeam);
         }
 
         return playersModel
@@ -259,9 +239,6 @@ export async function updatePlayerTeam(playersInTeam, teamsId) {
           .lean();
       })
     );
-
-    console.log("newPlayers query");
-    console.log(replaceMongoIdInArray(newPlayers));
   } catch (error) {
     throw new Error(error);
   }
@@ -269,29 +246,6 @@ export async function updatePlayerTeam(playersInTeam, teamsId) {
 
 export async function updatePlayersTournament(teamsTournament, tournament) {
   try {
-    console.log("players");
-
-    // const newPlayers = await Promise.all(
-    //   teamsTournament.map(async (team) => {
-    //     const teamId = team.teamId;
-    //     const players = team.players;
-    //     const newPlayers = await Promise.all(
-    //       players.map(async (playerId) => {
-
-    //         console.log("playerId");
-
-    //         await playersModel.findByIdAndUpdate(
-    //           playerId,
-    //           { tournament: tournament.id },
-    //           { new: false }
-    //         );
-    //       })
-    //     );
-    //     console.log("newPlayers query");
-    //     console.log(replaceMongoIdInArray(newPlayers));
-    //   })
-    // );
-
     const newPlayers = await Promise.all(
       teamsTournament.map(async (team) => {
         const playerUpdates = team.players.map((playerId) => ({
@@ -303,8 +257,6 @@ export async function updatePlayersTournament(teamsTournament, tournament) {
         }));
 
         const result = await playersModel.bulkWrite(playerUpdates);
-        console.log("newPlayers query");
-        // console.log(result);
       })
     );
   } catch (error) {
@@ -317,10 +269,6 @@ export async function removeFromPrevAddPlayersToCurrentTeamTeamsT(
   teamsTournament
 ) {
   try {
-    console.log("removeAddPlayersFromPrevCurrentTeam");
-    console.log(playersInTeam);
-    // console.log(teamsTournament);
-
     const teamsTId = teamsTournament.id;
 
     const newPlayers = await Promise.all(
@@ -328,9 +276,6 @@ export async function removeFromPrevAddPlayersToCurrentTeamTeamsT(
         const prevTeamId = player?.team?._id;
         //player is in a team table - player has a team id?
         if (prevTeamId) {
-          console.log("inside");
-          console.log("newTeams");
-
           const prevTeamsTournament = await teamsTournamentModel
             .findOne({
               teamId: prevTeamId,
@@ -340,15 +285,10 @@ export async function removeFromPrevAddPlayersToCurrentTeamTeamsT(
 
           //if player team is in a tournament
           if (prevTeamsTournament) {
-            //ok
-            console.log("prevTeamsTournament");
-            // console.log(prevTeamsTournament);
             //remove player from teamsTournament table
             prevTeamsTournament.players = prevTeamsTournament.players.filter(
               (p) => p !== player.id
             );
-            console.log("after filter");
-            console.log(prevTeamsTournament);
 
             const prevTeamsT = await teamsTournamentModel.findOneAndUpdate(
               {
@@ -359,16 +299,6 @@ export async function removeFromPrevAddPlayersToCurrentTeamTeamsT(
                 players: prevTeamsTournament.players,
               }
             );
-            console.log("prevTeamsT");
-            console.log(prevTeamsT);
-
-            // Remove player from team table
-            //   const updatedTeam = await teamsModel.updateOne(
-            //     { _id: prevTeamId },
-            //     { $pull: { players: player.id } }
-            //   );
-            //   console.log("updatedTeam");
-            //   console.log(updatedTeam);
 
             //   //add player to teamsTournament
 
@@ -379,8 +309,6 @@ export async function removeFromPrevAddPlayersToCurrentTeamTeamsT(
               })
               .lean();
 
-            console.log("currentTeamsTournament");
-            console.log(currentTeamsTournament);
             currentTeamsTournament.players.push(player.id);
             const newTeamsT = await teamsTournamentModel.findOneAndUpdate(
               {
@@ -391,56 +319,7 @@ export async function removeFromPrevAddPlayersToCurrentTeamTeamsT(
                 players: currentTeamsTournament.players,
               }
             );
-            console.log("newTeamsT");
-            console.log(newTeamsT);
-
-            //   //add player to team table
-            //   const currentTeam = await teamsModel
-            //     .findById(teamsTournament.teamId)
-            //     .lean();
-            //   console.log(currentTeam);
-            //   currentTeam.players.push(player.id);
-            //   console.log(currentTeam.players);
-            //   const newTeam = await teamsModel.findByIdAndUpdate(
-            //     teamsTournament.teamId,
-            //     {
-            //       players: currentTeam.players,
-            //     }
-            //   );
-            //   console.log("newTeam");
-            //   console.log(newTeam);
-            //   //remove old team from player table and add team to player table
-            //   const playerCurrent = await playersModel.findByIdAndUpdate(
-            //     player.id,
-            //     { team: teamsTournament.teamId }
-            //   );
-            //   console.log(playerCurrent);
-            // }
-            //if player team is not in a tournament
           } else {
-            //ok
-            console.log("not in tournament");
-
-            // // Remove player from team table
-            // const updatedTeam = await teamsModel.updateOne(
-            //   { _id: prevTeamId },
-            //   { $pull: { players: player.id } }
-            // );
-            // console.log(updatedTeam);
-
-            // //add team,tournament to player table
-            // const updatedPlayers = await playersModel.findByIdAndUpdate(
-            //   player.id,
-            //   {
-            //     team: teamsTournament.teamId,
-            //     tournament: teamsTournament.tournamentId,
-            //   }
-            // );
-
-            // console.log(updatedPlayers);
-
-            //add player to teamsTournament
-
             const currentTeamsTournament = await teamsTournamentModel
               .findOne({
                 teamId: teamsTournament.teamId,
@@ -448,8 +327,6 @@ export async function removeFromPrevAddPlayersToCurrentTeamTeamsT(
               })
               .lean();
 
-            console.log("currentTeamsTournament");
-            console.log(currentTeamsTournament);
             currentTeamsTournament.players.push(player.id);
             const newTeamsT = await teamsTournamentModel.findOneAndUpdate(
               {
@@ -460,31 +337,11 @@ export async function removeFromPrevAddPlayersToCurrentTeamTeamsT(
                 players: currentTeamsTournament.players,
               }
             );
-            console.log("newTeamsT");
-            console.log(newTeamsT);
-
-            // //add player to team table
-            // const currentTeam = await teamsModel
-            //   .findById(teamsTournament.teamId)
-            //   .lean();
-            // console.log(currentTeam);
-            // currentTeam.players.push(player.id);
-            // console.log(currentTeam.players);
-            // const newTeam = await teamsModel.findByIdAndUpdate(
-            //   teamsTournament.teamId,
-            //   {
-            //     players: currentTeam.players,
-            //   }
-            // );
-            // console.log("newTeam");
-            // console.log(newTeam);
           }
         }
         //player is not in a team table
         else {
           //ok
-          console.log("outside");
-          console.log("newTeams");
 
           //add player to city teamsTournament
 
@@ -495,8 +352,6 @@ export async function removeFromPrevAddPlayersToCurrentTeamTeamsT(
             })
             .lean();
 
-          console.log("currentTeamsTournament");
-          console.log(currentTeamsTournament);
           currentTeamsTournament.players.push(player.id);
           const newTeamsT = await teamsTournamentModel.findOneAndUpdate(
             {
@@ -507,42 +362,10 @@ export async function removeFromPrevAddPlayersToCurrentTeamTeamsT(
               players: currentTeamsTournament.players,
             }
           );
-          console.log("newTeamsT");
-          console.log(newTeamsT);
-
-          // //add player to city team table
-          // const currentTeam = await teamsModel
-          //   .findById(teamsTournament.teamId)
-          //   .lean();
-          // console.log(currentTeam);
-          // currentTeam.players.push(player.id);
-          // const newTeam = await teamsModel.findByIdAndUpdate(
-          //   teamsTournament.teamId,
-          //   {
-          //     players: currentTeam.players,
-          //   }
-          // );
-          // console.log("newTeam");
-          // console.log(newTeam);
-
-          // //add city,tournament to players table
-
-          // console.log(player.id);
-          // const playerCurrent = await playersModel.findByIdAndUpdate(
-          //   player.id,
-          //   {
-          //     team: teamsTournament.teamId,
-          //     tournament: teamsTournament.tournamentId,
-          //   }
-          // );
-          // console.log(playerCurrent);
         }
         return player;
       })
     );
-
-    console.log("newPlayers query");
-    // console.log(replaceMongoIdInArray(newPlayers));
   } catch (error) {
     throw new Error(error);
   }
@@ -553,10 +376,6 @@ export async function removeFromPrevAddPlayersToCurrentTeam(
   team
 ) {
   try {
-    console.log("removeAddPlayersFromPrevCurrentTeam");
-    console.log(playersInTeam);
-    // console.log(teamsTournament);
-
     const teamsTId = team.id;
 
     const newPlayers = await Promise.all(
@@ -571,33 +390,23 @@ export async function removeFromPrevAddPlayersToCurrentTeam(
           );
         }
 
-        console.log("newTeams");
-
         //add player to city team table
         const currentTeam = await teamsModel.findById(team.id).lean();
-        console.log(currentTeam);
+
         currentTeam.players.push(player.id);
         const newTeam = await teamsModel.findByIdAndUpdate(team.id, {
           players: currentTeam.players,
         });
 
-        console.log("newTeam");
-        console.log(newTeam);
-
         //add city to players table
 
-        console.log(player.id);
         const playerCurrent = await playersModel.findByIdAndUpdate(player.id, {
           team: team.id,
         });
-        console.log(playerCurrent);
 
         return player;
       })
     );
-
-    console.log("prev remove new add done");
-    // console.log(replaceMongoIdInArray(newPlayers));
   } catch (error) {
     throw new Error(error);
   }
@@ -624,8 +433,6 @@ export async function removePlayersFromCurrentTeamTeamsT(
         prevTeamsTournament.players = prevTeamsTournament.players.filter(
           (p) => p !== player.id
         );
-        console.log("after filter");
-        console.log(prevTeamsTournament);
 
         const prevTeamsT = await teamsTournamentModel.findOneAndUpdate(
           {
@@ -636,30 +443,10 @@ export async function removePlayersFromCurrentTeamTeamsT(
             players: prevTeamsTournament.players,
           }
         );
-        console.log("prevTeamsT");
-        console.log(prevTeamsT);
-
-        console.log("removePlayersFromCurrentTeam");
-
-        // // Remove player from team table
-        // const updatedTeam = await teamsModel.updateOne(
-        //   { _id: prevTeamId },
-        //   { $pull: { players: player.id } }
-        // );
-        // console.log(updatedTeam);
-
-        // //remove team,tournament from player table
-        // const updatedPlayers = await playersModel.findByIdAndUpdate(player.id, {
-        //   team: null,
-        //   tournament: null,
-        // });
 
         return player;
       })
     );
-
-    console.log("newPlayers query delete");
-    // console.log(replaceMongoIdInArray(newPlayers));
   } catch (error) {
     throw new Error(error);
   }
@@ -674,7 +461,6 @@ export async function removePlayersFromCurrentTeam(playersInTeam, team) {
           { _id: team?.id },
           { $pull: { players: player.id } }
         );
-        console.log(updatedTeam);
 
         //remove team,tournament from player table
         const updatedPlayers = await playersModel.findByIdAndUpdate(player.id, {
@@ -684,9 +470,6 @@ export async function removePlayersFromCurrentTeam(playersInTeam, team) {
         return player;
       })
     );
-
-    console.log("newPlayers query delete");
-    // console.log(replaceMongoIdInArray(newPlayers));
   } catch (error) {
     throw new Error(error);
   }

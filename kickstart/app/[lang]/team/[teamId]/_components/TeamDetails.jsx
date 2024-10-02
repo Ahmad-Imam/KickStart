@@ -35,14 +35,6 @@ export default async function TeamDetails({ team, wordDb }) {
 
   const playersInfo = replaceMongoIdInArray(team.players);
 
-  console.log("playersInfo query");
-  console.log(playersInfo);
-  console.log("yeloooooooooooooooooooooooo");
-
-  // console.log(team?.id);
-  // console.log(team?.yellow);
-  // console.log(team?.red);
-
   return (
     <div className="container mx-auto p-4">
       <Card className="w-full max-w-4xl mx-auto cardFull dark:bg-slate-900">

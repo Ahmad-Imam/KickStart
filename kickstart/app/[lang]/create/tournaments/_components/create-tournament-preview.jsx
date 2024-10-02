@@ -79,7 +79,6 @@ export default function TournamentPreview({
 
     return rounds;
   };
-  // console.log(startDate);
 
   const formatDate = (date) => {
     const options = {

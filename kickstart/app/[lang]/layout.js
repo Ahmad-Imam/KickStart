@@ -1,8 +1,8 @@
 import { Inter } from "next/font/google";
 import "./globals.css";
-import { MainNav } from "@/components/main-nav";
+
 import { Toaster } from "@/components/ui/sonner";
-import { ThemeProvider } from "@/components/theme-provider";
+import { ThemeProvider } from "./providers/theme-provider";
 import { ModeToggle } from "@/components/ModeToggle";
 import Navbar from "@/components/Navbar/Navbar";
 import ScrollToTop from "@/components/ScrollToTop";

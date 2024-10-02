@@ -26,9 +26,9 @@ export default function OverViewTab({
   wordDb,
 }) {
   if (typeof window !== "undefined") {
-    console.log("Rendering OverViewTab on the client");
+    // console.log("Rendering OverViewTab on the client");
   } else {
-    console.log("Rendering OverViewTab on the server");
+    // console.log("Rendering OverViewTab on the server");
   }
 
   return (

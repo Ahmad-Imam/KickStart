@@ -27,11 +27,9 @@ export default async function MatchEditPage({ params }) {
   const wordDb = await getDictionary(params.lang);
 
   const match = await getMatchById(params.matchId);
-  console.log("match");
 
   let isAdmin = false;
   const session = await auth();
-  console.log(session);
 
   if (session?.user) {
     const currentUser = await getUserByEmail(session?.user?.email);

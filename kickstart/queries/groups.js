@@ -12,9 +12,6 @@ export async function createGroups(
   teamsQPerGroup,
   teamsPerGroup
 ) {
-  console.log("createsgroups");
-  // console.log(tournamentId);
-  // console.log(data);
   let groupsList = [];
   try {
     groupsList = await Promise.all(
@@ -33,8 +30,6 @@ export async function createGroups(
         );
         const teamsDataArray = Object.values(teamsDataObj);
 
-        console.log(teamsDataArray);
-
         const groupData = {
           tournamentId: tournamentId,
           teamsQPerGroup: teamsQPerGroup,
@@ -46,11 +41,6 @@ export async function createGroups(
       })
     );
 
-    // const teamsTournament = await teamsTournamentModel.create(tournamentData);
-    // const simpleTeamData = await teamsTournamentModel
-    //   .findById(teamsTournament._id)
-    //   .lean();
-    // console.log(replaceMongoIdInObject(simpleTeamData));
     return replaceMongoIdInArray(groupsList);
   } catch (error) {
     throw new Error(error);
@@ -69,7 +59,6 @@ export async function getGroupsByTournamentId(tournamentId) {
 export async function updateMatchPlayedGroups(matchDetails, tournament) {
   try {
     const groups = await getGroupsByTournamentId(tournament.id);
-    // console.log(groups);
     const newGroups = await Promise.all(
       groups.map(async (group) => {
         const newGroup = await groupsModel
@@ -92,7 +81,6 @@ export async function updateMatchPlayedGroups(matchDetails, tournament) {
                     team.teamId.toString() ===
                     matchDetails.team1.teamId.toString()
                   ) {
-                    console.log("team1");
                     updateFields.matchPlayed += 1;
                     updateFields.goalsFor += matchDetails.result.team1;
                     updateFields.goalsAgainst += matchDetails.result.team2;
@@ -112,7 +100,6 @@ export async function updateMatchPlayedGroups(matchDetails, tournament) {
                     team.teamId.toString() ===
                     matchDetails.team2.teamId.toString()
                   ) {
-                    console.log("team2");
                     updateFields.matchPlayed += 1;
                     updateFields.goalsFor += matchDetails.result.team2;
                     updateFields.goalsAgainst += matchDetails.result.team1;
@@ -144,8 +131,6 @@ export async function updateMatchPlayedGroups(matchDetails, tournament) {
       })
     );
 
-    console.log("group updated");
-    // console.log(newGroups[0].teams);
     return replaceMongoIdInArray(newGroups);
   } catch (error) {
     throw new Error(error);

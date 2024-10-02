@@ -24,7 +24,6 @@ export default async function MatchPage({ params }) {
   const wordDb = await getDictionary(params.lang);
 
   const match = await getMatchById(params.matchId);
-  console.log("match");
 
   const sortedEvents = match.events?.slice().sort((a, b) => {
     const dateTimeA = new Date(`${a.date} ${a.time}`);
@@ -36,7 +35,6 @@ export default async function MatchPage({ params }) {
   let isAdmin = false;
   let isModerator = false;
   const session = await auth();
-  // console.log(session);
 
   if (session?.user) {
     const currentUser = await getUserByEmail(session?.user?.email);
@@ -44,12 +42,8 @@ export default async function MatchPage({ params }) {
     isAdmin = currentUser?.admin?.includes(params.tournamentId.toString());
     isModerator = tournament?.moderators?.includes(currentUser?.id);
   }
-  console.log("isAdmin");
-  console.log(isAdmin);
-  console.log(isModerator);
 
   const isMatchConfig = isAdmin || isModerator;
-  console.log(isMatchConfig);
 
   return (
     <div className="dark:bg-slate-950 min-h-screen w-full">

@@ -98,7 +98,6 @@ export default async function MatchDetails({
   let team2;
   //todo check for all match types
 
-  console.log("in teamid");
   team1 = await getTeamsTByTeamId(
     matchDetails?.team1?.teamId,
     matchDetails?.tournamentId
@@ -107,10 +106,6 @@ export default async function MatchDetails({
     matchDetails?.team2?.teamId,
     matchDetails?.tournamentId
   );
-
-  console.log("team2");
-
-  console.log(matchDetails?.tournamentId);
 
   const tournament = getTournamentById(matchDetails?.tournamentId);
 

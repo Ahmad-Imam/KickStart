@@ -30,25 +30,7 @@ export async function generateMetadata({ params }) {
 }
 
 export default async function TeamsTPage({ params }) {
-  // const { tournamentId } = params;
-  console.log(params);
-
   await dbConnect();
-  // const tournament = await getTournamentById(tournamentId);
-  // const matches = await getMatchesByTournamentId(tournamentId);
-  // const groups = await getGroupsByTournamentId(tournamentId);
-
-  // if (tournament) {
-  //   console.log("Tournament found");
-  //   // console.log(tournament);
-  //   console.log(typeof groups);
-  //   console.log(groups);
-  // }
-
-  // const match = await getMatchById(params.matchId);
-  // console.log(match);
-
-  // console.log(tournamentId);
 
   const wordDb = await getDictionary(params.lang);
 
@@ -57,21 +39,14 @@ export default async function TeamsTPage({ params }) {
     params.tournamentId
   );
 
-  console.log(params.teamId);
-  console.log(params.tournamentId);
-
   const tournament = await getTournamentById(teamsTournament?.tournamentId);
 
   const topScorers = await getTopScorers(teamsTournament.scorers);
-  // console.log(topScorers);
-  // console.log(teamsTournament);
   const yellowCards = await getYellowScorers(teamsTournament?.yellow);
   const redCards = await getRedScorers(teamsTournament?.red);
-  console.log("yellow");
 
   let isAdmin = false;
   const session = await auth();
-  console.log(session);
 
   if (session?.user) {
     const currentUser = await getUserByEmail(session?.user?.email);

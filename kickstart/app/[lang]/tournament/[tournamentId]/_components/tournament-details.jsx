@@ -13,15 +13,6 @@ import TournamentModerators from "./TournamentModerators";
 import { auth } from "@/auth";
 import { getAllUsers, getUserByEmail, getUserByIds } from "@/queries/users";
 
-// import MatchTab from "@/app/tournament/[tournamentId]/_components/MatchTab/MatchTab";
-// import OverViewTab from "@/app/tournament/[tournamentId]/_components/OverviewTab/OverviewTab";
-// import TeamsTab from "@/app/tournament/[tournamentId]/_components/TeamsTab/TeamsTab";
-// import GroupsTab from "@/app/tournament/[tournamentId]/_components/GroupsTab/GroupsTab";
-// import TournamentTabs from "./TournamentTabs";
-
-//groupmatch - groups  table - teams -  info from teamsTournament table
-//matches - matches table
-
 export default async function TournamentDetails({
   tournamentDetails,
   matchesDetails,
@@ -30,15 +21,10 @@ export default async function TournamentDetails({
   sortedEvents,
   wordDb,
 }) {
-  // console.log("group");
-
-  // console.log(matchesDetails);
-
   let moderatorsList = [];
   let isAdmin = false;
   let allUsersList = [];
   const session = await auth();
-  console.log(session);
 
   if (session?.user) {
     const currentUser = await getUserByEmail(session?.user?.email);
@@ -53,15 +39,8 @@ export default async function TournamentDetails({
       allUsersList = allUsers;
     }
 
-    console.log("isAdmin");
-    console.log(isAdmin);
-    // console.log(allUsersList[0]);
     moderatorsList = await getUserByIds(tournamentDetails?.moderators);
-    console.log("current user");
-    // console.log(currentUser);
   }
-
-  // console.log(session);
 
   return (
     <div className="container mx-auto px-4 py-6">

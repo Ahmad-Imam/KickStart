@@ -74,12 +74,6 @@ export function TournamentMultiForm({ wordDb }) {
   );
   const router = useRouter();
 
-  // console.log("semi");
-  // console.log(quarterMatch);
-  // console.log(semiMatch);
-  // console.log(groupMatch);
-  // console.log(teamsTournament);
-
   useEffect(() => {
     if (page === 2) {
       setSemiMatch([]);
@@ -105,7 +99,6 @@ export function TournamentMultiForm({ wordDb }) {
     return true;
   };
   const setSwitches = (teamsQPerGroup, valueInt, typeS) => {
-    console.log(typeS);
     const quarterSwitchCombinations = [
       [8, 1],
       [1, 8],
@@ -129,17 +122,10 @@ export function TournamentMultiForm({ wordDb }) {
 
     if (isQuarterSwitch || isSemiSwitch) {
       if (typeS === "G") {
-        console.log("quarter switch G");
-        console.log(valueInt + "  " + teamsQPerGroup);
         const teamsQ = generateTeamLabels(valueInt, teamsQPerGroup);
-        console.log(teamsQ);
-
         setTeamsQualifiedList(teamsQ);
       } else if (typeS === "Q") {
-        console.log("quarter switch q");
-        console.log(teamsQPerGroup + "  " + valueInt);
         const teamsQ = generateTeamLabels(teamsQPerGroup, valueInt);
-        console.log(teamsQ);
         setTeamsQualifiedList(teamsQ);
       }
     }
@@ -178,8 +164,6 @@ export function TournamentMultiForm({ wordDb }) {
   };
   const handleInputChange = (e) => {
     const { name, value } = e.target;
-    console.log(value);
-    console.log(name);
 
     const valueInt = parseInt(value);
     setFormData((prevData) => {
@@ -198,7 +182,6 @@ export function TournamentMultiForm({ wordDb }) {
   };
 
   const handleNext = () => {
-    console.log("next");
     setPage((prevPage) => prevPage + 1);
   };
 
@@ -224,10 +207,6 @@ export function TournamentMultiForm({ wordDb }) {
     return labels;
   };
 
-  // console.log(startDate);
-  // console.log(endDate);
-  // console.log("page " + page);
-
   const handleSubmit = async (e) => {
     e.preventDefault();
 
@@ -236,10 +215,7 @@ export function TournamentMultiForm({ wordDb }) {
     if (page < totalPages) {
       return; // Prevent form submission if not on the last page
     }
-    console.log("submit");
-    console.log(page);
-    // console.log(formData);
-    // Here you would typically send the data to a server
+
     if (
       formData.name === "" ||
       formData.organizer === "" ||
@@ -268,203 +244,11 @@ export function TournamentMultiForm({ wordDb }) {
       organizer: capitalizeFirstLetter(formData.organizer),
     };
 
-    // console.log(tournamentData);
     const createdTournament = await addTournaments(tournamentData, loggedUser);
-    console.log("createdTournament");
-    console.log(createdTournament);
+
     router.push(`/tournament/${createdTournament.id}`);
     setLoading(false);
-
-    //     {
-    //     "name": "tname",
-    //     "groupsNum": 1,
-    //     "teamsPerGroup": 8,
-    //     "teamsQPerGroup": 8,
-    //     "bio": "tbio",
-    //     "location": "tlocaiton",
-    //     "organizer": "torganizer",
-    //     "startDate": "2024-09-09T21:00:00.000Z",
-    //     "endDate": "2024-09-10T21:00:00.000Z",
-    //     "teams": [
-    //         {
-    //             "id": "66da0d4dc3ad3ec6dafeacb6",
-    //             "name": "Man City",
-    //             "bio": "man is blue",
-    //             "location": "Manchester",
-    //             "players": [],
-    //             "__v": 0
-    //         },
-    //         {
-    //             "id": "66da0d9ac3ad3ec6dafeacbc",
-    //             "name": "man u",
-    //             "bio": "man is red",
-    //             "location": "Manchester",
-    //             "players": [],
-    //             "__v": 0
-    //         },
-    //         {
-    //             "id": "66da0dafc3ad3ec6dafeacbe",
-    //             "name": "tottenham",
-    //             "bio": "chickens",
-    //             "location": "London",
-    //             "players": [],
-    //             "__v": 0
-    //         },
-    //         {
-    //             "id": "66da0dfdc3ad3ec6dafeacc2",
-    //             "name": "Real Madrid",
-    //             "bio": "hala madrid",
-    //             "location": "Madrid",
-    //             "players": [],
-    //             "__v": 0
-    //         },
-    //         {
-    //             "id": "66da0e0dc3ad3ec6dafeacc4",
-    //             "name": "FC Barcelona",
-    //             "bio": "culers",
-    //             "location": "Barcelona",
-    //             "players": [],
-    //             "__v": 0
-    //         },
-    //         {
-    //             "id": "66da0e25c3ad3ec6dafeacc6",
-    //             "name": "FC Bayern",
-    //             "bio": "mia san mia",
-    //             "location": "Berlin",
-    //             "players": [],
-    //             "__v": 0
-    //         },
-    //         {
-    //             "id": "66dcadb3452f638115d30982",
-    //             "name": "Argentina",
-    //             "bio": "this is a country",
-    //             "location": "Argentina",
-    //             "players": [
-    //                 "66d7733f6e2f2988fc3735fc"
-    //             ],
-    //             "__v": 0
-    //         },
-    //         {
-    //             "id": "66da0d88c3ad3ec6dafeacba",
-    //             "name": "arsenal",
-    //             "bio": "london is red",
-    //             "location": "London",
-    //             "players": [],
-    //             "__v": 0
-    //         }
-    //     ],
-    //     "groupMatch": [
-    //         {
-    //             "name": "Group A",
-    //             "teams": [
-    //                 {
-    //                     "id": "66da0d9ac3ad3ec6dafeacbc",
-    //                     "name": "man u",
-    //                     "bio": "man is red",
-    //                     "location": "Manchester",
-    //                     "players": [],
-    //                     "__v": 0
-    //                 },
-    //                 {
-    //                     "id": "66da0dafc3ad3ec6dafeacbe",
-    //                     "name": "tottenham",
-    //                     "bio": "chickens",
-    //                     "location": "London",
-    //                     "players": [],
-    //                     "__v": 0
-    //                 },
-    //                 {
-    //                     "id": "66da0e0dc3ad3ec6dafeacc4",
-    //                     "name": "FC Barcelona",
-    //                     "bio": "culers",
-    //                     "location": "Barcelona",
-    //                     "players": [],
-    //                     "__v": 0
-    //                 },
-    //                 {
-    //                     "id": "66da0e25c3ad3ec6dafeacc6",
-    //                     "name": "FC Bayern",
-    //                     "bio": "mia san mia",
-    //                     "location": "Berlin",
-    //                     "players": [],
-    //                     "__v": 0
-    //                 },
-    //                 {
-    //                     "id": "66dcadb3452f638115d30982",
-    //                     "name": "Argentina",
-    //                     "bio": "this is a country",
-    //                     "location": "Argentina",
-    //                     "players": [
-    //                         "66d7733f6e2f2988fc3735fc"
-    //                     ],
-    //                     "__v": 0
-    //                 },
-    //                 {
-    //                     "id": "66da0d88c3ad3ec6dafeacba",
-    //                     "name": "arsenal",
-    //                     "bio": "london is red",
-    //                     "location": "London",
-    //                     "players": [],
-    //                     "__v": 0
-    //                 },
-    //                 {
-    //                     "id": "66da0d4dc3ad3ec6dafeacb6",
-    //                     "name": "Man City",
-    //                     "bio": "man is blue",
-    //                     "location": "Manchester",
-    //                     "players": [],
-    //                     "__v": 0
-    //                 },
-    //                 {
-    //                     "id": "66da0dfdc3ad3ec6dafeacc2",
-    //                     "name": "Real Madrid",
-    //                     "bio": "hala madrid",
-    //                     "location": "Madrid",
-    //                     "players": [],
-    //                     "__v": 0
-    //                 }
-    //             ]
-    //         }
-    //     ],
-    //     "quarterMatch": [
-    //         {
-    //             "team1": {
-    //                 "qName": "A8"
-    //             },
-    //             "team2": {
-    //                 "qName": "A2"
-    //             }
-    //         },
-    //         {
-    //             "team1": {
-    //                 "qName": "A5"
-    //             },
-    //             "team2": {
-    //                 "qName": "A4"
-    //             }
-    //         },
-    //         {
-    //             "team1": {
-    //                 "qName": "A3"
-    //             },
-    //             "team2": {
-    //                 "qName": "A6"
-    //             }
-    //         },
-    //         {
-    //             "team1": {
-    //                 "qName": "A7"
-    //             },
-    //             "team2": {
-    //                 "qName": "A1"
-    //             }
-    //         }
-    //     ],
-    //     "semiMatch": [],
-    //     "thirdSwitch": true
-    // }
   };
-  // console.log("filler" + isAllGroupsFilled);
 
   return (
     <Card className=" max-w-3xl w-full cardFull dark:bg-slate-900">
@@ -660,8 +444,6 @@ export function TournamentMultiForm({ wordDb }) {
                     id="quarter"
                     checked={quarterSwitch}
                     onClick={() => {
-                      console.log("switch");
-                      console.log(formData.groupsNum * formData.teamsQPerGroup);
                       if (formData.groupsNum * formData.teamsQPerGroup === 8) {
                         return;
                       } else {
@@ -694,10 +476,6 @@ export function TournamentMultiForm({ wordDb }) {
                       id="quarter"
                       checked={semiSwitch}
                       onClick={() => {
-                        console.log("switch");
-                        console.log(
-                          formData.groupsNum * formData.teamsQPerGroup
-                        );
                         if (
                           formData.groupsNum * formData.teamsQPerGroup ===
                           4

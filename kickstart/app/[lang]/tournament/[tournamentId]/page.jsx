@@ -18,7 +18,7 @@ export async function generateMetadata({ params: { tournamentId } }) {
 
 export default async function TournamentPage({ params }) {
   const { tournamentId, lang } = params;
-  // console.log(tournamentId);
+
   const wordDb = await getDictionary(lang);
   await dbConnect();
   const tournament = await getTournamentById(tournamentId);
@@ -26,8 +26,6 @@ export default async function TournamentPage({ params }) {
   const groups = await getGroupsByTournamentId(tournamentId);
 
   const topScorers = await getTopScorers(tournament.scorers);
-  console.log("topScorers");
-  // console.log(topScorers);
 
   const sortedEvents = tournament.events?.slice().sort((a, b) => {
     const dateTimeA = new Date(`${a.date} ${a.time}`);
@@ -35,17 +33,6 @@ export default async function TournamentPage({ params }) {
     return dateTimeB - dateTimeA;
   });
 
-  // console.log(new Date(tournament.events[0].time));
-  // console.log("Sorted Events:", sortedEvents[0]);
-  // console.log("Sorted Events:", tournament.events[0].time);
-  const currentTime = new Date().toLocaleTimeString();
-  const currentDate = new Date().toLocaleDateString();
-
-  // console.log("Current Time:", new Date(`${currentDate} ${currentTime}`));
-  // console.log(sortedEvents[0]);
-
-  // Use sortedEvents in your component
-  // console.log(tournamentId);
   return (
     <>
       <div className="w-full px-6 py-10 min-h-screen dark:bg-slate-950">

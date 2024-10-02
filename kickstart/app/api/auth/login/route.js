@@ -6,9 +6,6 @@ import { NextRequest, NextResponse } from "next/server";
 export const POST = async (request) => {
   const { name, email, image } = await request.json();
 
-  console.log("inside login post");
-  console.log(name, email, image);
-
   const superAdmin = false;
 
   await dbConnect();
@@ -19,8 +16,6 @@ export const POST = async (request) => {
     image,
     superAdmin,
   };
-
-  // console.log(newUser);
 
   try {
     await userModel.create(newUser);

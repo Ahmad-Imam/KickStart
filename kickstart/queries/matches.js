@@ -9,13 +9,10 @@ import {
   replaceMongoIdInArray,
   replaceMongoIdInObject,
 } from "@/utils/data-util";
-import { da } from "date-fns/locale";
 
 export async function createMatches(allMatch, tournament, matchDate) {
-  console.log("creating matches");
   const tournamentId = tournament.id;
-  console.log(tournamentId);
-  console.log(allMatch);
+
   const {
     groupMatch,
     quarterMatch,
@@ -24,7 +21,6 @@ export async function createMatches(allMatch, tournament, matchDate) {
     teamsPerGroup,
     groupsNum,
   } = allMatch;
-  // const groupsNum = groupMatch.length;
 
   try {
     let matchesList = [];
@@ -56,11 +52,9 @@ export async function createMatches(allMatch, tournament, matchDate) {
           tiebreaker: {},
           location: tournament.location,
         };
-        console.log("hereeeeeeeeeeeeeeeeeeeeee");
+
         const createdMatch = await matchModel.create(matchData);
-        // matchesList.push(replaceMongoIdInObject(createdMatch));
       } else {
-        console.log("should be here");
         for (const group of groupMatch) {
           const groupMatches = [];
           const teams = group.teams;
@@ -94,7 +88,6 @@ export async function createMatches(allMatch, tournament, matchDate) {
                 };
                 groupMatches.push(matchData);
               } catch (error) {
-                console.log("error");
                 console.log(error);
               }
             }
@@ -104,8 +97,6 @@ export async function createMatches(allMatch, tournament, matchDate) {
           matchesList.push(...createdMatches.map(replaceMongoIdInObject));
         }
         if (quarterMatch.length > 0) {
-          console.log("quarterMatch");
-
           const quarterMatches = [];
           for (const match of quarterMatch) {
             const matchData = {
@@ -185,7 +176,6 @@ export async function createMatches(allMatch, tournament, matchDate) {
         }
 
         if (semiMatch.length > 0) {
-          console.log("semiMatch");
           const semiMatches = [];
           for (const match of semiMatch) {
             const matchData = {
@@ -270,9 +260,6 @@ export async function createMatches(allMatch, tournament, matchDate) {
         location: tournament.location,
       };
       const createdMatch = await matchModel.create(matchData);
-      console.log("match created g1 t2");
-      // console.log(createdMatch);
-      // matchesList.push(replaceMongoIdInObject(createdMatch));
     } else if (teamsPerGroup == 1 && groupsNum === 1) {
     } else if (teamsPerGroup == 1 && groupsNum === 4) {
       //semi. but no group matches
@@ -358,9 +345,6 @@ export async function createMatches(allMatch, tournament, matchDate) {
       const createdMatches = await matchModel.insertMany(semiMatches);
       matchesList.push(...createdMatches.map(replaceMongoIdInObject));
     } else if (teamsPerGroup == 1 && groupsNum === 8) {
-      //quarter. but no group matches
-      console.log("quarterMatch");
-
       const quarterTeamList = [];
       const quarterMatches = [];
 
@@ -466,145 +450,9 @@ export async function createMatches(allMatch, tournament, matchDate) {
       }
 
       const createdMatchesQ = await matchModel.insertMany(quarterMatches);
-      //   const createdMatchesS = await matchModel.insertMany(semiMatches);
-      // matchesList.push(...createdMatchesQ.map(replaceMongoIdInObject));
-      //   matchesList.push(...createdMatchesS.map(replaceMongoIdInObject));
-
-      //quarter. but no group matches
     } else {
       console.log("nothing");
     }
-
-    // if (quarterMatch.length > 0) {
-    //   console.log("quarterMatch");
-    //   const quarterMatches = [];
-    //   for (const match of quarterMatch) {
-    //     const matchData = {
-    //       tournamentId: tournamentId,
-    //       qName: { team1: match?.team1?.qName, team2: match?.team2?.qName },
-    //       status: "upcoming",
-    //       result: {
-    //         team1: 0,
-    //         team2: 0,
-    //       },
-    //       matchDate: matchDate,
-    //       type: "quarter",
-    //       tiebreaker: {},
-    //     };
-    //     quarterMatches.push(matchData);
-    //   }
-    //   //   const semiMatches = [];
-    //   for (let i = 0; i < 4; i = i + 2) {
-    //     const matchData = {
-    //       tournamentId: tournamentId,
-    //       qName: {
-    //         team1: `qf${i + 1}`,
-    //         team2: `qf${i + 2}`,
-    //       },
-    //       status: "upcoming",
-    //       result: {
-    //         team1: 0,
-    //         team2: 0,
-    //       },
-    //       matchDate: matchDate,
-    //       type: "semi",
-    //       tiebreaker: {},
-    //     };
-    //     quarterMatches.push(matchData);
-    //   }
-
-    //   //create final match
-    //   const matchData = {
-    //     tournamentId: tournamentId,
-    //     qName: { team1: "sf1", team2: "sf2" },
-    //     status: "upcoming",
-    //     result: {
-    //       team1: 0,
-    //       team2: 0,
-    //     },
-    //     matchDate: matchDate,
-    //     type: "final",
-    //     tiebreaker: {},
-    //   };
-    //   quarterMatches.push(matchData);
-    //   if (isThirdPlace) {
-    //     const matchData = {
-    //       tournamentId: tournamentId,
-    //       qName: { team1: "sf1", team2: "sf2" },
-    //       status: "upcoming",
-    //       result: {
-    //         team1: 0,
-    //         team2: 0,
-    //       },
-    //       matchDate: matchDate,
-    //       type: "third",
-    //       tiebreaker: {},
-    //     };
-    //     quarterMatches.push(matchData);
-    //   }
-
-    //   const createdMatchesQ = await matchModel.insertMany(quarterMatches);
-    //   //   const createdMatchesS = await matchModel.insertMany(semiMatches);
-    //   matchesList.push(...createdMatchesQ.map(replaceMongoIdInObject));
-    //   //   matchesList.push(...createdMatchesS.map(replaceMongoIdInObject));
-    // }
-
-    // if (semiMatch.length > 0) {
-    //   console.log("semiMatch");
-    //   const semiMatches = [];
-    //   for (const match of semiMatch) {
-    //     const matchData = {
-    //       tournamentId: tournamentId,
-    //       qName: { team1: match?.team1?.qName, team2: match?.team2?.qName },
-    //       status: "upcoming",
-    //       result: {
-    //         team1: 0,
-    //         team2: 0,
-    //       },
-    //       matchDate: matchDate,
-    //       type: "semi",
-    //       tiebreaker: {},
-    //     };
-    //     semiMatches.push(matchData);
-    //   }
-
-    //   //create final match
-    //   const matchData = {
-    //     tournamentId: tournamentId,
-    //     qName: { team1: "sf1", team2: "sf2" },
-    //     status: "upcoming",
-    //     result: {
-    //       team1: 0,
-    //       team2: 0,
-    //     },
-    //     matchDate: matchDate,
-    //     type: "final",
-    //     tiebreaker: {},
-    //   };
-    //   semiMatches.push(matchData);
-    //   if (isThirdPlace) {
-    //     const matchData = {
-    //       tournamentId: tournamentId,
-    //       qName: { team1: "sf1", team2: "sf2" },
-    //       status: "upcoming",
-    //       result: {
-    //         team1: 0,
-    //         team2: 0,
-    //       },
-    //       matchDate: matchDate,
-    //       type: "third",
-    //       tiebreaker: {},
-    //     };
-    //     semiMatches.push(matchData);
-    //   }
-
-    //   const createdMatches = await matchModel.insertMany(semiMatches);
-    //   matchesList.push(...createdMatches.map(replaceMongoIdInObject));
-    // }
-
-    console.log("matchesList");
-    // console.log(matchesList);
-    // return replaceMongoIdInArray(matchesList);
   } catch (error) {
     throw new Error(error);
   }
@@ -639,7 +487,6 @@ export async function updateMatchStatus(matchDetails, status, tournament) {
     const matchType = capitalizeFirstLetter(matchDetails?.type);
 
     if (status === "live") {
-      console.log("match started");
       matchEvent = {
         type: "kickoff",
         time: currentTime,
@@ -657,7 +504,6 @@ export async function updateMatchStatus(matchDetails, status, tournament) {
         matchId,
       };
     } else if (status === "finished") {
-      console.log("match ended");
       matchEvent = {
         type: "fulltime",
         time: currentTime,
@@ -677,8 +523,6 @@ export async function updateMatchStatus(matchDetails, status, tournament) {
       };
     }
 
-    // console.log(new Date().toLocaleTimeString());
-
     const updatedMatch = await matchModel.findByIdAndUpdate(matchId, {
       status,
       $push: { events: matchEvent },
@@ -688,11 +532,6 @@ export async function updateMatchStatus(matchDetails, status, tournament) {
       tournamentEvent,
       tournament.id
     );
-
-    console.log(matchId);
-    console.log(tournament.id);
-
-    // console.log(replaceMongoIdInObject(updatedTournament));
 
     return replaceMongoIdInObject(updatedMatch);
   } catch (error) {
@@ -781,8 +620,6 @@ export async function updateMatchGoal(gfTeam, gaTeam, player, matchDetails) {
       )
       .lean();
 
-    console.log("matchResult updated");
-
     // Update the scorers in the tournament table
     await tournamentsModel.findByIdAndUpdate(
       matchDetails.tournamentId,
@@ -795,7 +632,6 @@ export async function updateMatchGoal(gfTeam, gaTeam, player, matchDetails) {
         upsert: true,
       }
     );
-    console.log("tournScorer updated");
 
     const updatedTournament = await tournamentsModel
       .findById(matchDetails.tournamentId)
@@ -804,7 +640,6 @@ export async function updateMatchGoal(gfTeam, gaTeam, player, matchDetails) {
     if (
       !updatedTournament.scorers.some((scorer) => scorer.playerId === player.id)
     ) {
-      console.log("if no prev tournScorer updated");
       await tournamentsModel.findByIdAndUpdate(
         matchDetails.tournamentId,
         {
@@ -813,11 +648,6 @@ export async function updateMatchGoal(gfTeam, gaTeam, player, matchDetails) {
         { new: true }
       );
     }
-
-    console.log("tournaments updated complete");
-
-    console.log("gfTeam");
-    console.log(gfTeam);
 
     await teamsTournamentModel.findByIdAndUpdate(
       { _id: gfTeam.id, tournamentId: matchDetails.tournamentId },
@@ -831,8 +661,6 @@ export async function updateMatchGoal(gfTeam, gaTeam, player, matchDetails) {
       }
     );
 
-    console.log("teamsT scorers for updated");
-
     const updatedTeamTournament = await teamsTournamentModel
       .findOne({ _id: gfTeam.id, tournamentId: matchDetails.tournamentId })
       .lean();
@@ -843,7 +671,6 @@ export async function updateMatchGoal(gfTeam, gaTeam, player, matchDetails) {
         (scorer) => scorer.playerId === player.id
       )
     ) {
-      console.log("if no prev teamsT scorers, goals for updated");
       // Add the player to the scorers array with an initial score of 1
       await teamsTournamentModel.findByIdAndUpdate(
         { _id: gfTeam.id, tournamentId: matchDetails.tournamentId },
@@ -854,7 +681,6 @@ export async function updateMatchGoal(gfTeam, gaTeam, player, matchDetails) {
       );
     }
 
-    console.log("teamsT scorers for updated");
     await teamsTournamentModel.findByIdAndUpdate(
       { _id: gaTeam.id, tournamentId: matchDetails.tournamentId },
       {
@@ -862,7 +688,6 @@ export async function updateMatchGoal(gfTeam, gaTeam, player, matchDetails) {
       },
       { new: true }
     );
-    console.log("teamsT goals against updated");
 
     const tournamentEvent = {
       type: "goal",
@@ -881,14 +706,11 @@ export async function updateMatchGoal(gfTeam, gaTeam, player, matchDetails) {
       { new: true }
     );
 
-    console.log("player goals updated");
-
     // Update the tournament document in the database
     const updatedTournamentEvent = await updateTournamentEvent(
       tournamentEvent,
       matchDetails.tournamentId
     );
-    console.log("tournEvent updated");
 
     return replaceMongoIdInObject(updatedMatch);
   } catch (error) {
@@ -927,11 +749,6 @@ export async function updateMatchCard(team, player, matchDetails, type) {
       )
       .lean();
 
-    console.log("matchResult updated");
-
-    console.log("gfTeam");
-    // console.log(team);
-
     if (type === "yellow") {
       const updateResult = await teamsTournamentModel.findByIdAndUpdate(
         { _id: team.id, tournamentId: matchDetails.tournamentId },
@@ -952,9 +769,6 @@ export async function updateMatchCard(team, player, matchDetails, type) {
         },
         { new: true }
       );
-      console.log("player yellow updated");
-      console.log(player.id);
-      // console.log("update result:", updatedPlyer);
     } else {
       const updateResult = await teamsTournamentModel.findByIdAndUpdate(
         { _id: team.id, tournamentId: matchDetails.tournamentId },
@@ -977,15 +791,10 @@ export async function updateMatchCard(team, player, matchDetails, type) {
       );
     }
 
-    // console.log("Update result:", updateResult);
-    console.log("teamsT scorers for updated");
-
     // Fetch the updated team tournament document
     const updatedTeamTournament = await teamsTournamentModel
       .findOne({ _id: team.id, tournamentId: matchDetails.tournamentId })
       .lean();
-
-    // console.log("Updated team tournament:", updatedTeamTournament);
 
     // Check if the player is not already in the scorers array
 
@@ -995,7 +804,6 @@ export async function updateMatchCard(team, player, matchDetails, type) {
           (scorer) => scorer.playerId === player.id
         )
       ) {
-        console.log("if no prev teamsT scorers, goals for updated");
         // Add the player to the yellow array with an initial score of 1
         const addToSetResult = await teamsTournamentModel.findByIdAndUpdate(
           { _id: team.id, tournamentId: matchDetails.tournamentId },
@@ -1004,7 +812,6 @@ export async function updateMatchCard(team, player, matchDetails, type) {
           },
           { new: true }
         );
-        // console.log("Add to set result:", addToSetResult);
       }
     } else {
       if (
@@ -1012,7 +819,6 @@ export async function updateMatchCard(team, player, matchDetails, type) {
           (scorer) => scorer.playerId === player.id
         )
       ) {
-        console.log("if no prev teamsT scorers, goals for updated");
         // Add the player to the yellow array with an initial score of 1
         const addToSetResult = await teamsTournamentModel.findByIdAndUpdate(
           { _id: team.id, tournamentId: matchDetails.tournamentId },
@@ -1021,11 +827,8 @@ export async function updateMatchCard(team, player, matchDetails, type) {
           },
           { new: true }
         );
-        // console.log("Add to set result:", addToSetResult);
       }
     }
-
-    console.log("teamsT scorers for updated");
 
     const tournamentEvent = {
       type: type,
@@ -1044,7 +847,6 @@ export async function updateMatchCard(team, player, matchDetails, type) {
       tournamentEvent,
       matchDetails.tournamentId
     );
-    console.log("tournEvent updated");
 
     return replaceMongoIdInObject(updatedMatch);
   } catch (error) {
@@ -1061,11 +863,8 @@ export async function getMatchesLeftGroup(tournament) {
         status: { $in: ["upcoming", "live"] },
       })
       .lean();
-    // console.log(matchesFinished);
 
-    console.log(matchesUpcomingOrLive.length);
     if (matchesUpcomingOrLive.length === 0) {
-      console.log("all matches finished");
       return "done";
     } else return "not done";
 
@@ -1084,15 +883,10 @@ export async function getMatchesLeftQuarter(tournament) {
         status: { $in: ["upcoming", "live"] },
       })
       .lean();
-    // console.log(matchesFinished);
 
-    console.log(matchesUpcomingOrLive.length);
     if (matchesUpcomingOrLive.length === 0) {
-      console.log("all matches finished");
       return "done";
     } else return "not done";
-
-    // return replaceMongoIdInArray(matches);
   } catch (error) {
     throw new Error(error);
   }
@@ -1106,15 +900,10 @@ export async function getMatchesLeftSemi(tournament) {
         status: { $in: ["upcoming", "live"] },
       })
       .lean();
-    // console.log(matchesFinished);
 
-    console.log(matchesUpcomingOrLive.length);
     if (matchesUpcomingOrLive.length === 0) {
-      console.log("all matches finished");
       return "done";
     } else return "not done";
-
-    // return replaceMongoIdInArray(matches);
   } catch (error) {
     throw new Error(error);
   }
@@ -1131,12 +920,9 @@ export async function updateGroupEnd(tournament) {
     );
   }
 
-  console.log("tournament.id");
-  console.log(tournament.id);
   const groups = await groupsModel
     .find({ tournamentId: tournament.id.toString() })
     .lean();
-  console.log(groups);
 
   if (!groups || groups.length === 0) {
     throw new Error(`No groups found for tournament ${tournament.id}.`);
@@ -1145,7 +931,7 @@ export async function updateGroupEnd(tournament) {
   const groupMap = {};
   for (let i = 0; i < groupNumber; i++) {
     const groupKey = `Group ${String.fromCharCode(65 + i)}`; // Group A, B, C, etc.
-    console.log(groupKey);
+
     const group = groups.find((group) => group.name === groupKey);
     if (!group) {
       throw new Error(`Group ${groupKey} not found.`);
@@ -1165,21 +951,16 @@ export async function updateGroupEnd(tournament) {
     });
 
     groupMap[groupKey] = rankedTeamList.slice(0, teamsQualifiedPerGroup);
-    // console.log(rankedTeamList)
   }
-
-  console.log("groupMap");
-  console.log(groupMap);
 
   const matchTypes = totalTeams === 8 ? ["quarter"] : ["semi"];
   const matches = await matchModel
     .find({ type: { $in: matchTypes }, tournamentId: tournament.id })
     .lean();
-  console.log(matches?.length);
 
   for (const match of matches) {
     const { qName } = match;
-    console.log(qName);
+
     const team1Key = qName.team1;
     const team2Key = qName.team2;
 
@@ -1191,10 +972,6 @@ export async function updateGroupEnd(tournament) {
 
     const team1 = groupMap[group1][team1Index];
     const team2 = groupMap[group2][team2Index];
-
-    console.log("team1");
-    console.log(team1);
-    console.log(team2);
 
     const teamsT1 = await teamsTournamentModel
       .findOne({ teamId: team1.teamId, tournamentId: tournament.id })
@@ -1214,7 +991,6 @@ export async function updateGroupEnd(tournament) {
       }
     );
   }
-  console.log("matches updated");
 }
 
 export async function addTiebreaker(matchDetails) {
@@ -1227,7 +1003,6 @@ export async function addTiebreaker(matchDetails) {
       teamA: Array(10).fill("pending"),
       teamB: Array(10).fill("pending"),
     };
-    console.log(tiebreaker);
 
     const matchEvent = {
       type: "tiebreaker",
@@ -1253,9 +1028,6 @@ export async function addTiebreaker(matchDetails) {
         $push: { events: matchEvent },
       })
       .lean();
-
-    console.log("updated tiebreaker");
-    // console.log(updatedMatchTie);
 
     return replaceMongoIdInObject(updatedMatch);
   } catch (error) {
@@ -1287,7 +1059,6 @@ export async function updateTiebreaker(matchDetails, teamId, index, result) {
       throw new Error("Match not found or update failed");
     }
 
-    console.log("Updated match with tiebreaker:", updatedMatch);
     return updatedMatch;
   } catch (error) {
     console.error("Error updating tiebreaker:", error);
@@ -1313,7 +1084,6 @@ export async function finishTieBreaker(matchDetails) {
       team1: matchDetails?.result?.team1 + team1Result,
       team2: matchDetails?.result?.team2 + team2Result,
     };
-    console.log(matchResult);
 
     const matchEvent = {
       type: "tiebreaker",
@@ -1332,8 +1102,6 @@ export async function finishTieBreaker(matchDetails) {
       },
       { new: true }
     );
-
-    console.log("Tiebreaker finished");
 
     return replaceMongoIdInObject(updatedMatch);
   } catch (error) {
@@ -1357,8 +1125,6 @@ export async function updateMatchData(matchData, matchDetails) {
         }
       )
       .lean();
-
-    console.log("matchResult updated");
 
     return replaceMongoIdInObject(updatedMatch);
   } catch (error) {

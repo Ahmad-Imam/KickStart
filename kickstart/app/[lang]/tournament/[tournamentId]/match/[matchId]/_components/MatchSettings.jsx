@@ -16,8 +16,6 @@ export default function MatchSettings({
   tournamentStatus,
   wordDb,
 }) {
-  console.log(tournamentStatus);
-
   const [matchStarted, setMatchStarted] = useState(
     tournamentStatus === "live" && matchDetails?.status === "live"
       ? true
@@ -35,8 +33,6 @@ export default function MatchSettings({
 
   const [loading, setLoading] = useState(false);
   const [loadingTie, setLoadingTie] = useState(false);
-
-  // console.log(matchDetails);
 
   async function handleClick() {
     setLoading(true);
@@ -56,19 +52,15 @@ export default function MatchSettings({
     setTiebreaker((prev) => !prev);
     setLoadingTie(true);
     if (tiebreaker) {
-      console.log("Tiebreaker ended");
       setTiebreakerEnd(true);
       const tiebreakerEnd = await endTiebreaker(matchDetails);
       setLoadingTie(false);
     }
     if (!tiebreaker) {
-      console.log("Tiebreaker started");
       const tiebreaker = await startTiebreaker(matchDetails);
       setLoadingTie(false);
     }
   }
-
-  console.log(matchDetails?.result?.team1 !== matchDetails?.result?.team2);
 
   return (
     <div>

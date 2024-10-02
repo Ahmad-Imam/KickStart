@@ -22,9 +22,6 @@ export default async function PlayerPage({ params }) {
 
   const playerDetails = await getPlayerById(playerId);
 
-  // console.log(playerDetails);
-  // console.log(playerDetails);
-
   return (
     <div className="dark:bg-slate-950">
       <PlayerDetails

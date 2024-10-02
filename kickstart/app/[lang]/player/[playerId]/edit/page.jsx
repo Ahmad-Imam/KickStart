@@ -11,7 +11,6 @@ export default async function PlayerEditPage({ params }) {
   await dbConnect();
   const wordDb = await getDictionary(lang);
   const playerDetails = await getPlayerById(playerId);
-  //   console.log(playerDetails);
 
   const session = await auth();
   if (!session) {

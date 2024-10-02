@@ -53,7 +53,6 @@ export default async function TeamsTDetails({
   tournamentDetails,
   wordDb,
 }) {
-  // In a real app, you'd fetch this based on params.i
   await dbConnect();
   const playersInfo = await getAllPlayersByIds(teamsTournament.players);
 
@@ -61,14 +60,6 @@ export default async function TeamsTDetails({
     teamsTournament.tournamentId,
     teamsTournament.teamId
   );
-
-  // console.log("playersInfo query");
-  // console.log(playersInfo);
-  console.log("yeloooooooooooooooooooooooo");
-
-  // console.log(teamsTournament?.id);
-  // console.log(teamsTournament?.yellow);
-  // console.log(teamsTournament?.red);
 
   return (
     <div className="container mx-auto px-4 py-8">

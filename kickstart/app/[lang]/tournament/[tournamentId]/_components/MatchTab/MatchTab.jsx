@@ -34,8 +34,7 @@ export default function MatchTab({
   const quarterMatches = matchesDetails?.filter(
     (match) => match?.type === "quarter"
   );
-  console.log("quarter");
-  console.log(quarterMatches);
+
   const semiMatches = matchesDetails?.filter((match) => match?.type === "semi");
   const finalMatch = matchesDetails?.filter((match) => match?.type === "final");
 

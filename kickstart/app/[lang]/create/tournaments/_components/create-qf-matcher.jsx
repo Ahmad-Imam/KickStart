@@ -71,16 +71,9 @@ export default function SFMatcher({ teamsQ, setQuarterMatch, wordDb }) {
       .filter((team) => team && team.qName) // Filter out null and undefined teams
       .map((team) => team.qName);
 
-    // console.log("selectedTeams");
-    // console.log(selectedTeams);
-    // console.log(teams);
-
     const availableTeams = teams.filter(
       (team) => !selectedTeams.includes(team)
     );
-
-    // console.log("availableTeams");
-    // console.log(availableTeams);
 
     // Include the currently selected team for this slot
     const currentTeam = matches[matchIndex][teamKey];

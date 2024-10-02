@@ -1,7 +1,5 @@
 "use client";
-import Link from "next/link";
 
-import { Button } from "@/components/ui/button";
 import {
   Card,
   CardContent,
@@ -12,31 +10,21 @@ import {
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { addPlayers, addTeams } from "@/app/actions";
-
 import { useState, useEffect } from "react";
 import { ScrollArea } from "@/components/ui/scroll-area";
-
 import { MapPinIcon, X } from "lucide-react";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
-import { set } from "mongoose";
 import { capitalizeFirstLetter } from "@/utils/data-util";
 import { useRouter } from "next/navigation";
-import { ca } from "date-fns/locale";
 
 export function CreatePlayersForm({ wordDb }) {
   const [query, setQuery] = useState("");
   const [results, setResults] = useState([]);
   const [savedItems, setSavedItems] = useState([]);
-
   const [teamsList, setTeamsList] = useState([]);
-  console.log(teamsList);
-
   const [loadingTeam, setLoadingTeam] = useState(false);
-
   const positions = ["goalkeeper", "defender", "midfielder", "striker"];
-
   const [selectedPosition, setSelectedPosition] = useState(positions[2]);
-  console.log(selectedPosition);
 
   const [loading, setLoading] = useState(false);
 
@@ -85,10 +73,7 @@ export function CreatePlayersForm({ wordDb }) {
       team,
       position: selectedPosition,
     };
-
-    console.log(playerData);
     const player = await addPlayers(playerData);
-    console.log(player);
     // Call the API to create the team
     setLoading(false);
     router.push(`/player/${player.id}`);
@@ -98,11 +83,6 @@ export function CreatePlayersForm({ wordDb }) {
     try {
       setLoadingTeam(true);
 
-      console.log("env");
-      // console.log(process.env.BASE_URL);
-      // console.log(String(process.env.MONGODB_CONNECTION_STRING));
-      // console.log(process.env.NEXT_PUBLIC_BASE_URL);
-
       const res = await fetch(`/api/teams`, { cache: "no-store" });
       const data = await res.json();
       setTeamsList(data);
@@ -110,7 +90,6 @@ export function CreatePlayersForm({ wordDb }) {
     } catch (error) {
       console.log(error);
     }
-    // console.log(data);
   };
 
   useEffect(() => {

@@ -32,10 +32,8 @@ export default function SearchTournaments({ allTournaments, wordDb }) {
   async function handleDelete(e, tournamentId) {
     e.preventDefault();
     e.stopPropagation();
-    console.log("Delete button clicked");
 
     await removeTournament(tournamentId);
-    console.log("removed");
   }
 
   const { loggedUser } = useAuth();

@@ -27,7 +27,7 @@ export async function createTournaments(data, loggedUser) {
     const simpleTournamentData = await tournamentsModel
       .findById(tournament._id)
       .lean();
-    console.log(tournament);
+
     return replaceMongoIdInObject(simpleTournamentData);
   } catch (error) {
     throw new Error(error);
@@ -36,12 +36,10 @@ export async function createTournaments(data, loggedUser) {
 
 export async function getTournamentById(tournamentId) {
   try {
-    console.log(tournamentId);
     if (!mongoose.Types.ObjectId.isValid(tournamentId)) {
       throw new Error("Invalid tournament ID");
     }
     const tournament = await tournamentsModel.findById(tournamentId).lean();
-    // console.log(tournament);
 
     return replaceMongoIdInObject(tournament);
   } catch (error) {
@@ -64,19 +62,16 @@ export async function deleteTournament(tournamentId) {
       throw new Error("Invalid tournament ID");
     }
     //remove from groups table which has the same tournament id
-    //remove from matches table which has the same tournament id
 
     const removedGroups = await groupsModel.deleteMany({ tournamentId });
-    console.log("removedGrouops");
+
     const removedMatches = await matchModel.deleteMany({ tournamentId });
-    console.log("removedmatches");
+
     const removedTeamsT = await teamsTournamentModel.deleteMany({
       tournamentId,
     });
-    console.log("removedteamsT");
+
     const tournament = await tournamentsModel.findByIdAndDelete(tournamentId);
-    // return replaceMongoIdInObject(tournament);
-    console.log("removedtournemant");
   } catch (error) {
     throw new Error(error);
   }
@@ -111,7 +106,6 @@ export async function removePrevModeratorsFromCurrentTournament(
           { _id: tournamentDetails?.id },
           { $pull: { moderators: user.id } }
         );
-        // console.log(updatedTeam);
 
         //remove team,tournament from player table
         const updatedUsers = await userModel.findByIdAndUpdate(user.id, {
@@ -121,9 +115,6 @@ export async function removePrevModeratorsFromCurrentTournament(
         return user;
       })
     );
-    console.log("newTournament");
-    console.log(newTournament);
-    // return replaceMongoIdInObject(newTournament);
   } catch (error) {
     throw new Error(error);
   }
@@ -142,9 +133,7 @@ export async function addModeratorsToCurrentTournament(
           { _id: tournamentDetails?.id },
           { $push: { moderators: user.id } }
         );
-        // console.log(updatedTeam);
 
-        //remove team,tournament from player table
         const updatedUsers = await userModel.findByIdAndUpdate(user.id, {
           $push: { moderator: tournamentDetails.id },
         });
@@ -152,9 +141,6 @@ export async function addModeratorsToCurrentTournament(
         return user;
       })
     );
-    console.log("newTournament");
-    console.log(newTournament);
-    // return replaceMongoIdInObject(newTournament);
   } catch (error) {
     throw new Error(error);
   }

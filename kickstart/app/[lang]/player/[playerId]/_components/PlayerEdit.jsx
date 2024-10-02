@@ -40,8 +40,6 @@ export default function PlayerEdit({ playerDetails, wordDb }) {
 
   const [initialFormData, setInitialFormData] = useState(formData);
 
-  //   console.log(teamsList);
-
   const [loadingTeam, setLoadingTeam] = useState(false);
 
   const positions = ["goalkeeper", "defender", "midfielder", "striker"];
@@ -51,7 +49,6 @@ export default function PlayerEdit({ playerDetails, wordDb }) {
   const [selectedPosition, setSelectedPosition] = useState(
     initialFormData.position
   );
-  //   console.log(selectedPosition);
 
   useEffect(() => {
     if (query.trim() === "") {
@@ -84,7 +81,7 @@ export default function PlayerEdit({ playerDetails, wordDb }) {
     setLoading(true);
     // const formData = new FormData(e.target);
     const name = initialFormData.name;
-    console.log(name);
+
     const nickName = initialFormData.nickName;
     const country = initialFormData.country;
     const jersey = initialFormData.jersey;
@@ -100,10 +97,8 @@ export default function PlayerEdit({ playerDetails, wordDb }) {
       //   ...playerDetails,
     };
 
-    console.log(playerData);
     const teams = await editPlayerData(playerData, playerDetails.id);
     setLoading(false);
-    console.log("ipdted");
     router.push(`/player/${playerDetails.id}`);
 
     // Call the API to create the team
@@ -120,7 +115,6 @@ export default function PlayerEdit({ playerDetails, wordDb }) {
     } catch (error) {
       console.log(error);
     }
-    // console.log(data);
   };
 
   useEffect(() => {

@@ -44,9 +44,7 @@ export default function TournamentModeratorsForm({
       const filtered = playerList.filter((item) =>
         item?.name.toLowerCase().includes(query.toLowerCase())
       );
-      console.log("filtered");
-      console.log(filtered);
-      // console.log(playerList);
+
       setResults(filtered);
     }, 300); // Simulate a slight delay
 
@@ -54,13 +52,8 @@ export default function TournamentModeratorsForm({
   }, [query, playerList]);
 
   const handleResultClick = (item) => {
-    // console.log(item);
-    // console.log(savedItems.some((savedItem) => savedItem.id === item.id));
-
     if (!savedItems.some((savedItem) => savedItem.id === item.id)) {
-      console.log("added");
       setSavedItems((prevSavedItems) => [...prevSavedItems, item]);
-
       setResults((prevResults) =>
         prevResults.filter((result) => result.id !== item.id)
       );
@@ -70,14 +63,12 @@ export default function TournamentModeratorsForm({
   };
 
   const removeSavedItem = (item) => {
-    console.log(item);
     setSavedItems((prev) => prev.filter((i) => i.id !== item.id));
     setResults((prevResults) => [...prevResults, item]);
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    console.log("submitted");
     setSquadChangeLoading(true);
     const newPlayers = savedItems.filter(
       (item) => !moderatorsList.some((player) => player.id === item.id)
@@ -86,22 +77,14 @@ export default function TournamentModeratorsForm({
       (player) => !savedItems.some((item) => item.id === player.id)
     );
 
-    console.log(newPlayers);
-    console.log(removedPlayers);
-    console.log(tournamentDetails?.id);
-
     if (newPlayers.length > 0) {
       await addNewModeratorsToCurrentTournament(newPlayers, tournamentDetails);
-      console.log("test");
-      // console.log(test);
     }
     if (removedPlayers.length > 0) {
       await deletePrevModeratorsFromCurrentTournament(
         removedPlayers,
         tournamentDetails
       );
-      console.log("test R");
-      // console.log(test);
     }
 
     setSquadChangeLoading(false);

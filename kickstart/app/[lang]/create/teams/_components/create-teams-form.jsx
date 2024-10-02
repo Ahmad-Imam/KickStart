@@ -1,7 +1,4 @@
 "use client";
-import Link from "next/link";
-
-import { Button } from "@/components/ui/button";
 import {
   Card,
   CardContent,
@@ -15,13 +12,10 @@ import { addTeams, editPlayerTeam } from "@/app/actions";
 import { useState, useEffect } from "react";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { MapPinIcon, X } from "lucide-react";
-import { set } from "mongoose";
-import { toast } from "sonner";
 import { capitalizeFirstLetter } from "@/utils/data-util";
 import { Badge } from "@/components/ui/badge";
-import { ca } from "date-fns/locale";
-import { useRouter } from "next/navigation";
 
+import { useRouter } from "next/navigation";
 export function CreateTeamsForm({ wordDb }) {
   const [playersList, setPlayersList] = useState([]);
   const [query, setQuery] = useState("");
@@ -32,10 +26,6 @@ export function CreateTeamsForm({ wordDb }) {
 
   const [loading, setLoading] = useState(false);
   const router = useRouter();
-
-  console.log("saved");
-  console.log(Array.isArray(savedItems));
-  console.log(savedItems);
 
   useEffect(() => {
     if (query.trim() === "") {
@@ -54,10 +44,7 @@ export function CreateTeamsForm({ wordDb }) {
   }, [query]);
 
   const handleResultClick = (item) => {
-    console.log(item);
-    console.log(savedItems.some((savedItem) => savedItem.id === item.id));
     if (!savedItems.some((savedItem) => savedItem.id === item.id)) {
-      console.log("added");
       setSavedItems((prevSavedItems) => [...prevSavedItems, item]);
     }
   };
@@ -81,22 +68,14 @@ export function CreateTeamsForm({ wordDb }) {
       players: savedItems.map((item) => item.id),
     };
 
-    // console.log(teamData);
     const teams = await addTeams(teamData);
-    console.log("teamData");
-    console.log(teams);
 
     if (playersInTeam.length > 0) {
-      console.log("players");
       const playersUpdated = await editPlayerTeam(playersInTeam, teams.id);
-      console.log("playersUpdated");
-      console.log(playersUpdated);
     }
     setLoading(false);
 
     router.push(`/team/${teams.id}`);
-
-    // Call the API to create the team
   }
 
   const fetchPlayers = async () => {
@@ -109,8 +88,6 @@ export function CreateTeamsForm({ wordDb }) {
     } catch (error) {
       console.log(error);
     }
-
-    // console.log(data);
   };
 
   useEffect(() => {

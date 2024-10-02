@@ -28,21 +28,13 @@ export default function GroupMatcher({
     teamsPerGroupI,
     teamsQualified,
   });
-  // console.log(config.numberOfGroups);
   const [availableTeams, setAvailableTeams] = useState(teamsTournament);
-
   const [groups, setGroups] = useState(
     Array.from({ length: config.numberOfGroups }, (_, i) => ({
       name: `Group ${String.fromCharCode(65 + i)}`, // 65 is the ASCII code for 'A'
       teams: [],
     }))
   );
-
-  console.log("groups");
-  console.log(isAllGroupsFilled);
-  console.log(config);
-  // console.log(teamsTournament);
-  // console.log(groups);
 
   useEffect(() => {
     setGroupMatch([]);
@@ -56,17 +48,12 @@ export default function GroupMatcher({
     const allFilled = groups.every(
       (group) => group.teams.length === config.teamsPerGroupI
     );
-    console.log("allFilled");
-    console.log(allFilled);
     setIsAllGroupsFilled(allFilled);
   }, [groups]);
 
   const addTeamToGroup = (groupIndex, teamName) => {
-    // console.log("team");
-    // console.log(teamName);
     const selectedTeam = availableTeams.find((t) => t.name === teamName);
-    // console.log("selectedTeam");
-    // console.log(selectedTeam);
+
     if (groups[groupIndex].teams.length < config.teamsPerGroupI) {
       setGroups(
         groups.map((group, i) =>
@@ -88,8 +75,6 @@ export default function GroupMatcher({
 
   const removeTeamFromGroup = (groupIndex, teamName) => {
     const selectedTeam = teamsTournament.find((t) => t.name === teamName);
-    // console.log("selectedTeamremvoe");
-    // console.log(selectedTeam);
 
     setGroups(
       groups.map((group, i) =>

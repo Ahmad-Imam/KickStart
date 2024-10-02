@@ -11,7 +11,7 @@ import {
 } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { addTeams, addTeamsN, editMatchData } from "@/app/actions";
+import { editMatchData } from "@/app/actions";
 import { useState, useEffect } from "react";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { X } from "lucide-react";
@@ -26,10 +26,6 @@ export default function MatchEdit({ matchDetails, wordDb }) {
   const [location, setLocation] = useState(matchDetails?.location || "");
   const [loading, setLoading] = useState(false);
   const router = useRouter();
-  console.log("saved");
-  // console.log(Array.isArray(savedItems));
-  // console.log(savedItems);
-  console.log(location);
 
   async function handleSubmit(e) {
     e.preventDefault();
@@ -40,20 +36,13 @@ export default function MatchEdit({ matchDetails, wordDb }) {
     const matchData = {
       location,
       matchDate: matchDate.toString(),
-      // players: savedItems.map((item) => item.id),
     };
-
-    console.log(matchData);
 
     const matchUpdated = await editMatchData(matchData, matchDetails);
     router.push(
       `/tournament/${matchDetails.tournamentId}/match/${matchDetails.id}`
     );
     setLoading(false);
-
-    console.log("matchUpdated");
-    // Call the API to create the team
-    // console.log(teamData);
   }
 
   return (
