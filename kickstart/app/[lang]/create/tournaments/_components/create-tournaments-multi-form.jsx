@@ -457,7 +457,7 @@ export function TournamentMultiForm({ wordDb }) {
                   <TooltipProvider>
                     <Tooltip>
                       <TooltipTrigger asChild>
-                        <Label htmlFor="quarter">{quarterFinals}</Label>
+                        <Label htmlFor="quarter">{wordDb.quarterFinals}</Label>
                       </TooltipTrigger>
                       <TooltipContent>
                         Number of Groups * Number of Teams Qualified must be 8
@@ -641,7 +641,7 @@ export function TournamentMultiForm({ wordDb }) {
             </div>
           )}
           {page < totalPages ? (
-            <div
+            <button
               type="button"
               disabled={
                 (page === 1 &&
@@ -655,10 +655,10 @@ export function TournamentMultiForm({ wordDb }) {
                     formData.groupsNum * formData.teamsPerGroup)
               }
               onClick={handleNext}
-              className="customButton w-28"
+              className="customButton w-28 disabled:opacity-50 disabled:cursor-not-allowed"
             >
               {wordDb.next}
-            </div>
+            </button>
           ) : (
             <button
               className="customButton w-28 disabled:opacity-50 disabled:cursor-not-allowed"

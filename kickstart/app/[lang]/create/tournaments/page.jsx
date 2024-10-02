@@ -1,5 +1,5 @@
 import { auth } from "@/auth";
-import { TournamentForm } from "./_components/create-tournaments-form";
+
 import { TournamentMultiForm } from "./_components/create-tournaments-multi-form";
 
 import { redirect } from "next/navigation";
